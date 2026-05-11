@@ -8,198 +8,330 @@ type Category = "All" | "Flowers" | "Fruits" | "Vegetables"
 type Plant = {
   id: number
   name: string
-  species: string
+  meta: string
   category: Exclude<Category, "All">
-  care: "Easy" | "Medium" | "Moderate"
   img: string
 }
 
 const plants: Plant[] = [
   {
     id: 1,
-    name: "English Rose",
-    species: "Rosa gallica",
+    name: "Cosmos bipinnatus",
+    meta: "3 varieties · sown March",
     category: "Flowers",
-    care: "Medium",
-    img: "https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=600&q=80",
+    img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 2,
-    name: "Lavender",
-    species: "Lavandula angustifolia",
-    category: "Flowers",
-    care: "Easy",
-    img: "https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?auto=format&fit=crop&w=600&q=80",
+    name: "San Marzano",
+    meta: "2 varieties · staked",
+    category: "Fruits",
+    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 3,
-    name: "Cherry Tomato",
-    species: "Solanum lycopersicum",
-    category: "Fruits",
-    care: "Easy",
-    img: "https://images.unsplash.com/photo-1592921870789-04563d55041c?auto=format&fit=crop&w=600&q=80",
+    name: "Lacinato kale",
+    meta: "1 variety · cool-loving",
+    category: "Vegetables",
+    img: "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 4,
-    name: "Sweet Basil",
-    species: "Ocimum basilicum",
-    category: "Vegetables",
-    care: "Easy",
-    img: "https://images.unsplash.com/photo-1609358905581-e5381612486e?auto=format&fit=crop&w=600&q=80",
+    name: "Café au Lait dahlia",
+    meta: "4 varieties · tubered",
+    category: "Flowers",
+    img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 5,
-    name: "Sunflower",
-    species: "Helianthus annuus",
-    category: "Flowers",
-    care: "Easy",
-    img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=600&q=80",
+    name: "Albion strawberry",
+    meta: "2 varieties · ever-bearing",
+    category: "Fruits",
+    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 6,
-    name: "Blueberry",
-    species: "Vaccinium corymbosum",
-    category: "Fruits",
-    care: "Medium",
-    img: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=600&q=80",
+    name: "Eden climbing rose",
+    meta: "2 varieties · trellised",
+    category: "Flowers",
+    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 7,
-    name: "Peppermint",
-    species: "Mentha × piperita",
+    name: "Shishito pepper",
+    meta: "3 varieties · in pots",
     category: "Vegetables",
-    care: "Easy",
-    img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+    img: "https://images.unsplash.com/photo-1525607551316-4a8e16d1f9ba?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: 8,
-    name: "Purple Orchid",
-    species: "Phalaenopsis",
+    name: "Brown Turkey fig",
+    meta: "1 variety · 2nd year",
+    category: "Fruits",
+    img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 9,
+    name: "Sweet pea",
+    meta: "5 varieties · climbing",
     category: "Flowers",
-    care: "Moderate",
-    img: "https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=600&q=80",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 10,
+    name: "Nasturtium",
+    meta: "2 varieties · trailing",
+    category: "Flowers",
+    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 11,
+    name: "Wisteria",
+    meta: "1 variety · 3rd year",
+    category: "Flowers",
+    img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 12,
+    name: "Monstera deliciosa",
+    meta: "1 variety · indoor",
+    category: "Vegetables",
+    img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 13,
+    name: "Larkspur",
+    meta: "4 varieties · direct sown",
+    category: "Flowers",
+    img: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 14,
+    name: "Lemon tree",
+    meta: "1 variety · container",
+    category: "Fruits",
+    img: "https://images.unsplash.com/photo-1444930694458-01babf71870c?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: 15,
+    name: "Rainbow chard",
+    meta: "3 varieties · cut-and-come",
+    category: "Vegetables",
+    img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=900&q=80",
   },
 ]
 
-const careBadge: Record<Plant["care"], { bg: string; color: string }> = {
-  Easy: { bg: "var(--green-surface)", color: "var(--green-ink)" },
-  Medium: { bg: "var(--ochre-surface, #F1E0B8)", color: "#7A5500" },
-  Moderate: { bg: "var(--clay-surface, #F4D9C2)", color: "var(--clay-deep, #9A552A)" },
+const tabCounts: Record<Category, number> = {
+  All: 40,
+  Flowers: 18,
+  Fruits: 12,
+  Vegetables: 10,
 }
 
 const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
 
 export default function PlantGrid() {
   const [active, setActive] = useState<Category>("All")
+  const [visible, setVisible] = useState(8)
 
   const filtered = active === "All" ? plants : plants.filter((p) => p.category === active)
+  const shown = filtered.slice(0, visible)
+  const hasMore = visible < filtered.length
+  const isExpanded = visible >= filtered.length && filtered.length > 8
 
   return (
-    <section id="plants" className="py-24" style={{ background: "var(--paper-warm)" }}>
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
-            <span
-              className="inline-block text-xs font-medium tracking-widest uppercase mb-4"
-              style={{ color: "var(--green-highlight)" }}
-            >
-              Plant Library
-            </span>
-            <h2
-              className="text-4xl font-medium"
-              style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
-            >
-              Explore Our Plants
-            </h2>
-            <p className="mt-2 text-sm" style={{ color: "var(--ink-mute)" }}>
-              Care guides and journaling inspiration for thousands of species
-            </p>
-          </div>
+    <section id="plants" style={{ padding: "96px 0" }}>
+      <div className="max-w-7xl mx-auto px-16">
 
-          <div
-            className="flex rounded-full p-1 gap-1"
-            style={{ background: "var(--line-soft)", width: "fit-content" }}
-          >
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActive(tab)}
-                className="px-5 py-1.5 rounded-full text-sm font-medium transition-all"
-                style={
-                  active === tab
-                    ? { background: "var(--green-ink)", color: "white" }
-                    : { color: "var(--ink-soft)" }
-                }
-              >
-                {tab}
-              </button>
-            ))}
+        {/* Section head: title left, sub right */}
+        <div
+          className="flex items-end justify-between gap-10 mb-11"
+        >
+          <div>
+            <div
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--clay)",
+                fontWeight: 600,
+                marginBottom: "14px",
+              }}
+            >
+              The collection
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-fraunces)",
+                fontWeight: 300,
+                fontSize: "48px",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                margin: 0,
+                color: "var(--green-ink)",
+              }}
+            >
+              Forty plants,{" "}
+              <em style={{ fontStyle: "italic", color: "var(--green-ink)", fontWeight: 400 }}>
+                three families
+              </em>
+              , one small sky.
+            </h2>
           </div>
+          <p
+            style={{
+              fontSize: "15px",
+              color: "var(--ink-soft)",
+              maxWidth: "360px",
+              flexShrink: 0,
+              lineHeight: 1.65,
+              margin: 0,
+            }}
+          >
+            Browse by category. Each card is hand-tended and updated as the season turns.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-          {filtered.map((plant) => {
-            const badge = careBadge[plant.care]
-            return (
-              <div
-                key={plant.id}
-                className="rounded-2xl overflow-hidden flex flex-col group"
-                style={{ background: "var(--paper)", border: "1px solid var(--line)" }}
+        {/* Filter tabs */}
+        <div className="flex gap-2 flex-wrap mb-9">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => { setActive(tab); setVisible(8) }}
+              className="inline-flex items-center gap-2 transition-colors"
+              style={{
+                padding: "9px 16px",
+                borderRadius: "999px",
+                fontSize: "13px",
+                border: active === tab
+                  ? "1px solid var(--green-ink)"
+                  : "1px solid var(--line)",
+                background: active === tab ? "var(--green-ink)" : "#fff",
+                color: active === tab ? "var(--paper)" : "var(--ink-soft)",
+                cursor: "pointer",
+              }}
+            >
+              {tab}
+              <span
+                style={{
+                  padding: "1px 8px",
+                  borderRadius: "999px",
+                  fontSize: "11px",
+                  background: active === tab ? "rgba(255,255,255,0.18)" : "#F2F2EC",
+                  color: active === tab ? "#fff" : "var(--ink-mute)",
+                }}
               >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={plant.img}
-                    alt={plant.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <span
-                      className="inline-block px-2.5 py-1 rounded-full text-xs font-medium"
-                      style={{ background: badge.bg, color: badge.color }}
-                    >
-                      {plant.care}
-                    </span>
+                {tabCounts[tab]}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Plant grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {shown.map((plant) => (
+            <article
+              key={plant.id}
+              className="flex flex-col overflow-hidden"
+              style={{
+                background: "#fff",
+                border: "1px solid var(--line)",
+                borderRadius: "12px",
+              }}
+            >
+              <div className="relative aspect-[5/4] overflow-hidden">
+                <Image
+                  src={plant.img}
+                  alt={plant.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+
+              <div style={{ padding: "18px 20px 20px" }}>
+                <div style={{ marginBottom: "16px" }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-fraunces)",
+                      fontSize: "19px",
+                      color: "var(--green-ink)",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {plant.name}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--ink-mute)",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {plant.meta}
                   </div>
                 </div>
 
-                <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center justify-between">
                   <span
-                    className="inline-block text-xs font-medium mb-2"
-                    style={{ color: "var(--green-highlight)" }}
+                    style={{
+                      fontSize: "11px",
+                      padding: "4px 10px",
+                      borderRadius: "999px",
+                      background: "var(--green-surface)",
+                      color: "var(--green-ink)",
+                      fontWeight: 500,
+                    }}
                   >
                     {plant.category}
                   </span>
-                  <h3
-                    className="text-lg font-medium leading-tight mb-0.5"
-                    style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
+                  <span
+                    className="flex items-center gap-1.5"
+                    style={{ fontSize: "11px", color: "var(--ink-mute)" }}
                   >
-                    {plant.name}
-                  </h3>
-                  <p className="text-xs italic mb-4 flex-1" style={{ color: "var(--ink-mute)" }}>
-                    {plant.species}
-                  </p>
-                  <button
-                    className="w-full py-2 rounded-xl text-sm font-medium transition-opacity hover:opacity-80"
-                    style={{ background: "var(--green-surface)", color: "var(--green-ink)" }}
-                  >
-                    + Add to Journal
-                  </button>
+                    <span
+                      style={{
+                        width: "7px",
+                        height: "7px",
+                        borderRadius: "50%",
+                        background: "var(--green-ink)",
+                        boxShadow: "0 0 0 3px rgba(59,109,17,0.12)",
+                        display: "inline-block",
+                        flexShrink: 0,
+                      }}
+                    />
+                    Thriving
+                  </span>
                 </div>
               </div>
-            )
-          })}
+            </article>
+          ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <button
-            className="px-8 py-3 rounded-full text-sm font-medium border transition-opacity hover:opacity-70"
-            style={{ color: "var(--green-ink)", borderColor: "var(--line)" }}
-          >
-            Browse all 2,400+ plants →
-          </button>
-        </div>
+        {(hasMore || isExpanded) && (
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => {
+                if (hasMore) setVisible((v) => v + 8)
+                else setVisible(8)
+              }}
+              style={{
+                padding: "11px 32px",
+                borderRadius: "999px",
+                fontSize: "13px",
+                fontWeight: 500,
+                border: "1px solid var(--line)",
+                background: "#fff",
+                color: "var(--ink-soft)",
+                cursor: "pointer",
+              }}
+            >
+              {hasMore
+                ? `View next ${Math.min(8, filtered.length - visible)} plants`
+                : "View less"}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )
