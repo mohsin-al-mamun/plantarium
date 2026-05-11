@@ -1,151 +1,153 @@
 import Image from "next/image"
 
-type CarePill = { label: string; icon: React.ReactNode }
+type Plant = { name: string; img: string }
 
-type FeaturedPlant = {
-  img: string
-  tag: string
-  name: string
-  species: string
-  desc: string
-  care: CarePill[]
-}
-
-const WaterIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M7 2C7 2 3 6 3 9C3 11.2 4.8 13 7 13C9.2 13 11 11.2 11 9C11 6 7 2 7 2Z"
-      stroke="currentColor" strokeWidth="1.3" fill="none" />
-  </svg>
-)
-
-const SunIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <circle cx="7" cy="7" r="2.5" stroke="currentColor" strokeWidth="1.3" />
-    <path d="M7 1.5V3M7 11V12.5M1.5 7H3M11 7H12.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-  </svg>
-)
-
-const SoilIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M2 9H12M2 11.5H12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    <path d="M7 8C7 8 5 6 5 4.5C5 3.1 6 2.5 7 2.5C8 2.5 9 3.1 9 4.5C9 6 7 8 7 8Z"
-      stroke="currentColor" strokeWidth="1.3" fill="none" />
-  </svg>
-)
-
-const plants: FeaturedPlant[] = [
+const plants: Plant[] = [
   {
-    img: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=800&q=80",
-    tag: "Houseplant",
-    name: "Fiddle Leaf Fig",
-    species: "Ficus lyrata",
-    desc: "A dramatic tropical statement plant with broad, violin-shaped leaves. Perfect for bright corners and open living spaces where it can stretch towards the light.",
-    care: [
-      { label: "Bright indirect light", icon: <SunIcon /> },
-      { label: "Water weekly", icon: <WaterIcon /> },
-      { label: "Well-draining soil", icon: <SoilIcon /> },
-    ],
+    name: "Eden Climbing Rose",
+    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=1400&q=80",
   },
   {
-    img: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80",
-    tag: "Garden Rose",
-    name: "Heritage Rose",
-    species: "Rosa × hybrida",
-    desc: "A classic fragrant rose with layers of velvety petals in warm blush tones. Blooms repeatedly through the season when given proper care and regular feeding.",
-    care: [
-      { label: "Full sun 6h+", icon: <SunIcon /> },
-      { label: "Water twice weekly", icon: <WaterIcon /> },
-      { label: "Rich compost", icon: <SoilIcon /> },
-    ],
+    name: "San Marzano Tomato",
+    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Café au Lait Dahlia",
+    img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Cosmos bipinnatus",
+    img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Albion Strawberry",
+    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Lacinato Kale",
+    img: "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?auto=format&fit=crop&w=900&q=80",
   },
 ]
 
+type CardProps = { plant: Plant; sizes: string }
+
+function PlantCard({ plant, sizes }: CardProps) {
+  return (
+    <div className="relative overflow-hidden h-full group" style={{ borderRadius: "12px" }}>
+      <Image
+        src={plant.img}
+        alt={plant.name}
+        fill
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+        sizes={sizes}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(to top, rgba(6,30,14,0.65) 0%, transparent 55%)",
+        }}
+      />
+      <div className="absolute bottom-0 left-0 p-4">
+        <span
+          className="text-white"
+          style={{
+            fontFamily: "var(--font-fraunces)",
+            fontSize: "15px",
+            fontWeight: 300,
+            letterSpacing: "-0.01em",
+            lineHeight: 1.2,
+          }}
+        >
+          {plant.name}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export default function Featured() {
   return (
-    <section id="plants" className="py-24" style={{ background: "var(--paper-warm)" }}>
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="mb-14 text-center">
-          <span
-            className="inline-block text-xs font-medium tracking-widest uppercase mb-4"
-            style={{ color: "var(--green-highlight)" }}
+    <section style={{ paddingTop: "24px", paddingBottom: "96px" }}>
+      <div className="max-w-7xl mx-auto px-16">
+
+        {/* Section head */}
+        <div className="flex items-end justify-between gap-10 mb-11">
+          <div>
+            <div
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--clay)",
+                fontWeight: 600,
+                marginBottom: "14px",
+              }}
+            >
+              In bloom this week
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-fraunces)",
+                fontWeight: 300,
+                fontSize: "48px",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                margin: 0,
+                color: "var(--green-ink)",
+              }}
+            >
+              Currently{" "}
+              <em style={{ fontStyle: "italic", color: "var(--green-ink)", fontWeight: 400 }}>
+                flowering
+              </em>{" "}
+              on the rooftop.
+            </h2>
+          </div>
+          <p
+            style={{
+              fontSize: "15px",
+              color: "var(--ink-soft)",
+              maxWidth: "360px",
+              flexShrink: 0,
+              lineHeight: 1.65,
+              margin: 0,
+            }}
           >
-            Featured Plants
-          </span>
-          <h2
-            className="text-4xl font-medium"
-            style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
-          >
-            Plants Worth Knowing
-          </h2>
+            Six of the year's favourites getting their best light right now — tap any card to read
+            the full growing note.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {plants.map((plant) => (
-            <div
-              key={plant.name}
-              className="overflow-hidden rounded-2xl"
-              style={{ background: "var(--paper)", border: "1px solid var(--line)" }}
-            >
-              <div className="relative h-72 overflow-hidden">
-                <Image
-                  src={plant.img}
-                  alt={plant.name}
-                  fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute top-4 left-4">
-                  <span
-                    className="inline-block px-3 py-1 rounded-full text-xs font-medium"
-                    style={{ background: "var(--green-ink)", color: "white" }}
-                  >
-                    {plant.tag}
-                  </span>
-                </div>
-              </div>
+        {/* Bookend grid — first & last big */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateRows: "280px 280px",
+            gap: "10px",
+          }}
+        >
+          {/* Row 1 */}
+          <div style={{ gridColumn: "1 / 3" }}>
+            <PlantCard plant={plants[0]} sizes="50vw" />
+          </div>
+          <div style={{ gridColumn: "3" }}>
+            <PlantCard plant={plants[1]} sizes="25vw" />
+          </div>
+          <div style={{ gridColumn: "4" }}>
+            <PlantCard plant={plants[2]} sizes="25vw" />
+          </div>
 
-              <div className="p-8">
-                <div className="mb-4">
-                  <h3
-                    className="text-2xl font-medium mb-1"
-                    style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
-                  >
-                    {plant.name}
-                  </h3>
-                  <p className="text-sm italic" style={{ color: "var(--ink-mute)" }}>
-                    {plant.species}
-                  </p>
-                </div>
-
-                <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--ink-soft)" }}>
-                  {plant.desc}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {plant.care.map((pill) => (
-                    <span
-                      key={pill.label}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
-                      style={{
-                        background: "var(--green-surface)",
-                        color: "var(--green-ink)",
-                      }}
-                    >
-                      {pill.icon}
-                      {pill.label}
-                    </span>
-                  ))}
-                </div>
-
-                <button
-                  className="text-sm font-medium transition-opacity hover:opacity-70"
-                  style={{ color: "var(--green-ink)" }}
-                >
-                  Add to Journal →
-                </button>
-              </div>
-            </div>
-          ))}
+          {/* Row 2 */}
+          <div style={{ gridColumn: "1" }}>
+            <PlantCard plant={plants[3]} sizes="25vw" />
+          </div>
+          <div style={{ gridColumn: "2" }}>
+            <PlantCard plant={plants[4]} sizes="25vw" />
+          </div>
+          <div style={{ gridColumn: "3 / 5" }}>
+            <PlantCard plant={plants[5]} sizes="50vw" />
+          </div>
         </div>
       </div>
     </section>
