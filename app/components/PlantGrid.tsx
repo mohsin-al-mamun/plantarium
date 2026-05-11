@@ -121,13 +121,6 @@ const plants: Plant[] = [
   },
 ]
 
-const tabCounts: Record<Category, number> = {
-  All: 40,
-  Flowers: 18,
-  Fruits: 12,
-  Vegetables: 10,
-}
-
 const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
 
 export default function PlantGrid() {
@@ -198,7 +191,7 @@ export default function PlantGrid() {
             <button
               key={tab}
               onClick={() => { setActive(tab); setVisible(8) }}
-              className="inline-flex items-center gap-2 transition-colors"
+              className="inline-flex items-center transition-colors"
               style={{
                 padding: "9px 16px",
                 borderRadius: "999px",
@@ -212,17 +205,6 @@ export default function PlantGrid() {
               }}
             >
               {tab}
-              <span
-                style={{
-                  padding: "1px 8px",
-                  borderRadius: "999px",
-                  fontSize: "11px",
-                  background: active === tab ? "rgba(255,255,255,0.18)" : "#F2F2EC",
-                  color: active === tab ? "#fff" : "var(--ink-mute)",
-                }}
-              >
-                {tabCounts[tab]}
-              </span>
             </button>
           ))}
         </div>

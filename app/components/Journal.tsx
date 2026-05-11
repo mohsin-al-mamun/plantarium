@@ -1,155 +1,202 @@
 import Image from "next/image"
+import Link from "next/link"
 
-type JournalEntry = {
+type Entry = {
   date: string
-  month: string
-  year: string
-  img: string
   title: string
-  excerpt: string
-  tags: string[]
+  sub: string
+  img: string
+  accent?: "amber"
 }
 
-const entries: JournalEntry[] = [
+const entries: Entry[] = [
   {
-    date: "15",
-    month: "Mar",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=300&q=80",
-    title: "First Blooms of Spring",
-    excerpt:
-      "After a long dormant winter, my heritage roses finally broke through with the most gorgeous deep-pink buds. The warm afternoon light caught them perfectly just after the morning frost melted away.",
-    tags: ["Roses", "Spring", "Blooms"],
+    date: "04 · MAY · 2026",
+    title: "First Eden rose of the season opened.",
+    sub: "After a slow April, three buds cracked open within a day of each other. Heavy fragrance in the morning, faint by noon.",
+    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=600&q=80",
   },
   {
-    date: "28",
-    month: "Feb",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=300&q=80",
-    title: "Raised Bed Assembly Day",
-    excerpt:
-      "Finally assembled the new cedar raised beds I'd been planning since autumn. Filled them with a mix of compost, topsoil and perlite. The tomatoes and peppers will love this come summer.",
-    tags: ["Raised Beds", "Soil", "Planning"],
+    date: "21 · APR · 2026",
+    title: "San Marzano transplanted into the long bed.",
+    sub: "Six plants, eighteen inches apart, staked with bamboo. The first true leaves are darker than last year — likely the new compost.",
+    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600&q=80",
+    accent: "amber",
   },
   {
-    date: "10",
-    month: "Jan",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=300&q=80",
-    title: "Winter Herb Window Garden",
-    excerpt:
-      "Moved all my tender herbs indoors before the hard frost. Set up a south-facing shelf with grow lights. Basil, mint, and chives are thriving already — fresh herbs all winter long.",
-    tags: ["Herbs", "Winter", "Indoors"],
+    date: "02 · APR · 2026",
+    title: "Cosmos and zinnia direct-sown after the last frost.",
+    sub: "Three rows along the south rail. Light cover of compost, then a slow soak. Germination expected in 7–10 days.",
+    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&q=80",
   },
 ]
 
 export default function Journal() {
   return (
-    <section id="journal" className="py-24" style={{ background: "var(--paper)" }}>
-      <div className="max-w-5xl mx-auto px-8">
-        <div className="mb-14 flex items-end justify-between">
+    <section id="journal" style={{ padding: "24px 0 96px" }}>
+      <div className="max-w-7xl mx-auto px-16">
+
+        {/* Section head */}
+        <div className="flex items-end justify-between gap-10 mb-11">
           <div>
-            <span
-              className="inline-block text-xs font-medium tracking-widest uppercase mb-4"
-              style={{ color: "var(--green-highlight)" }}
+            <div
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--clay)",
+                fontWeight: 600,
+                marginBottom: "14px",
+              }}
             >
-              Garden Journal
-            </span>
+              Growth journal
+            </div>
             <h2
-              className="text-4xl font-medium"
-              style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
+              style={{
+                fontFamily: "var(--font-fraunces)",
+                fontWeight: 300,
+                fontSize: "48px",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                margin: 0,
+                color: "var(--green-ink)",
+              }}
             >
-              Recent Entries
+              Notes from{" "}
+              <em style={{ fontStyle: "italic", color: "var(--green-ink)", fontWeight: 400 }}>
+                the watering can
+              </em>
+              .
             </h2>
           </div>
-          <button
-            className="px-5 py-2.5 text-sm font-medium rounded-full border transition-opacity hover:opacity-70 hidden md:block"
-            style={{ color: "var(--green-ink)", borderColor: "var(--green-ink)" }}
+          <p
+            style={{
+              fontSize: "15px",
+              color: "var(--ink-soft)",
+              maxWidth: "360px",
+              flexShrink: 0,
+              lineHeight: 1.65,
+              margin: 0,
+            }}
           >
-            + New Entry
-          </button>
+            Small updates, posted whenever something changes — a sprout, a setback, a first fruit.
+          </p>
         </div>
 
-        <div className="relative">
+        {/* Journal list */}
+        <div className="relative" style={{ paddingLeft: "28px" }}>
+          {/* Vertical line */}
           <div
-            className="absolute left-[52px] top-6 bottom-6"
-            style={{ width: "1px", background: "var(--line)" }}
+            className="absolute"
+            style={{
+              left: "6px",
+              top: "8px",
+              bottom: "8px",
+              width: "1px",
+              background: "var(--line)",
+            }}
           />
 
-          <div className="flex flex-col gap-10">
-            {entries.map((entry, i) => (
-              <div key={i} className="flex gap-8 items-start">
-                <div className="flex-shrink-0 flex flex-col items-center w-[52px] pt-1">
-                  <div
-                    className="text-2xl font-medium leading-none"
-                    style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
-                  >
-                    {entry.date}
-                  </div>
-                  <div className="text-xs font-medium mt-0.5" style={{ color: "var(--ink-mute)" }}>
-                    {entry.month}
-                  </div>
-                  <div className="text-xs" style={{ color: "var(--ink-mute)" }}>
-                    {entry.year}
-                  </div>
-                </div>
+          {entries.map((entry, i) => (
+            <div
+              key={entry.date}
+              className="relative"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: "32px",
+                padding: "24px 0",
+                borderBottom: i < entries.length - 1 ? "1px solid var(--line-soft)" : "none",
+              }}
+            >
+              {/* Dot */}
+              <div
+                className="absolute"
+                style={{
+                  left: "-28px",
+                  top: "32px",
+                  width: "13px",
+                  height: "13px",
+                  borderRadius: "50%",
+                  background: entry.accent === "amber" ? "var(--ochre)" : "var(--green-ink)",
+                  boxShadow: entry.accent === "amber"
+                    ? "0 0 0 4px var(--ochre-surface)"
+                    : "0 0 0 4px var(--green-surface)",
+                }}
+              />
 
+              {/* Text */}
+              <div>
                 <div
-                  className="w-3 h-3 rounded-full flex-shrink-0 mt-2 relative z-10"
-                  style={{ background: "var(--green-highlight)", border: "2px solid var(--paper)" }}
-                />
-
-                <div
-                  className="flex-1 rounded-2xl overflow-hidden flex"
-                  style={{ border: "1px solid var(--line)", background: "var(--paper-warm)" }}
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "11px",
+                    color: "var(--ink-mute)",
+                    letterSpacing: "0.06em",
+                  }}
                 >
-                  <div className="relative w-36 flex-shrink-0">
-                    <Image
-                      src={entry.img}
-                      alt={entry.title}
-                      fill
-                      className="object-cover"
-                      sizes="144px"
-                    />
-                  </div>
-                  <div className="p-6 flex-1">
-                    <h3
-                      className="text-xl font-medium mb-2"
-                      style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
-                    >
-                      {entry.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--ink-soft)" }}>
-                      {entry.excerpt}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {entry.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs px-3 py-1 rounded-full"
-                          style={{
-                            background: "var(--green-surface)",
-                            color: "var(--green-ink)",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  {entry.date}
                 </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-fraunces)",
+                    fontSize: "22px",
+                    letterSpacing: "-0.01em",
+                    margin: "6px 0",
+                    color: "var(--green-ink)",
+                  }}
+                >
+                  {entry.title}
+                </div>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "var(--ink-soft)",
+                    maxWidth: "560px",
+                    margin: 0,
+                    lineHeight: 1.65,
+                  }}
+                >
+                  {entry.sub}
+                </p>
               </div>
-            ))}
-          </div>
+
+              {/* Thumb */}
+              <div
+                className="relative flex-shrink-0"
+                style={{
+                  width: "140px",
+                  height: "100px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  alignSelf: "center",
+                }}
+              >
+                <Image
+                  src={entry.img}
+                  alt={entry.title}
+                  fill
+                  className="object-cover"
+                  sizes="140px"
+                />
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <button
-            className="text-sm font-medium transition-opacity hover:opacity-70"
-            style={{ color: "var(--green-ink)" }}
+        <div className="mt-10" style={{ paddingLeft: "28px" }}>
+          <Link
+            href="/journal"
+            className="inline-flex items-center gap-2 hover:opacity-70 transition-opacity"
+            style={{ textDecoration: "none" }}
           >
-            View all journal entries →
-          </button>
+            <span style={{ fontSize: "13px", color: "var(--ink-soft)" }}>
+              View all notes
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--green-ink)" }}>
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
