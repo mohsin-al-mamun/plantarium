@@ -112,7 +112,7 @@ export default function Featured() {
   const pageItems = plants.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
   return (
-    <section style={{ paddingTop: "24px", paddingBottom: "96px" }}>
+    <section style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-16">
 
         {/* Section head */}

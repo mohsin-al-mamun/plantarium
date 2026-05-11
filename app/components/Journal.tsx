@@ -33,7 +33,7 @@ const entries: Entry[] = [
 
 export default function Journal() {
   return (
-    <section id="journal" style={{ padding: "24px 0 96px" }}>
+    <section id="journal" style={{ padding: "24px 0 96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-16">
 
         {/* Section head */}
