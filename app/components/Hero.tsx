@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 const HERO_IMG =
-  "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=2000&q=80"
+  "https://images.unsplash.com/photo-1526397751294-331021109fbd?auto=format&fit=crop&w=2000&q=80"
 
 const stats = [
   { value: "40+", label: "Varieties" },
@@ -61,7 +61,7 @@ export default function Hero() {
             }}
           >
             A living garden{" "}
-            <em style={{ fontStyle: "italic", color: "var(--green-highlight)", fontWeight: 400 }}>
+            <em style={{ fontStyle: "italic", color: "#E8C97A", fontWeight: 400 }}>
               above
             </em>{" "}
             the city.

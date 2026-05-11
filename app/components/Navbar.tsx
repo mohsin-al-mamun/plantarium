@@ -1,66 +1,144 @@
-import Link from "next/link"
+"use client"
 
-const navLinks = ["Journal", "Plants", "Garden", "About"]
+import Link from "next/link"
+import { useState } from "react"
+
+const navLinks = [
+  { label: "Home", href: "#" },
+  { label: "Plants", href: "#plants" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Journal", href: "#journal" },
+  { label: "About", href: "#about" },
+]
+
+const SearchIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7" />
+    <path d="m20 20-3.5-3.5" />
+  </svg>
+)
+
+const ArrowIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 17 17 7M9 7h8v8" />
+  </svg>
+)
+
+const LeafIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 21c0-7 5-12 9-12-1 7-5 12-9 12Z" />
+    <path d="M12 21c-4 0-8-3-9-9 6 0 9 4 9 9Z" />
+    <path d="M12 21V11" />
+  </svg>
+)
 
 export default function Navbar() {
+  const [active, setActive] = useState("Home")
+
   return (
     <header
       className="sticky top-0 z-50"
       style={{
-        background: "rgba(244,239,227,0.92)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--line)",
+        background: "rgba(255,255,255,0.92)",
+        backdropFilter: "saturate(140%) blur(8px)",
+        WebkitBackdropFilter: "saturate(140%) blur(8px)",
+        borderBottom: "1px solid var(--line-soft)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-8 py-4 grid grid-cols-3 items-center">
+      <div
+        className="max-w-7xl mx-auto px-16 grid items-center"
+        style={{ gridTemplateColumns: "1fr auto 1fr", height: "72px" }}
+      >
+        {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-            <path
-              d="M13 3C13 3 6 8 5 14C4 20 8 23 13 23C18 23 22 20 21 14C20 8 13 3 13 3Z"
-              fill="var(--green-ink)"
-            />
-            <path
-              d="M13 23V13M13 13C11 11 8 9 7 7"
-              stroke="var(--green-highlight)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span
-            className="text-xl font-medium"
-            style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
+          <div
+            className="grid place-items-center flex-shrink-0"
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              background: "var(--green-surface)",
+              color: "var(--green-ink)",
+            }}
           >
-            Plantarium
+            <LeafIcon />
+          </div>
+          <span
+            style={{
+              fontFamily: "var(--font-fraunces)",
+              fontSize: "20px",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Plant
+            <em style={{ fontStyle: "italic", color: "var(--green-ink)", fontWeight: 400 }}>
+              arium
+            </em>
           </span>
         </Link>
 
-        <nav className="flex items-center justify-center gap-8">
+        {/* Nav links */}
+        <nav className="flex items-center" style={{ gap: "36px" }}>
           {navLinks.map((item) => (
             <Link
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-sm font-medium transition-opacity hover:opacity-60"
-              style={{ color: "var(--ink-soft)" }}
+              key={item.label}
+              href={item.href}
+              onClick={() => setActive(item.label)}
+              className="flex flex-col items-center text-sm transition-colors"
+              style={{
+                color: active === item.label ? "var(--green-ink)" : "var(--ink-soft)",
+                padding: "6px 2px",
+                textDecoration: "none",
+              }}
             >
-              {item}
+              {item.label}
+              {active === item.label && (
+                <span
+                  className="block rounded-full mt-1"
+                  style={{
+                    height: "2px",
+                    width: "14px",
+                    background: "var(--green-ink)",
+                  }}
+                />
+              )}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-3">
+        {/* CTA */}
+        <div className="flex items-center justify-end" style={{ gap: "14px" }}>
           <button
-            className="px-5 py-2 text-sm rounded-full border transition-opacity hover:opacity-70"
-            style={{ color: "var(--green-ink)", borderColor: "var(--green-ink)" }}
+            aria-label="Search"
+            className="grid place-items-center transition-opacity hover:opacity-70"
+            style={{
+              width: "38px",
+              height: "38px",
+              borderRadius: "50%",
+              border: "1px solid var(--line)",
+              background: "var(--paper)",
+              color: "var(--ink-soft)",
+            }}
           >
-            Sign In
+            <SearchIcon />
           </button>
-          <button
-            className="px-5 py-2 text-sm rounded-full text-white transition-opacity hover:opacity-90"
-            style={{ background: "var(--green-ink)" }}
+          <a
+            href="#"
+            className="inline-flex items-center gap-2 transition-opacity hover:opacity-80"
+            style={{
+              fontFamily: "var(--font-inter)",
+              fontSize: "13px",
+              fontWeight: 500,
+              borderRadius: "999px",
+              padding: "10px 18px",
+              border: "1px solid var(--green-ink)",
+              color: "var(--green-ink)",
+              textDecoration: "none",
+            }}
           >
-            Start Garden →
-          </button>
+            Get in touch
+            <ArrowIcon />
+          </a>
         </div>
       </div>
     </header>
