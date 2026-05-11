@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --green-ink: #0E3B2A;
+  --green-ink-2: #062618;
+  --green-surface: #D9E5DA;
+  --green-highlight: #6B9A7A;
+  --clay: #C97B4A;
+  --clay-deep: #9A552A;
+  --clay-surface: #F4D9C2;
+  --ochre: #D9A441;
+  --ochre-surface: #F1E0B8;
+  --paper: #F4EFE3;
+  --paper-warm: #E8E1CF;
+  --ink: #0E3B2A;
+  --ink-soft: #3F5A48;
+  --ink-mute: #7A8A7E;
+  --line: #D8D2BF;
+  --line-soft: #E2DCC8;
+  --pink: #F4D7D2;
+  --amber: #F2D8A2;
+  --teal: #BFD9CF;
+  --berry: #D9C2D7;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
