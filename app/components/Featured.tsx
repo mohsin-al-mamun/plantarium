@@ -113,10 +113,10 @@ export default function Featured() {
 
   return (
     <section style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-16">
 
         {/* Section head */}
-        <div className="flex items-end justify-between gap-10 mb-11">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-10 mb-8 md:mb-11">
           <div>
             <div
               style={{
@@ -134,7 +134,7 @@ export default function Featured() {
               style={{
                 fontFamily: "var(--font-fraunces)",
                 fontWeight: 300,
-                fontSize: "48px",
+                fontSize: "clamp(28px, 5vw, 48px)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.05,
                 margin: 0,
@@ -149,6 +149,7 @@ export default function Featured() {
             </h2>
           </div>
           <p
+            className="hidden md:block"
             style={{
               fontSize: "15px",
               color: "var(--ink-soft)",
@@ -163,44 +164,34 @@ export default function Featured() {
           </p>
         </div>
 
-        {/* Bookend grid — first & last big */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gridTemplateRows: "280px 280px",
-            gap: "10px",
-          }}
-        >
-          {/* Row 1 */}
-          <div style={{ gridColumn: "1 / 3" }}>
-            <PlantCard plant={pageItems[0]} sizes="50vw" />
+        {/* Bookend grid — first & last big on desktop, 2-col on mobile */}
+        <div className="featured-grid">
+          <div className="f-big-left">
+            <PlantCard plant={pageItems[0]} sizes="(max-width: 1024px) 50vw, 50vw" />
           </div>
           {pageItems[1] && (
-            <div style={{ gridColumn: "3" }}>
-              <PlantCard plant={pageItems[1]} sizes="25vw" />
+            <div className="f-col-3">
+              <PlantCard plant={pageItems[1]} sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
           )}
           {pageItems[2] && (
-            <div style={{ gridColumn: "4" }}>
-              <PlantCard plant={pageItems[2]} sizes="25vw" />
+            <div className="f-col-4">
+              <PlantCard plant={pageItems[2]} sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
           )}
-
-          {/* Row 2 */}
           {pageItems[3] && (
-            <div style={{ gridColumn: "1" }}>
-              <PlantCard plant={pageItems[3]} sizes="25vw" />
+            <div className="f-col-1">
+              <PlantCard plant={pageItems[3]} sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
           )}
           {pageItems[4] && (
-            <div style={{ gridColumn: "2" }}>
-              <PlantCard plant={pageItems[4]} sizes="25vw" />
+            <div className="f-col-2">
+              <PlantCard plant={pageItems[4]} sizes="(max-width: 1024px) 50vw, 25vw" />
             </div>
           )}
           {pageItems[5] && (
-            <div style={{ gridColumn: "3 / 5" }}>
-              <PlantCard plant={pageItems[5]} sizes="50vw" />
+            <div className="f-big-right">
+              <PlantCard plant={pageItems[5]} sizes="(max-width: 1024px) 50vw, 50vw" />
             </div>
           )}
         </div>

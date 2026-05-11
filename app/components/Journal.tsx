@@ -34,10 +34,10 @@ const entries: Entry[] = [
 export default function Journal() {
   return (
     <section id="journal" style={{ padding: "24px 0 96px", background: "var(--paper-warm)" }}>
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-16">
 
         {/* Section head */}
-        <div className="flex items-end justify-between gap-10 mb-11">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-10 mb-8 md:mb-11">
           <div>
             <div
               style={{
@@ -55,7 +55,7 @@ export default function Journal() {
               style={{
                 fontFamily: "var(--font-fraunces)",
                 fontWeight: 300,
-                fontSize: "48px",
+                fontSize: "clamp(28px, 5vw, 48px)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.05,
                 margin: 0,
@@ -70,6 +70,7 @@ export default function Journal() {
             </h2>
           </div>
           <p
+            className="hidden md:block"
             style={{
               fontSize: "15px",
               color: "var(--ink-soft)",
@@ -163,7 +164,7 @@ export default function Journal() {
 
               {/* Thumb */}
               <div
-                className="relative flex-shrink-0"
+                className="relative flex-shrink-0 hidden sm:block"
                 style={{
                   width: "140px",
                   height: "100px",

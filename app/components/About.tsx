@@ -1,14 +1,10 @@
 export default function About() {
   return (
     <section id="about" style={{ padding: "24px 0 96px" }}>
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-16">
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.1fr 1fr",
-            gap: "80px",
-            alignItems: "start",
-          }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20"
+          style={{ alignItems: "start" }}
         >
           {/* Left — personal text */}
           <div>

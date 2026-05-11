@@ -47,14 +47,14 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-16 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-16 w-full">
         <div style={{ paddingTop: "64px", maxWidth: "660px" }}>
           <h1
             className="text-white"
             style={{
               fontFamily: "var(--font-fraunces)",
               fontWeight: 300,
-              fontSize: "76px",
+              fontSize: "clamp(40px, 6vw, 76px)",
               lineHeight: 1.02,
               letterSpacing: "-0.025em",
               margin: "0 0 24px",
@@ -69,7 +69,7 @@ export default function Hero() {
 
           <p
             style={{
-              fontSize: "17px",
+              fontSize: "clamp(15px, 2vw, 17px)",
               color: "rgba(255,255,255,0.88)",
               maxWidth: "480px",
               lineHeight: 1.65,
@@ -81,7 +81,7 @@ export default function Hero() {
             vegetables that mostly make it to dinner.
           </p>
 
-          <div className="flex items-center" style={{ gap: "12px", marginBottom: "48px" }}>
+          <div className="flex flex-wrap items-center" style={{ gap: "12px", marginBottom: "48px" }}>
             <a
               href="#plants"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-85"
@@ -105,9 +105,9 @@ export default function Hero() {
           </div>
 
           <div
-            className="flex"
+            className="flex flex-wrap"
             style={{
-              gap: "44px",
+              gap: "32px",
               paddingTop: "28px",
               borderTop: "1px solid rgba(255,255,255,0.22)",
             }}

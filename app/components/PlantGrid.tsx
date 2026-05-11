@@ -133,13 +133,11 @@ export default function PlantGrid() {
   const isExpanded = visible >= filtered.length && filtered.length > 8
 
   return (
-    <section id="plants" style={{ padding: "96px 0" }}>
-      <div className="max-w-7xl mx-auto px-16">
+    <section id="plants" style={{ padding: "60px 0 96px" }}>
+      <div className="max-w-7xl mx-auto px-4 md:px-16">
 
         {/* Section head: title left, sub right */}
-        <div
-          className="flex items-end justify-between gap-10 mb-11"
-        >
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-10 mb-8 md:mb-11">
           <div>
             <div
               style={{
@@ -157,7 +155,7 @@ export default function PlantGrid() {
               style={{
                 fontFamily: "var(--font-fraunces)",
                 fontWeight: 300,
-                fontSize: "48px",
+                fontSize: "clamp(28px, 5vw, 48px)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.05,
                 margin: 0,
@@ -172,6 +170,7 @@ export default function PlantGrid() {
             </h2>
           </div>
           <p
+            className="hidden md:block"
             style={{
               fontSize: "15px",
               color: "var(--ink-soft)",

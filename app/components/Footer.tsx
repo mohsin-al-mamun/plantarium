@@ -62,15 +62,14 @@ const socials = [
 export default function Footer() {
   return (
     <footer style={{ background: "var(--green-ink-2, #062618)", borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "40px" }}>
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-16">
 
         {/* Top */}
         <div
+          className="grid grid-cols-1 md:grid-cols-3"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1.4fr 1fr 1fr",
-            gap: "60px",
-            padding: "72px 0 56px",
+            gap: "40px 60px",
+            padding: "48px 0 40px",
           }}
         >
           {/* Brand */}
@@ -168,7 +167,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div
-          className="flex items-center justify-between"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           style={{
             padding: "22px 0 28px",
             borderTop: "1px solid rgba(255,255,255,0.08)",

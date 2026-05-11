@@ -120,7 +120,7 @@ const ChevronRight = () => (
 
 function PhotoTile({ photo, rowSpan = false }: { photo: Photo; rowSpan?: boolean }) {
   return (
-    <div className={`relative rounded-xl overflow-hidden group${rowSpan ? " row-span-2" : ""}`}>
+    <div className={`relative rounded-xl overflow-hidden group${rowSpan ? " gallery-tall" : ""}`}>
       <Image
         src={photo.src}
         alt={photo.alt}
@@ -178,8 +178,8 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="py-24" style={{ background: "var(--paper)" }}>
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="mb-14 flex items-end justify-between gap-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-10 mb-8 md:mb-14">
           <div>
             <span
               className="inline-block text-xs font-medium tracking-widest uppercase mb-4"
@@ -188,14 +188,14 @@ export default function Gallery() {
               From the album
             </span>
             <h2
-              className="text-4xl font-medium"
-              style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)" }}
+              style={{ fontFamily: "var(--font-fraunces)", color: "var(--green-ink)", fontSize: "clamp(28px, 5vw, 36px)", fontWeight: 500 }}
             >
               A year on the roof,{" "}
               <em style={{ fontStyle: "italic", fontWeight: 400 }}>in pictures</em>.
             </h2>
           </div>
           <p
+            className="hidden md:block"
             style={{
               fontSize: "15px",
               color: "var(--ink-soft)",
@@ -209,13 +209,7 @@ export default function Gallery() {
           </p>
         </div>
 
-        <div
-          className="grid gap-3"
-          style={{
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gridTemplateRows: "220px 220px",
-          }}
-        >
+        <div className="gallery-grid">
           {p[0] && <PhotoTile photo={p[0]} rowSpan />}
           {p.slice(1, 4).map((photo) => <PhotoTile key={photo.src} photo={photo} />)}
           {p[4] && <PhotoTile photo={p[4]} rowSpan />}
