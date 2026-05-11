@@ -76,7 +76,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2.5" style={{ marginBottom: "16px" }}>
               <div
-                className="grid place-items-center flex-shrink-0"
+                className="grid place-items-center shrink-0"
                 style={{
                   width: "28px",
                   height: "28px",

@@ -59,7 +59,7 @@ export default function StatsStrip() {
               }}
             >
               <div
-                className="flex-shrink-0 grid place-items-center"
+                className="shrink-0 grid place-items-center"
                 style={{
                   width: "46px",
                   height: "46px",

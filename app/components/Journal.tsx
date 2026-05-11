@@ -164,7 +164,7 @@ export default function Journal() {
 
               {/* Thumb */}
               <div
-                className="relative flex-shrink-0 hidden sm:block"
+                className="relative shrink-0 hidden sm:block"
                 style={{
                   width: "140px",
                   height: "100px",
