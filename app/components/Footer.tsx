@@ -1,141 +1,202 @@
 import Link from "next/link"
 
-const exploreLinks = ["Journal", "Plant Library", "Garden Planner", "Seasonal Guide", "Community"]
-const moreLinks = ["Help Centre", "Privacy Policy", "Terms of Service", "Contact Us"]
+const exploreLinks = [
+  { label: "Plant collection", href: "#plants" },
+  { label: "Photo gallery", href: "#gallery" },
+  { label: "Growth journal", href: "#journal" },
+  { label: "Care philosophy", href: "#about" },
+]
+
+const moreLinks = [
+  { label: "Seasonal calendar", href: "#" },
+  { label: "Seed swap list", href: "#" },
+  { label: "Newsletter", href: "#" },
+  { label: "Get in touch", href: "#" },
+]
+
+const LeafIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 21c0-7 5-12 9-12-1 7-5 12-9 12Z" />
+    <path d="M12 21c-4 0-8-3-9-9 6 0 9 4 9 9Z" />
+    <path d="M12 21V11" />
+  </svg>
+)
+
+const socials = [
+  {
+    label: "LinkedIn",
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="4" />
+        <path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 10v7" />
+      </svg>
+    ),
+  },
+  {
+    label: "GitHub",
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+      </svg>
+    ),
+  },
+  {
+    label: "Facebook",
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 4h-2a3 3 0 0 0-3 3v3H7v3h2v8h3v-8h2.5l.5-3H12V7a1 1 0 0 1 1-1h1Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Email",
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m4 7 8 6 8-6" />
+      </svg>
+    ),
+  },
+]
 
 export default function Footer() {
   return (
-    <footer style={{ background: "var(--green-ink-2, #062618)" }}>
-      <div
-        className="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
-      >
-        {/* Brand */}
-        <div>
-          <div className="flex items-center gap-2.5 mb-4">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2C12 2 6 7 5 13C4 19 8 22 12 22C16 22 20 19 19 13C18 7 12 2 12 2Z"
-                fill="rgba(255,255,255,0.2)"
-                stroke="rgba(255,255,255,0.6)"
-                strokeWidth="1.3"
-              />
-              <path
-                d="M12 22V13M12 13C10 11 8 9 7 7"
-                stroke="rgba(255,255,255,0.4)"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span
-              className="text-lg font-medium text-white"
-              style={{ fontFamily: "var(--font-fraunces)" }}
-            >
-              Plantarium
-            </span>
-          </div>
-          <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.45)" }}>
-            A living journal for curious gardeners. Document every bloom, track every season, grow
-            every day.
-          </p>
+    <footer style={{ background: "var(--green-ink-2, #062618)", borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "40px" }}>
+      <div className="max-w-7xl mx-auto px-16">
 
-          <div className="flex gap-3">
-            {[
-              {
-                label: "Instagram",
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" />
-                    <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
-                    <circle cx="18" cy="6" r="1" fill="currentColor" />
-                  </svg>
-                ),
-              },
-              {
-                label: "Twitter",
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M22 4s-3 1-4.5 1.5L4 20M4 4l16 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                ),
-              },
-              {
-                label: "Pinterest",
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C6.5 2 2 6.5 2 12C2 16.2 4.5 19.8 8 21.5C8 20.5 8 19.2 8.3 18L9.8 12C9.4 11.2 9.2 10.3 9.2 9.4C9.2 7.7 10.1 6.4 11.3 6.4C12.3 6.4 12.8 7.1 12.8 8C12.8 9.1 12.1 10.7 11.8 12.2C11.5 13.5 12.4 14.5 13.7 14.5C16 14.5 17.6 12 17.6 9C17.6 6 15.5 4 12 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                ),
-              },
-            ].map(({ label, icon }) => (
-              <button
-                key={label}
-                aria-label={label}
-                className="w-9 h-9 rounded-full flex items-center justify-center transition-opacity hover:opacity-70"
+        {/* Top */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.4fr 1fr 1fr",
+            gap: "60px",
+            padding: "72px 0 56px",
+          }}
+        >
+          {/* Brand */}
+          <div>
+            <div className="flex items-center gap-2.5" style={{ marginBottom: "16px" }}>
+              <div
+                className="grid place-items-center flex-shrink-0"
                 style={{
-                  background: "rgba(255,255,255,0.08)",
-                  color: "rgba(255,255,255,0.6)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
+                  background: "rgba(255,255,255,0.1)",
+                  color: "rgba(255,255,255,0.8)",
+                }}
+              >
+                <LeafIcon />
+              </div>
+              <span
+                style={{
+                  fontFamily: "var(--font-fraunces)",
+                  fontSize: "20px",
+                  letterSpacing: "-0.01em",
+                  color: "#fff",
+                }}
+              >
+                Plant
+                <em style={{ fontStyle: "italic", color: "rgba(255,255,255,0.7)", fontWeight: 400 }}>
+                  arium
+                </em>
+              </span>
+            </div>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px", lineHeight: 1.65, maxWidth: "320px", margin: 0 }}>
+              A personal record of one small rooftop garden in Brooklyn. Updated whenever something opens, ripens, or refuses to.
+            </p>
+          </div>
+
+          {/* Explore */}
+          <div>
+            <h5
+              style={{
+                margin: "0 0 18px",
+                fontSize: "12px",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: "rgba(255,255,255,0.35)",
+                fontWeight: 500,
+              }}
+            >
+              Explore
+            </h5>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "10px" }}>
+              {exploreLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: "14px" }}
+                    className="hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* More */}
+          <div>
+            <h5
+              style={{
+                margin: "0 0 18px",
+                fontSize: "12px",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: "rgba(255,255,255,0.35)",
+                fontWeight: 500,
+              }}
+            >
+              More
+            </h5>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "10px" }}>
+              {moreLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    style={{ color: "rgba(255,255,255,0.65)", textDecoration: "none", fontSize: "14px" }}
+                    className="hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div
+          className="flex items-center justify-between"
+          style={{
+            padding: "22px 0 28px",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            fontSize: "12px",
+            color: "rgba(255,255,255,0.35)",
+          }}
+        >
+          <div>© 2026 Plantarium · Brooklyn, NY · Tended by Maren</div>
+          <div className="flex" style={{ gap: "10px" }}>
+            {socials.map(({ label, icon }) => (
+              <a
+                key={label}
+                href="#"
+                aria-label={label}
+                className="grid place-items-center transition-opacity hover:opacity-80"
+                style={{
+                  width: "34px",
+                  height: "34px",
+                  borderRadius: "50%",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  color: "rgba(255,255,255,0.55)",
                 }}
               >
                 {icon}
-              </button>
+              </a>
             ))}
           </div>
         </div>
-
-        {/* Explore */}
-        <div>
-          <h4
-            className="text-sm font-medium text-white mb-5 tracking-wide"
-          >
-            Explore
-          </h4>
-          <ul className="flex flex-col gap-3">
-            {exploreLinks.map((link) => (
-              <li key={link}>
-                <Link
-                  href="#"
-                  className="text-sm transition-opacity hover:opacity-80"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
-                >
-                  {link}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* More */}
-        <div>
-          <h4
-            className="text-sm font-medium text-white mb-5 tracking-wide"
-          >
-            More
-          </h4>
-          <ul className="flex flex-col gap-3">
-            {moreLinks.map((link) => (
-              <li key={link}>
-                <Link
-                  href="#"
-                  className="text-sm transition-opacity hover:opacity-80"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
-                >
-                  {link}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-          © 2024 Plantarium. Made with care for gardeners everywhere.
-        </p>
-        <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>
-          Designed to help you grow
-        </p>
       </div>
     </footer>
   )
