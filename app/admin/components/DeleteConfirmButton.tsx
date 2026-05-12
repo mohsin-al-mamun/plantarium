@@ -28,8 +28,8 @@ export default function DeleteConfirmButton({
         onClick={() => setOpen(true)}
         title={icon ? title : undefined}
         style={icon ? {
-          padding: "4px", background: "none", border: "none", cursor: "pointer",
-          color: "#ef4444", display: "flex", alignItems: "center", flexShrink: 0, borderRadius: "4px",
+          padding: "6px", background: "none", border: "none", cursor: "pointer",
+          color: "#ef4444", display: "flex", alignItems: "center", flexShrink: 0, borderRadius: "6px",
         } : compact ? {
           padding: 0, background: "none", border: "none", cursor: "pointer",
           fontSize: "12px", color: "#ef4444", flexShrink: 0,
@@ -39,7 +39,7 @@ export default function DeleteConfirmButton({
         }}
       >
         {icon ? (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="3 6 5 6 21 6" />
             <path d="M19 6l-1 14H6L5 6" />
             <path d="M10 11v6M14 11v6" />

@@ -142,10 +142,10 @@ export default async function AdminPlantsPage() {
                   <td style={{ padding: "10px 16px" }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "4px" }}>
                       <Link href={`/admin/plants/${plant.id}/edit`} title="Edit plant" style={{
-                        padding: "5px", borderRadius: "6px", color: "var(--ink-mute)",
+                        padding: "6px", borderRadius: "6px", color: "var(--ink-mute)",
                         display: "flex", alignItems: "center", textDecoration: "none",
                       }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                         </svg>
