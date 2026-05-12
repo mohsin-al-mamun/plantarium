@@ -1,6 +1,7 @@
 export type Variety = {
   name: string
   photo: string
+  photos?: string[]
   trait: string
   season: string
   note: string
@@ -40,6 +41,10 @@ export const PLANTS: Plant[] = [
       {
         name: "Purity",
         photo: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+        photos: [
+          "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
+        ],
         trait: "Pure white, single petals",
         season: "Mid Summer",
         note: "The first to bloom each year. I keep a small bunch in the kitchen window all of June — they last longer than anything else I grow.",
@@ -127,6 +132,11 @@ export const PLANTS: Plant[] = [
       {
         name: "Café au Lait",
         photo: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
+        photos: [
+          "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
+        ],
         trait: "Blush peach, dinner plate",
         season: "Late Summer",
         note: "The one that started the whole dahlia obsession. Someone on the street once stopped to ask what it was. That was enough.",
@@ -199,6 +209,13 @@ export const PLANTS: Plant[] = [
       {
         name: "Pierre de Ronsard",
         photo: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=900&q=80",
+        photos: [
+          "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
+        ],
         trait: "Cream-pink, cupped",
         season: "Late Spring – Summer",
         note: "The patience finally paid off. Third year and it covered the whole east panel. I cut one bloom for the table every morning in June.",
@@ -286,6 +303,12 @@ export const PLANTS: Plant[] = [
       {
         name: "Matucana",
         photo: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
+        photos: [
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
+        ],
         trait: "Bicolor maroon and violet",
         season: "Spring",
         note: "The oldest sweet pea variety still in cultivation. The scent is nothing like the modern types — heavier, almost spiced. I grow it every year.",

@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation"
-import Image from "next/image"
 import Link from "next/link"
 import Navbar from "@/app/components/Navbar"
 import Footer from "@/app/components/Footer"
 import CareNotes from "@/app/components/CareNotes"
+import VarietyGrid from "@/app/components/VarietyGrid"
 import { PLANTS } from "@/app/data/plants"
 
 export function generateStaticParams() {
@@ -156,65 +156,7 @@ export default async function PlantDetailPage({
             </div>
 
             {/* Varieties grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-              {plant.varieties.map((v) => (
-                <article
-                  key={v.name}
-                  className="flex flex-col overflow-hidden"
-                  style={{
-                    background: "var(--card)",
-                    border: "1px solid var(--line)",
-                    borderRadius: "12px",
-                  }}
-                >
-                  <div className="relative aspect-5/4 overflow-hidden">
-                    <Image
-                      src={v.photo}
-                      alt={v.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-
-                  <div style={{ padding: "18px 20px 20px" }}>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-fraunces)",
-                        fontSize: "19px",
-                        color: "var(--green-ink)",
-                        lineHeight: 1.2,
-                        marginBottom: "6px",
-                      }}
-                    >
-                      {v.name}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "13px",
-                        color: "var(--ink-soft)",
-                        marginBottom: "16px",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {v.trait}
-                    </div>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        padding: "4px 10px",
-                        borderRadius: "999px",
-                        background: "var(--teal)",
-                        color: "var(--green-ink)",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {v.season}
-                    </span>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <VarietyGrid varieties={plant.varieties} plantName={plant.name} />
             <CareNotes care={plant.care} />
           </div>
         </section>
