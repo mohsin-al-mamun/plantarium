@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Fragment } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { PRODUCTS, type Product } from "@/app/data/care"
@@ -138,62 +138,57 @@ function PlantModal({ plant, onClose }: { plant: Plant; onClose: () => void }) {
         </div>
 
         <div className="overflow-y-auto" style={{ padding: "36px 40px", flex: 1 }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--green-ink)", fontWeight: 600, marginBottom: "12px" }}>
-                Fertilizers · {fertilizers.length}
-              </div>
-              <div className="flex flex-col gap-3">
-                {fertilizers.length === 0
-                  ? <span style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
-                  : fertilizers.map(f => (
-                    <div key={f.id} style={{ padding: "12px 14px", borderRadius: "10px", background: "var(--green-surface)" }}>
-                      <div style={{ color: "var(--green-ink)", fontWeight: 500, fontSize: "14px", marginBottom: "6px" }}>{f.name}</div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
-                        <span>{f.dosage}</span>
-                      </div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
-                        <span>{f.frequency}</span>
-                      </div>
-                    </div>
-                  ))
-                }
-              </div>
+          <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "12px 16px" }}>
+            <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--green-ink)", fontWeight: 600, minHeight: "28px", display: "flex", alignItems: "center" }}>
+              Fertilizers · {fertilizers.length}
             </div>
-
-            <div>
-              <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--clay-deep)", fontWeight: 600, marginBottom: "12px" }}>
-                Pest control · {pesticides.length}
-              </div>
-              <div className="flex flex-col gap-3">
-                {pesticides.length === 0
-                  ? <span style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
-                  : pesticides.map(p => (
-                    <div key={p.id} style={{ padding: "12px 14px", borderRadius: "10px", background: "var(--clay-surface)" }}>
-                      <div style={{ color: "var(--clay-deep)", fontWeight: 500, fontSize: "14px", marginBottom: "6px" }}>{p.name}</div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
-                        <span>{p.dosage}</span>
-                      </div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
-                        <span>{p.frequency}</span>
-                      </div>
-                    </div>
-                  ))
-                }
-              </div>
+            <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--clay-deep)", fontWeight: 600, minHeight: "28px", display: "flex", alignItems: "center" }}>
+              Pest control · {pesticides.length}
             </div>
+            {Array.from({ length: Math.max(fertilizers.length, pesticides.length, 1) }).map((_, i) => (
+              <Fragment key={i}>
+                {i === 0 && fertilizers.length === 0
+                  ? <span style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
+                  : fertilizers[i]
+                    ? <div style={{ padding: "12px 14px", borderRadius: "10px", background: "var(--green-surface)" }}>
+                        <div style={{ color: "var(--green-ink)", fontWeight: 500, fontSize: "14px", marginBottom: "6px" }}>{fertilizers[i].name}</div>
+                        <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
+                          <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
+                          <span>{fertilizers[i].dosage}</span>
+                        </div>
+                        <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
+                          <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
+                          <span>{fertilizers[i].frequency}</span>
+                        </div>
+                      </div>
+                    : <div />
+                }
+                {i === 0 && pesticides.length === 0
+                  ? <span style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
+                  : pesticides[i]
+                    ? <div style={{ padding: "12px 14px", borderRadius: "10px", background: "var(--clay-surface)" }}>
+                        <div style={{ color: "var(--clay-deep)", fontWeight: 500, fontSize: "14px", marginBottom: "6px" }}>{pesticides[i].name}</div>
+                        <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
+                          <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
+                          <span>{pesticides[i].dosage}</span>
+                        </div>
+                        <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
+                          <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
+                          <span>{pesticides[i].frequency}</span>
+                        </div>
+                      </div>
+                    : <div />
+                }
+              </Fragment>
+            ))}
           </div>
 
           <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--line)" }}>
             <Link href={`/plants/${plant.slug}`} onClick={onClose}
-              style={{ fontSize: "13px", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500 }}
+              style={{ fontSize: "13px", padding: "5px 12px", borderRadius: "999px", background: "var(--green-surface)", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500, display: "inline-block" }}
               className="hover:opacity-70 transition-opacity"
             >
-              View {plant.name} varieties →
+              View varieties →
             </Link>
           </div>
         </div>

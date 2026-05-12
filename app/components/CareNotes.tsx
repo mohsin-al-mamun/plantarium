@@ -1,9 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import { PRODUCTS } from "@/app/data/care"
-import { PLANTS } from "@/app/data/plants"
 
 const ChevronIcon = ({ open }: { open: boolean }) => (
   <svg
@@ -32,7 +30,6 @@ const FrequencyIcon = () => (
 export default function CareNotes({ plantSlug }: { plantSlug: string }) {
   const [open, setOpen] = useState(false)
 
-  const plant = PLANTS.find(p => p.slug === plantSlug)
   const products = PRODUCTS.filter(p => p.plants.includes(plantSlug))
   const fertilizers = products.filter(p => p.kind === "fertilizer")
   const pesticides = products.filter(p => p.kind === "pesticide")
@@ -69,23 +66,15 @@ export default function CareNotes({ plantSlug }: { plantSlug: string }) {
               {fertilizers.length === 0
                 ? <span style={{ fontSize: "12px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
                 : fertilizers.map(f => (
-                  <div key={f.id} className="flex overflow-hidden" style={{ borderRadius: "8px", background: "var(--green-surface)" }}>
-                    {plant && (
-                      <div className="relative shrink-0 overflow-hidden" style={{ width: "72px" }}>
-                        <Image src={plant.img} alt={plant.name} fill className="object-cover" sizes="72px" />
-                        <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.15)" }} />
-                      </div>
-                    )}
-                    <div style={{ padding: "10px 12px", flex: 1 }}>
-                      <div style={{ color: "var(--green-ink)", fontWeight: 500, fontSize: "13px", marginBottom: "6px" }}>{f.name}</div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
-                        <span>{f.dosage}</span>
-                      </div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
-                        <span>{f.frequency}</span>
-                      </div>
+                  <div key={f.id} style={{ borderRadius: "8px", background: "var(--green-surface)", padding: "10px 12px" }}>
+                    <div style={{ color: "var(--green-ink)", fontWeight: 500, fontSize: "13px", marginBottom: "6px" }}>{f.name}</div>
+                    <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
+                      <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
+                      <span>{f.dosage}</span>
+                    </div>
+                    <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
+                      <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
+                      <span>{f.frequency}</span>
                     </div>
                   </div>
                 ))
@@ -101,23 +90,15 @@ export default function CareNotes({ plantSlug }: { plantSlug: string }) {
               {pesticides.length === 0
                 ? <span style={{ fontSize: "12px", color: "var(--ink-mute)", fontStyle: "italic" }}>None recorded</span>
                 : pesticides.map(p => (
-                  <div key={p.id} className="flex overflow-hidden" style={{ borderRadius: "8px", background: "var(--clay-surface)" }}>
-                    {plant && (
-                      <div className="relative shrink-0 overflow-hidden" style={{ width: "72px" }}>
-                        <Image src={plant.img} alt={plant.name} fill className="object-cover" sizes="72px" />
-                        <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.15)" }} />
-                      </div>
-                    )}
-                    <div style={{ padding: "10px 12px", flex: 1 }}>
-                      <div style={{ color: "var(--clay-deep)", fontWeight: 500, fontSize: "13px", marginBottom: "6px" }}>{p.name}</div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
-                        <span>{p.dosage}</span>
-                      </div>
-                      <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
-                        <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
-                        <span>{p.frequency}</span>
-                      </div>
+                  <div key={p.id} style={{ borderRadius: "8px", background: "var(--clay-surface)", padding: "10px 12px" }}>
+                    <div style={{ color: "var(--clay-deep)", fontWeight: 500, fontSize: "13px", marginBottom: "6px" }}>{p.name}</div>
+                    <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px", marginBottom: "3px" }}>
+                      <span style={{ marginTop: "1px", flexShrink: 0 }}><DosageIcon /></span>
+                      <span>{p.dosage}</span>
+                    </div>
+                    <div className="flex items-start gap-2" style={{ color: "var(--ink-mute)", fontSize: "12px" }}>
+                      <span style={{ marginTop: "1px", flexShrink: 0 }}><FrequencyIcon /></span>
+                      <span>{p.frequency}</span>
                     </div>
                   </div>
                 ))
