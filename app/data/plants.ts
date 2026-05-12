@@ -7,11 +7,6 @@ export type Variety = {
   note: string
 }
 
-export type Care = {
-  fertilizers: string[]
-  insecticides: string[]
-}
-
 export type Plant = {
   id: number
   slug: string
@@ -21,7 +16,6 @@ export type Plant = {
   category: "Flowers" | "Fruits" | "Vegetables"
   img: string
   varieties: Variety[]
-  care: Care
 }
 
 export const PLANTS: Plant[] = [
@@ -33,10 +27,6 @@ export const PLANTS: Plant[] = [
     meta: "3 varieties · sown March",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Balanced 10-10-10 (monthly)", "Compost tea (spring)"],
-      insecticides: ["Neem oil (aphids)", "None typically needed"],
-    },
     varieties: [
       {
         name: "Purity",
@@ -73,10 +63,6 @@ export const PLANTS: Plant[] = [
     meta: "2 varieties · staked",
     category: "Fruits",
     img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Tomato feed 4-8-8 (bi-weekly)", "Seaweed foliar spray"],
-      insecticides: ["Insecticidal soap (aphids)", "Copper spray (blight prevention)"],
-    },
     varieties: [
       {
         name: "San Marzano 2",
@@ -102,10 +88,6 @@ export const PLANTS: Plant[] = [
     meta: "1 variety · cool-loving",
     category: "Vegetables",
     img: "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Nitrogen-rich 10-5-5 (monthly)", "Fish emulsion (spring)"],
-      insecticides: ["Bt spray (cabbage worms)", "Neem oil (aphids)"],
-    },
     varieties: [
       {
         name: "Lacinato",
@@ -124,10 +106,6 @@ export const PLANTS: Plant[] = [
     meta: "4 varieties · tubered",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Low-nitrogen 5-10-10 (fortnightly)", "Bone meal at planting"],
-      insecticides: ["Slug pellets (spring)", "Insecticidal soap (earwigs)"],
-    },
     varieties: [
       {
         name: "Café au Lait",
@@ -172,10 +150,6 @@ export const PLANTS: Plant[] = [
     meta: "2 varieties · ever-bearing",
     category: "Fruits",
     img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Strawberry feed 8-12-32 (weekly in fruit)", "Sulphate of potash (spring)"],
-      insecticides: ["Copper tape slug barrier", "None — birds are the bigger threat"],
-    },
     varieties: [
       {
         name: "Albion",
@@ -201,10 +175,6 @@ export const PLANTS: Plant[] = [
     meta: "2 varieties · trellised",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Rose granules 4-8-12 (spring & summer)", "Foliar feed (mid-season)"],
-      insecticides: ["Fungicide spray (black spot)", "Insecticidal soap (aphids)"],
-    },
     varieties: [
       {
         name: "Pierre de Ronsard",
@@ -237,10 +207,6 @@ export const PLANTS: Plant[] = [
     meta: "3 varieties · in pots",
     category: "Vegetables",
     img: "https://images.unsplash.com/photo-1525607551316-4a8e16d1f9ba?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Pepper feed 5-8-8 (bi-weekly)", "Liquid seaweed foliar spray"],
-      insecticides: ["Neem oil (aphids)", "Yellow sticky traps (whitefly)"],
-    },
     varieties: [
       {
         name: "Shishito",
@@ -273,10 +239,6 @@ export const PLANTS: Plant[] = [
     meta: "1 variety · 2nd year",
     category: "Fruits",
     img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["General purpose 10-10-10 (spring only)", "Compost mulch annually"],
-      insecticides: ["None required", "Horticultural fleece (frost protection)"],
-    },
     varieties: [
       {
         name: "Brown Turkey",
@@ -295,10 +257,6 @@ export const PLANTS: Plant[] = [
     meta: "5 varieties · climbing",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Low-nitrogen 5-10-10 (fortnightly)", "Potassium-rich feed (flowering)"],
-      insecticides: ["Neem oil (thrips)", "Insecticidal soap (young growth aphids)"],
-    },
     varieties: [
       {
         name: "Matucana",
@@ -351,10 +309,6 @@ export const PLANTS: Plant[] = [
     meta: "2 varieties · trailing",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["None — poor soil preferred", "Occasional diluted compost water"],
-      insecticides: ["None needed", "Aphids present — acts as trap crop for other plants"],
-    },
     varieties: [
       {
         name: "Empress of India",
@@ -380,10 +334,6 @@ export const PLANTS: Plant[] = [
     meta: "1 variety · 3rd year",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Low-nitrogen 0-10-10 (spring)", "Phosphorus boost at budding"],
-      insecticides: ["None typically needed", "Scale insecticide if spotted"],
-    },
     varieties: [
       {
         name: "Multijuga",
@@ -402,10 +352,6 @@ export const PLANTS: Plant[] = [
     meta: "1 variety · indoor",
     category: "Vegetables",
     img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Balanced liquid 20-20-20 (monthly)", "Diluted fish emulsion (growing season)"],
-      insecticides: ["Neem oil (spider mites)", "Isopropyl wipe (mealybugs)"],
-    },
     varieties: [
       {
         name: "Thai Constellation",
@@ -424,10 +370,6 @@ export const PLANTS: Plant[] = [
     meta: "4 varieties · direct sown",
     category: "Flowers",
     img: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Balanced 10-10-10 (once at germination)", "None after establishment"],
-      insecticides: ["Slug pellets (seedlings)", "None at maturity"],
-    },
     varieties: [
       {
         name: "Giant Imperial Blue",
@@ -467,10 +409,6 @@ export const PLANTS: Plant[] = [
     meta: "1 variety · container",
     category: "Fruits",
     img: "https://images.unsplash.com/photo-1444930694458-01babf71870c?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Citrus feed 6-3-6 (monthly spring–autumn)", "Iron chelate (for yellowing)"],
-      insecticides: ["Horticultural oil (scale)", "Neem oil (spider mites)"],
-    },
     varieties: [
       {
         name: "Eureka",
@@ -489,10 +427,6 @@ export const PLANTS: Plant[] = [
     meta: "3 varieties · cut-and-come",
     category: "Vegetables",
     img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=900&q=80",
-    care: {
-      fertilizers: ["Nitrogen-rich 10-5-5 (monthly)", "Liquid seaweed (after cutting)"],
-      insecticides: ["Neem oil (aphids)", "Slug pellets (young plants)"],
-    },
     varieties: [
       {
         name: "Bright Lights",
