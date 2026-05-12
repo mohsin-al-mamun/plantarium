@@ -132,8 +132,9 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         <DeleteConfirmButton
           action={deletePlant}
           label="Delete plant"
-          title={`Delete ${plant.name}?`}
-          message={`This will permanently delete ${plant.name} along with all ${plant.varieties.length} variet${plant.varieties.length === 1 ? "y" : "ies"} and their gallery photos.`}
+          title="Delete plant"
+          name={plant.name}
+          message={`Permanently deletes ${plant.name} and all ${plant.varieties.length} variet${plant.varieties.length === 1 ? "y" : "ies"} with their gallery photos.`}
         />
       </div>
     </div>

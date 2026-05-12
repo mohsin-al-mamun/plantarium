@@ -6,11 +6,13 @@ export default function DeleteConfirmButton({
   action,
   label = "Delete",
   title,
+  name,
   message,
 }: {
   action: () => Promise<void>
   label?: string
   title: string
+  name?: string
   message: string
 }) {
   const [open, setOpen] = useState(false)
@@ -45,12 +47,23 @@ export default function DeleteConfirmButton({
             }}
             onClick={e => e.stopPropagation()}
           >
-            <h2 style={{
-              fontFamily: "var(--font-fraunces)", fontWeight: 300, fontSize: "24px",
-              color: "var(--green-ink)", margin: "0 0 12px", letterSpacing: "-0.02em",
-            }}>
-              {title}
-            </h2>
+            <div style={{ marginBottom: "12px" }}>
+              <div style={{
+                fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase",
+                color: "var(--ink-mute)", fontWeight: 600, marginBottom: "6px",
+              }}>
+                {title}
+              </div>
+              {name && (
+                <div style={{
+                  fontFamily: "var(--font-fraunces)", fontWeight: 300, fontSize: "26px",
+                  color: "var(--green-ink)", letterSpacing: "-0.02em",
+                  fontStyle: "italic",
+                }}>
+                  {name}
+                </div>
+              )}
+            </div>
 
             <p style={{ fontSize: "14px", color: "var(--ink-soft)", lineHeight: 1.65, margin: "0 0 20px" }}>
               {message}

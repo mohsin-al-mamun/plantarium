@@ -147,8 +147,9 @@ export default async function EditVarietyPage({
         <DeleteConfirmButton
           action={deleteVariety}
           label="Delete variety"
-          title={`Delete ${variety.name}?`}
-          message={`This will permanently delete this variety and its ${variety.photos.length} gallery photo${variety.photos.length === 1 ? "" : "s"}.`}
+          title="Delete variety"
+          name={variety.name}
+          message={`Permanently deletes this variety and its ${variety.photos.length} gallery photo${variety.photos.length === 1 ? "" : "s"}.`}
         />
       </div>
     </div>
