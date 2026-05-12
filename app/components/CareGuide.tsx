@@ -19,6 +19,7 @@ type ProductRow = {
   dosage: string | null
   frequency: string | null
   notes: string | null
+  img: string | null
   linkedPlants: LinkedPlant[]
 }
 
@@ -83,7 +84,7 @@ function TypeBadge({ type }: { type: "organic" | "chemical" }) {
 // ── Product modal ──────────────────────────────────────────────────────────────
 
 function ProductModal({ product, onClose }: { product: ProductRow; onClose: () => void }) {
-  const coverImg = product.linkedPlants[0]?.img
+  const coverImg = product.img ?? product.linkedPlants[0]?.img
 
   return (
     <Overlay onClose={onClose}>
@@ -223,7 +224,7 @@ function PlantModal({ plant, onClose }: { plant: PlantRow; onClose: () => void }
 // ── Cards ──────────────────────────────────────────────────────────────────────
 
 function ProductCard({ product, onSelect }: { product: ProductRow; onSelect: (p: ProductRow) => void }) {
-  const coverImg = product.linkedPlants[0]?.img
+  const coverImg = product.img ?? product.linkedPlants[0]?.img
 
   return (
     <div

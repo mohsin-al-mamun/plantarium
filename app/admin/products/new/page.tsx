@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import ImageUploadField from "@/app/admin/components/ImageUploadField"
 
 async function createProduct(formData: FormData) {
   "use server"
@@ -11,8 +12,9 @@ async function createProduct(formData: FormData) {
   const dosage = (formData.get("dosage") as string) || null
   const frequency = (formData.get("frequency") as string) || null
   const notes = (formData.get("notes") as string) || null
+  const img = (formData.get("img") as string) || null
 
-  await prisma.product.create({ data: { id, name, kind, type, dosage, frequency, notes } })
+  await prisma.product.create({ data: { id, name, kind, type, dosage, frequency, notes, img } })
   redirect("/admin/products")
 }
 
@@ -31,7 +33,12 @@ export default function NewProductPage() {
         </h1>
       </div>
 
-      <form action={createProduct} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <form action={createProduct} style={{
+        display: "flex", flexDirection: "column", gap: "20px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", padding: "28px",
+        boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <Field label="ID / Slug *" name="id" required placeholder="e.g. neem-oil" hint="Unique, lowercase, no spaces" />
         <Field label="Name *" name="name" required placeholder="e.g. Neem Oil" />
 
@@ -57,6 +64,7 @@ export default function NewProductPage() {
         <Field label="Dosage" name="dosage" placeholder="e.g. 5ml per litre" />
         <Field label="Frequency" name="frequency" placeholder="e.g. Every 2 weeks" />
         <Field label="Notes" name="notes" placeholder="Additional notes…" multiline />
+        <ImageUploadField label="Image" name="img" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
           <button type="submit" style={{

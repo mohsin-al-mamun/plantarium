@@ -72,6 +72,7 @@ model Product {
   dosage    String?
   frequency String?
   notes     String?
+  img       String?
   plants    PlantProduct[]
 }
 

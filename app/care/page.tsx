@@ -34,6 +34,7 @@ export default async function CarePage() {
     dosage: p.dosage,
     frequency: p.frequency,
     notes: p.notes,
+    img: p.img,
     linkedPlants: p.plants.map((pp) => pp.plant),
   }))
 

@@ -31,7 +31,12 @@ export default function NewPlantPage() {
         </h1>
       </div>
 
-      <form action={createPlant} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <form action={createPlant} style={{
+        display: "flex", flexDirection: "column", gap: "20px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", padding: "28px",
+        boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <Field label="Name *" name="name" required placeholder="e.g. Tomato" />
         <Field label="Slug *" name="slug" required placeholder="e.g. tomato" hint="URL-safe, lowercase, no spaces" />
 
