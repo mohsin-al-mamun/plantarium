@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import type { Variety } from "@/app/data/plants"
 import { Overlay } from "@/app/components/ModalShell"
+
+type Variety = {
+  name: string
+  photo: string
+  photos?: string[]
+  trait: string
+  season: string
+  note: string
+}
 
 function PhotoTile({ src, alt, pos = "center center" }: { src: string; alt: string; pos?: string }) {
   return (

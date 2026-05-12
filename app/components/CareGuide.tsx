@@ -3,13 +3,40 @@
 import { useEffect, useState, Fragment } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { PRODUCTS, type Product } from "@/app/data/care"
-import { PLANTS, type Plant } from "@/app/data/plants"
 import { Overlay } from "@/app/components/ModalShell"
 
 type View = "products" | "plants"
 type KindFilter = "all" | "fertilizer" | "pesticide"
 type TypeFilter = "all" | "organic" | "chemical"
+
+type LinkedPlant = { slug: string; name: string; img: string | null }
+
+type ProductRow = {
+  id: string
+  name: string
+  kind: "fertilizer" | "pesticide"
+  type: "organic" | "chemical"
+  dosage: string | null
+  frequency: string | null
+  notes: string | null
+  linkedPlants: LinkedPlant[]
+}
+
+type PlantProductRow = {
+  id: string
+  name: string
+  kind: "fertilizer" | "pesticide"
+  dosage: string | null
+  frequency: string | null
+}
+
+type PlantRow = {
+  slug: string
+  name: string
+  category: string
+  img: string | null
+  products: PlantProductRow[]
+}
 
 const DosageIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -25,7 +52,7 @@ const FrequencyIcon = () => (
   </svg>
 )
 
-function KindBadge({ kind }: { kind: Product["kind"] }) {
+function KindBadge({ kind }: { kind: "fertilizer" | "pesticide" }) {
   const isF = kind === "fertilizer"
   return (
     <span style={{
@@ -39,7 +66,7 @@ function KindBadge({ kind }: { kind: Product["kind"] }) {
   )
 }
 
-function TypeBadge({ type }: { type: Product["type"] }) {
+function TypeBadge({ type }: { type: "organic" | "chemical" }) {
   const isO = type === "organic"
   return (
     <span style={{
@@ -55,11 +82,8 @@ function TypeBadge({ type }: { type: Product["type"] }) {
 
 // ── Product modal ──────────────────────────────────────────────────────────────
 
-function ProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
-  const linkedPlants = product.plants
-    .map(slug => PLANTS.find(p => p.slug === slug))
-    .filter(Boolean) as Plant[]
-  const coverImg = linkedPlants[0]?.img
+function ProductModal({ product, onClose }: { product: ProductRow; onClose: () => void }) {
+  const coverImg = product.linkedPlants[0]?.img
 
   return (
     <Overlay onClose={onClose}>
@@ -98,7 +122,7 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
               Used for
             </div>
             <div className="flex flex-wrap gap-2">
-              {linkedPlants.map(p => (
+              {product.linkedPlants.map(p => (
                 <Link key={p.slug} href={`/plants/${p.slug}`} onClick={onClose}
                   style={{ fontSize: "13px", padding: "5px 12px", borderRadius: "999px", background: "var(--green-surface)", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500 }}
                   className="hover:opacity-70 transition-opacity"
@@ -116,16 +140,15 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
 
 // ── Plant modal ────────────────────────────────────────────────────────────────
 
-function PlantModal({ plant, onClose }: { plant: Plant; onClose: () => void }) {
-  const products = PRODUCTS.filter(p => p.plants.includes(plant.slug))
-  const fertilizers = products.filter(p => p.kind === "fertilizer")
-  const pesticides = products.filter(p => p.kind === "pesticide")
+function PlantModal({ plant, onClose }: { plant: PlantRow; onClose: () => void }) {
+  const fertilizers = plant.products.filter(p => p.kind === "fertilizer")
+  const pesticides = plant.products.filter(p => p.kind === "pesticide")
 
   return (
     <Overlay onClose={onClose}>
       <div className="flex flex-col lg:flex-row" style={{ height: "clamp(460px, 80vh, 640px)" }}>
         <div className="relative shrink-0 w-full lg:w-[48%] overflow-hidden" style={{ minHeight: "220px" }}>
-          <Image src={plant.img} alt={plant.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 365px" />
+          <Image src={plant.img ?? ""} alt={plant.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 365px" />
           <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.3)" }} />
           <div className="absolute bottom-0 left-0 right-0" style={{ padding: "20px 24px", background: "linear-gradient(to top, rgba(10,30,16,0.75), transparent)" }}>
             <div style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", fontWeight: 600, marginBottom: "4px" }}>
@@ -199,10 +222,8 @@ function PlantModal({ plant, onClose }: { plant: Plant; onClose: () => void }) {
 
 // ── Cards ──────────────────────────────────────────────────────────────────────
 
-function ProductCard({ product, onSelect }: { product: Product; onSelect: (p: Product) => void }) {
-  const coverImg = product.plants
-    .map(slug => PLANTS.find(p => p.slug === slug))
-    .filter(Boolean)[0]?.img
+function ProductCard({ product, onSelect }: { product: ProductRow; onSelect: (p: ProductRow) => void }) {
+  const coverImg = product.linkedPlants[0]?.img
 
   return (
     <div
@@ -236,10 +257,9 @@ function ProductCard({ product, onSelect }: { product: Product; onSelect: (p: Pr
   )
 }
 
-function PlantCard({ plant, onSelect }: { plant: Plant; onSelect: (p: Plant) => void }) {
-  const products = PRODUCTS.filter(p => p.plants.includes(plant.slug))
-  const fCount = products.filter(p => p.kind === "fertilizer").length
-  const pCount = products.filter(p => p.kind === "pesticide").length
+function PlantCard({ plant, onSelect }: { plant: PlantRow; onSelect: (p: PlantRow) => void }) {
+  const fCount = plant.products.filter(p => p.kind === "fertilizer").length
+  const pCount = plant.products.filter(p => p.kind === "pesticide").length
 
   return (
     <div
@@ -248,7 +268,7 @@ function PlantCard({ plant, onSelect }: { plant: Plant; onSelect: (p: Plant) => 
       className="hover:shadow-md"
     >
       <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-        <Image src={plant.img} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        <Image src={plant.img ?? ""} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
         <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
           <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "999px", background: "rgba(255,255,255,0.92)", color: "var(--green-ink)" }}>
             {plant.category}
@@ -270,12 +290,12 @@ function PlantCard({ plant, onSelect }: { plant: Plant; onSelect: (p: Plant) => 
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 
-export default function CareGuide() {
+export default function CareGuide({ products, plants }: { products: ProductRow[]; plants: PlantRow[] }) {
   const [view, setView] = useState<View>("products")
   const [kind, setKind] = useState<KindFilter>("all")
   const [type, setType] = useState<TypeFilter>("all")
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<ProductRow | null>(null)
+  const [selectedPlant, setSelectedPlant] = useState<PlantRow | null>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -290,15 +310,11 @@ export default function CareGuide() {
     return () => { document.body.style.overflow = "" }
   }, [selectedProduct, selectedPlant])
 
-  const filteredProducts = PRODUCTS.filter(p => {
+  const filteredProducts = products.filter(p => {
     if (kind !== "all" && p.kind !== kind) return false
     if (type !== "all" && p.type !== type) return false
     return true
   })
-
-  const plantsWithProducts = PLANTS.filter(plant =>
-    PRODUCTS.some(p => p.plants.includes(plant.slug))
-  )
 
   const filterBtn = (active: boolean) => ({
     padding: "8px 16px", borderRadius: "999px", fontSize: "13px", cursor: "pointer",
@@ -361,7 +377,7 @@ export default function CareGuide() {
 
           {view === "plants" && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {plantsWithProducts.map(p => <PlantCard key={p.slug} plant={p} onSelect={setSelectedPlant} />)}
+              {plants.map(p => <PlantCard key={p.slug} plant={p} onSelect={setSelectedPlant} />)}
             </div>
           )}
         </div>
