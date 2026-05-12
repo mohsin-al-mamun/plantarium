@@ -3,12 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import type { Variety } from "@/app/data/plants"
-
-const XIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 6L6 18M6 6l12 12" />
-  </svg>
-)
+import { Overlay } from "@/app/components/ModalShell"
 
 function PhotoTile({ src, alt, pos = "center center" }: { src: string; alt: string; pos?: string }) {
   return (
@@ -156,26 +151,11 @@ export default function VarietyGrid({ varieties, plantName }: { varieties: Varie
 
       {/* Modal */}
       {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-8"
-          style={{ background: "rgba(10,30,16,0.82)", backdropFilter: "blur(10px)" }}
-          onClick={() => setSelected(null)}
-        >
+        <Overlay onClose={() => setSelected(null)} maxWidth="1140px">
           <div
             className="relative w-full flex flex-col lg:flex-row overflow-hidden"
-            style={{ maxWidth: "1140px", height: "clamp(520px, 88vh, 760px)", background: "var(--card)", borderRadius: "24px", boxShadow: "0 48px 120px rgba(10,30,16,0.55)" }}
-            onClick={(e) => e.stopPropagation()}
+            style={{ height: "clamp(520px, 88vh, 760px)" }}
           >
-            {/* Close */}
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-4 right-4 z-20 grid place-items-center transition-opacity hover:opacity-70"
-              style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(10,30,16,0.6)", color: "#fff", border: "none", cursor: "pointer" }}
-              aria-label="Close"
-            >
-              <XIcon />
-            </button>
-
             {/* Adaptive image grid */}
             <div className="shrink-0 w-full lg:w-[60%] lg:self-stretch overflow-hidden" style={{ minHeight: "320px" }}>
               <AdaptiveGrid
@@ -211,7 +191,7 @@ export default function VarietyGrid({ varieties, plantName }: { varieties: Varie
               </div>
             </div>
           </div>
-        </div>
+        </Overlay>
       )}
     </>
   )

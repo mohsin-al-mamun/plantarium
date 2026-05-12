@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { PRODUCTS, type Product } from "@/app/data/care"
 import { PLANTS, type Plant } from "@/app/data/plants"
+import { Overlay } from "@/app/components/ModalShell"
 
 type View = "products" | "plants"
 type KindFilter = "all" | "fertilizer" | "pesticide"
@@ -21,12 +22,6 @@ const FrequencyIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" />
     <path d="M16 2v4M8 2v4M3 10h18" />
-  </svg>
-)
-
-const XIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 6L6 18M6 6l12 12" />
   </svg>
 )
 
@@ -58,38 +53,6 @@ function TypeBadge({ type }: { type: Product["type"] }) {
   )
 }
 
-function CloseBtn({ onClose }: { onClose: () => void }) {
-  return (
-    <button
-      onClick={onClose}
-      className="absolute top-4 right-4 z-20 grid place-items-center transition-opacity hover:opacity-70"
-      style={{ width: "34px", height: "34px", borderRadius: "50%", background: "rgba(10,30,16,0.6)", color: "#fff", border: "none", cursor: "pointer" }}
-      aria-label="Close"
-    >
-      <XIcon />
-    </button>
-  )
-}
-
-function Overlay({ onClose, children }: { onClose: () => void; children: React.ReactNode }) {
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-      style={{ background: "rgba(10,30,16,0.82)", backdropFilter: "blur(10px)" }}
-      onClick={onClose}
-    >
-      <div
-        className="relative w-full overflow-hidden"
-        style={{ maxWidth: "960px", maxHeight: "88vh", background: "var(--card)", borderRadius: "24px", boxShadow: "0 48px 120px rgba(10,30,16,0.55)" }}
-        onClick={e => e.stopPropagation()}
-      >
-        <CloseBtn onClose={onClose} />
-        {children}
-      </div>
-    </div>
-  )
-}
-
 // ── Product modal ──────────────────────────────────────────────────────────────
 
 function ProductModal({ product, onClose }: { product: Product; onClose: () => void }) {
@@ -100,9 +63,9 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
 
   return (
     <Overlay onClose={onClose}>
-      <div className="flex flex-col lg:flex-row" style={{ maxHeight: "88vh" }}>
+      <div className="flex flex-col lg:flex-row" style={{ height: "clamp(460px, 80vh, 640px)" }}>
         {coverImg && (
-          <div className="relative shrink-0 w-full lg:w-[45%] overflow-hidden" style={{ minHeight: "240px" }}>
+          <div className="relative shrink-0 w-full lg:w-[50%] overflow-hidden" style={{ minHeight: "240px" }}>
             <Image src={coverImg} alt={product.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 432px" />
             <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.22)" }} />
             <div className="absolute bottom-0 left-0 right-0 flex gap-2 flex-wrap" style={{ padding: "20px 24px", background: "linear-gradient(to top, rgba(10,30,16,0.7), transparent)" }}>
@@ -160,8 +123,8 @@ function PlantModal({ plant, onClose }: { plant: Plant; onClose: () => void }) {
 
   return (
     <Overlay onClose={onClose}>
-      <div className="flex flex-col lg:flex-row" style={{ maxHeight: "88vh" }}>
-        <div className="relative shrink-0 w-full lg:w-[38%] overflow-hidden" style={{ minHeight: "220px" }}>
+      <div className="flex flex-col lg:flex-row" style={{ height: "clamp(460px, 80vh, 640px)" }}>
+        <div className="relative shrink-0 w-full lg:w-[48%] overflow-hidden" style={{ minHeight: "220px" }}>
           <Image src={plant.img} alt={plant.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 365px" />
           <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.3)" }} />
           <div className="absolute bottom-0 left-0 right-0" style={{ padding: "20px 24px", background: "linear-gradient(to top, rgba(10,30,16,0.75), transparent)" }}>
