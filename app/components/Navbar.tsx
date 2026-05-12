@@ -62,7 +62,7 @@ export default function Navbar() {
         style={{ gridTemplateColumns: "1fr auto 1fr", height: "72px" }}
       >
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5" onClick={() => setActive("")}>
           <div
             className="grid place-items-center shrink-0"
             style={{
