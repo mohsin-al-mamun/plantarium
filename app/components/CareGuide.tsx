@@ -253,8 +253,8 @@ function ProductCard({ product, onSelect }: { product: Product; onSelect: (p: Pr
       className="hover:shadow-md"
     >
       {coverImg && (
-        <div className="relative overflow-hidden" style={{ aspectRatio: "5/3" }}>
-          <Image src={coverImg} alt={product.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
+        <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+          <Image src={coverImg} alt={product.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
           <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
             <KindBadge kind={product.kind} />
             <TypeBadge type={product.type} />
@@ -289,10 +289,10 @@ function PlantCard({ plant, onSelect }: { plant: Plant; onSelect: (p: Plant) => 
       style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: "12px", overflow: "hidden", cursor: "pointer", transition: "box-shadow 0.2s" }}
       className="hover:shadow-md"
     >
-      <div className="relative overflow-hidden" style={{ aspectRatio: "5/3" }}>
-        <Image src={plant.img} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
+      <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+        <Image src={plant.img} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
         <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
-          <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "999px", background: "var(--green-surface)", color: "var(--green-ink)" }}>
+          <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "999px", background: "rgba(255,255,255,0.92)", color: "var(--green-ink)" }}>
             {plant.category}
           </span>
         </div>

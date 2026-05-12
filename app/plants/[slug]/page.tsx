@@ -157,7 +157,7 @@ export default async function PlantDetailPage({
 
             {/* Varieties grid */}
             <VarietyGrid varieties={plant.varieties} plantName={plant.name} />
-            <CareNotes care={plant.care} />
+            <CareNotes plantSlug={plant.slug} />
           </div>
         </section>
       </main>
