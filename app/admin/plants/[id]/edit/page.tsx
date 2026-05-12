@@ -4,7 +4,10 @@ import Link from "next/link"
 
 export default async function EditPlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const plant = await prisma.plant.findUnique({ where: { id: Number(id) } })
+  const plant = await prisma.plant.findUnique({
+    where: { id: Number(id) },
+    include: { varieties: { orderBy: { position: "asc" } } },
+  })
   if (!plant) notFound()
 
   async function updatePlant(formData: FormData) {
@@ -74,6 +77,42 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
       </form>
 
       <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+          <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            Varieties · {plant.varieties.length}
+          </div>
+          <Link href={`/admin/plants/${id}/varieties/new`} style={{
+            fontSize: "12px", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500,
+          }}>
+            + Add variety
+          </Link>
+        </div>
+        {plant.varieties.length === 0
+          ? <p style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>No varieties yet</p>
+          : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "40px" }}>
+              {plant.varieties.map(v => (
+                <div key={v.id} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "10px 14px", borderRadius: "8px", border: "1px solid var(--line)", background: "var(--card)",
+                }}>
+                  <div>
+                    <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--green-ink)" }}>{v.name}</span>
+                    {v.season && <span style={{ fontSize: "12px", color: "var(--ink-mute)", marginLeft: "10px" }}>{v.season}</span>}
+                  </div>
+                  <Link href={`/admin/plants/${id}/varieties/${v.id}/edit`} style={{
+                    fontSize: "12px", color: "var(--green-ink)", textDecoration: "none",
+                  }}>
+                    Edit
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div style={{ paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
         <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
         <form action={deletePlant}>
           <button type="submit" style={{
