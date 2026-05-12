@@ -69,7 +69,8 @@ export default function Hero() {
           sizes="100vw"
           style={{
             opacity: i === activeIndex ? 1 : 0,
-            transition: "opacity 1.2s ease-in-out",
+            zIndex: i === activeIndex ? 1 : 0,
+            transition: "opacity 2s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         />
       ))}
