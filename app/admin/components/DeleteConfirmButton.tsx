@@ -50,7 +50,7 @@ export default function DeleteConfirmButton({
             <div style={{ marginBottom: "12px" }}>
               <div style={{
                 fontSize: "11px", letterSpacing: "0.14em", textTransform: "uppercase",
-                color: "var(--ink-mute)", fontWeight: 600, marginBottom: "6px",
+                color: "#ef4444", fontWeight: 600, marginBottom: "6px",
               }}>
                 {title}
               </div>
