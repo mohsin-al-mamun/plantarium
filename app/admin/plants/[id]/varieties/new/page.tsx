@@ -27,7 +27,7 @@ export default async function NewVarietyPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div style={{ maxWidth: "640px" }}>
+    <div style={{ maxWidth: "640px", margin: "0 auto" }}>
       <div style={{ marginBottom: "32px" }}>
         <Link href={`/admin/plants/${id}/edit`} style={{ fontSize: "13px", color: "var(--ink-mute)", textDecoration: "none" }}>
           ← {plant.name}

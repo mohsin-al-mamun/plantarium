@@ -44,7 +44,7 @@ export default function ImageUploadField({
 
       {url && (
         <div style={{
-          position: "relative", height: "160px", borderRadius: "8px",
+          position: "relative", aspectRatio: "4/3", borderRadius: "8px",
           overflow: "hidden", marginBottom: "8px", background: "var(--green-surface)",
         }}>
           <Image src={url} alt="Preview" fill className="object-cover" sizes="640px" />
