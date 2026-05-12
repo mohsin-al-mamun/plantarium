@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import ImageUploadField from "@/app/admin/components/ImageUploadField"
 
 export default async function NewVarietyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -41,7 +42,7 @@ export default async function NewVarietyPage({ params }: { params: Promise<{ id:
 
       <form action={createVariety} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <Field label="Name *" name="name" required placeholder="e.g. Cherry Belle" />
-        <Field label="Cover photo URL *" name="photo" required placeholder="https://…" />
+        <ImageUploadField label="Cover photo" name="photo" required />
         <Field label="Trait" name="trait" placeholder="e.g. Sweet, Crisp" />
         <Field label="Season" name="season" placeholder="e.g. Spring–Summer" />
         <Field label="Note" name="note" placeholder="Any notes about this variety…" multiline />

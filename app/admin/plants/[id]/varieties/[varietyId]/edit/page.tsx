@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import ImageUploadField from "@/app/admin/components/ImageUploadField"
 
 export default async function EditVarietyPage({
   params,
@@ -62,7 +63,7 @@ export default async function EditVarietyPage({
 
       <form action={updateVariety} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <Field label="Name *" name="name" required defaultValue={variety.name} />
-        <Field label="Cover photo URL *" name="photo" required defaultValue={variety.photo} />
+        <ImageUploadField label="Cover photo" name="photo" required defaultValue={variety.photo} />
         <Field label="Trait" name="trait" defaultValue={variety.trait ?? ""} placeholder="e.g. Sweet, Crisp" />
         <Field label="Season" name="season" defaultValue={variety.season ?? ""} placeholder="e.g. Spring–Summer" />
         <Field label="Note" name="note" defaultValue={variety.note ?? ""} multiline />
@@ -123,21 +124,11 @@ export default async function EditVarietyPage({
           </div>
         )}
 
-        <form action={addPhoto} style={{ display: "flex", gap: "8px" }}>
-          <input
-            type="text"
-            name="url"
-            required
-            placeholder="https://… photo URL"
-            style={{
-              flex: 1, padding: "10px 14px", borderRadius: "8px",
-              border: "1px solid var(--line)", background: "var(--paper)",
-              fontSize: "13px", color: "var(--green-ink)", outline: "none",
-            }}
-          />
+        <form action={addPhoto} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <ImageUploadField label="Photo URL" name="url" required />
           <button type="submit" style={{
             padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer", flexShrink: 0,
+            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer", alignSelf: "flex-start",
           }}>
             Add photo
           </button>

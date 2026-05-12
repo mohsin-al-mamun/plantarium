@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import ImageUploadField from "@/app/admin/components/ImageUploadField"
 
 async function createPlant(formData: FormData) {
   "use server"
@@ -46,7 +47,7 @@ export default function NewPlantPage() {
 
         <Field label="Meta" name="meta" placeholder="e.g. Solanum lycopersicum" hint="Latin name or short descriptor" />
         <Field label="Description" name="description" placeholder="A brief description of this plant…" multiline />
-        <Field label="Image URL" name="img" placeholder="https://…" />
+        <ImageUploadField label="Image" name="img" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
           <button type="submit" style={{

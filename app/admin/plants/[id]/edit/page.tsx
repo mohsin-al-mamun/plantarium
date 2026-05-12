@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import ImageUploadField from "@/app/admin/components/ImageUploadField"
 
 export default async function EditPlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -58,7 +59,7 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
 
         <Field label="Meta" name="meta" defaultValue={plant.meta ?? ""} />
         <Field label="Description" name="description" defaultValue={plant.description ?? ""} multiline />
-        <Field label="Image URL" name="img" defaultValue={plant.img ?? ""} />
+        <ImageUploadField label="Image" name="img" defaultValue={plant.img ?? ""} />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
           <button type="submit" style={{
