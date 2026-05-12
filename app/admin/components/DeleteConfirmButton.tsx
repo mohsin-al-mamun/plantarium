@@ -8,12 +8,16 @@ export default function DeleteConfirmButton({
   title,
   name,
   message,
+  compact,
+  icon,
 }: {
   action: () => Promise<void>
   label?: string
   title: string
   name?: string
   message: string
+  compact?: boolean
+  icon?: boolean
 }) {
   const [open, setOpen] = useState(false)
 
@@ -22,12 +26,26 @@ export default function DeleteConfirmButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        style={{
+        title={icon ? title : undefined}
+        style={icon ? {
+          padding: "4px", background: "none", border: "none", cursor: "pointer",
+          color: "#ef4444", display: "flex", alignItems: "center", flexShrink: 0, borderRadius: "4px",
+        } : compact ? {
+          padding: 0, background: "none", border: "none", cursor: "pointer",
+          fontSize: "12px", color: "#ef4444", flexShrink: 0,
+        } : {
           padding: "9px 18px", borderRadius: "8px", fontSize: "13px",
           border: "1px solid #ef4444", color: "#ef4444", background: "none", cursor: "pointer",
         }}
       >
-        {label}
+        {icon ? (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6l-1 14H6L5 6" />
+            <path d="M10 11v6M14 11v6" />
+            <path d="M9 6V4h6v2" />
+          </svg>
+        ) : label}
       </button>
 
       {open && (

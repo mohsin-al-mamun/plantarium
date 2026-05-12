@@ -116,14 +116,12 @@ export default async function EditVarietyPage({
                   }}>
                     {p.url}
                   </span>
-                  <form action={deletePhoto} style={{ flexShrink: 0 }}>
-                    <button type="submit" style={{
-                      fontSize: "12px", color: "#ef4444", background: "none",
-                      border: "none", cursor: "pointer", padding: 0,
-                    }}>
-                      Remove
-                    </button>
-                  </form>
+                  <DeleteConfirmButton
+                    action={deletePhoto}
+                    title="Remove photo"
+                    message="This photo will be permanently deleted from storage."
+                    icon
+                  />
                 </div>
               )
             })}
