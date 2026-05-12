@@ -79,9 +79,7 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
           <button type="submit" style={{
             padding: "9px 18px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid #ef4444", color: "#ef4444", background: "none", cursor: "pointer",
-          }}
-            onClick={() => confirm("Delete this plant and all its varieties?")}
-          >
+          }}>
             Delete plant
           </button>
         </form>
