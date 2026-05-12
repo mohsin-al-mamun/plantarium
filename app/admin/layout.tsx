@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import AdminNav from "@/app/admin/components/AdminNav"
 
 async function logout() {
   "use server"
@@ -17,20 +18,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         padding: "0 32px", display: "flex", alignItems: "center",
         justifyContent: "space-between", height: "56px",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           <Link href="/admin" style={{
             fontFamily: "var(--font-fraunces)", fontSize: "18px", fontWeight: 300,
-            color: "var(--green-ink)", textDecoration: "none",
+            color: "var(--green-ink)", textDecoration: "none", display: "flex",
+            alignItems: "baseline", gap: "8px",
           }}>
-            Plantarium <span style={{ color: "var(--ink-mute)", fontSize: "12px" }}>admin</span>
+            Plantarium
+            <span style={{
+              fontSize: "10px", fontWeight: 600, letterSpacing: "0.12em",
+              textTransform: "uppercase", color: "var(--paper)",
+              background: "var(--green-ink)", padding: "2px 7px", borderRadius: "999px",
+            }}>
+              admin
+            </span>
           </Link>
-          <div style={{ display: "flex", gap: "4px" }}>
-            <NavLink href="/admin/plants">Plants</NavLink>
-            <NavLink href="/admin/products">Products</NavLink>
-          </div>
+          <AdminNav />
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <Link href="/" style={{ fontSize: "12px", color: "var(--ink-mute)", textDecoration: "none" }}>
+          <Link href="/" style={{
+            fontSize: "12px", color: "var(--ink-mute)", textDecoration: "none",
+            padding: "6px 12px", borderRadius: "6px", border: "1px solid var(--line)",
+          }}>
             ← View site
           </Link>
           <form action={logout}>
@@ -47,16 +56,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {children}
       </main>
     </div>
-  )
-}
-
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link href={href} style={{
-      fontSize: "13px", color: "var(--ink-soft)", textDecoration: "none",
-      padding: "6px 12px", borderRadius: "6px",
-    }}>
-      {children}
-    </Link>
   )
 }

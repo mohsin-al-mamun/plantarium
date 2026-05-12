@@ -53,14 +53,13 @@ export default async function AdminPlantsPage() {
                 <Td>{plant.category}</Td>
                 <Td>{plant._count.varieties}</Td>
                 <Td>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <Link href={`/admin/plants/${plant.id}/edit`} style={{ color: "var(--green-ink)", textDecoration: "none", fontSize: "12px" }}>
-                      Edit
-                    </Link>
-                    <Link href={`/admin/plants/${plant.id}/varieties/new`} style={{ color: "var(--ink-mute)", textDecoration: "none", fontSize: "12px" }}>
-                      + Variety
-                    </Link>
-                  </div>
+                  <Link href={`/admin/plants/${plant.id}/edit`} style={{
+                    color: "var(--green-ink)", textDecoration: "none", fontSize: "12px",
+                    fontWeight: 500, padding: "4px 10px", borderRadius: "6px",
+                    background: "var(--green-surface)", display: "inline-block",
+                  }}>
+                    Edit
+                  </Link>
                 </Td>
               </tr>
             ))}
