@@ -80,25 +80,21 @@ export default async function AdminPlantsPage() {
               >
                 {/* Thumbnail */}
                 <td style={{ padding: "10px 8px 10px 16px" }}>
-                  {plant.img ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={plant.img}
-                      alt={plant.name}
-                      style={{
-                        width: 38, height: 38, borderRadius: "8px", objectFit: "cover",
-                        border: "1px solid var(--line)", display: "block",
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      width: 38, height: 38, borderRadius: "8px", background: "var(--green-surface)",
-                      border: "1px solid var(--line)", display: "flex", alignItems: "center",
-                      justifyContent: "center", fontSize: "14px",
-                    }}>
-                      🌿
-                    </div>
-                  )}
+                  <div style={{
+                    width: "42px", height: "42px", borderRadius: "8px", flexShrink: 0,
+                    border: "1px solid var(--line)", overflow: "hidden",
+                    background: "var(--green-surface)", display: "flex",
+                    alignItems: "center", justifyContent: "center", fontSize: "16px",
+                  }}>
+                    {plant.img ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={plant.img}
+                        alt={plant.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      />
+                    ) : "🌿"}
+                  </div>
                 </td>
 
                 {/* Name */}
