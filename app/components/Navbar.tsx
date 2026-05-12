@@ -1,13 +1,15 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 const navLinks = [
-  { label: "Plants", href: "#plants" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Journal", href: "#journal" },
-  { label: "About", href: "#about" },
+  { label: "Plants", href: "/#plants" },
+  { label: "Care", href: "/care" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "Journal", href: "/#journal" },
+  { label: "About", href: "/#about" },
 ]
 
 const SearchIcon = () => (
@@ -44,8 +46,14 @@ const XIcon = () => (
 )
 
 export default function Navbar() {
+  const pathname = usePathname()
   const [active, setActive] = useState("")
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const isActive = (label: string, href: string) => {
+    if (href.startsWith("/") && !href.startsWith("/#")) return pathname === href
+    return active === label
+  }
 
   return (
     <header
@@ -62,7 +70,7 @@ export default function Navbar() {
         style={{ gridTemplateColumns: "1fr auto 1fr", height: "72px" }}
       >
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5" onClick={() => setActive("")}>
+        <Link href="/" className="flex items-center gap-2.5">
           <div
             className="grid place-items-center shrink-0"
             style={{
@@ -98,13 +106,13 @@ export default function Navbar() {
               onClick={() => setActive(item.label)}
               className="flex flex-col items-center text-sm transition-colors"
               style={{
-                color: active === item.label ? "var(--green-ink)" : "var(--ink-soft)",
+                color: isActive(item.label, item.href) ? "var(--green-ink)" : "var(--ink-soft)",
                 padding: "6px 2px",
                 textDecoration: "none",
               }}
             >
               {item.label}
-              {active === item.label && (
+              {isActive(item.label, item.href) && (
                 <span
                   className="block rounded-full mt-1"
                   style={{ height: "2px", width: "14px", background: "var(--green-ink)" }}
@@ -187,10 +195,10 @@ export default function Navbar() {
                   onClick={() => { setActive(item.label); setMenuOpen(false) }}
                   style={{
                     padding: "13px 0",
-                    color: active === item.label ? "var(--green-ink)" : "var(--ink-soft)",
+                    color: isActive(item.label, item.href) ? "var(--green-ink)" : "var(--ink-soft)",
                     textDecoration: "none",
                     fontSize: "15px",
-                    fontWeight: active === item.label ? 500 : 400,
+                    fontWeight: isActive(item.label, item.href) ? 500 : 400,
                     borderBottom: "1px solid var(--line-soft)",
                   }}
                 >
