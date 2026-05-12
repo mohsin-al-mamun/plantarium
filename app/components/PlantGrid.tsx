@@ -3,17 +3,25 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { PLANTS } from "@/app/data/plants"
 
 type Category = "All" | "Flowers" | "Fruits" | "Vegetables"
 
+type PlantRow = {
+  id: number
+  slug: string
+  name: string
+  meta: string | null
+  category: string
+  img: string | null
+}
+
 const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
 
-export default function PlantGrid() {
+export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
   const [active, setActive] = useState<Category>("All")
   const [visible, setVisible] = useState(8)
 
-  const filtered = active === "All" ? PLANTS : PLANTS.filter((p) => p.category === active)
+  const filtered = active === "All" ? plants : plants.filter((p) => p.category === active)
   const shown = filtered.slice(0, visible)
   const hasMore = visible < filtered.length
   const isExpanded = visible >= filtered.length && filtered.length > 8
@@ -110,7 +118,7 @@ export default function PlantGrid() {
             >
               <div className="relative aspect-5/4 overflow-hidden">
                 <Image
-                  src={plant.img}
+                  src={plant.img ?? ""}
                   alt={plant.name}
                   fill
                   className="object-cover"

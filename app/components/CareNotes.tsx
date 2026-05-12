@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { PRODUCTS } from "@/app/data/care"
 
 const ChevronIcon = ({ open }: { open: boolean }) => (
   <svg
@@ -27,13 +26,20 @@ const FrequencyIcon = () => (
   </svg>
 )
 
-export default function CareNotes({ plantSlug }: { plantSlug: string }) {
+type ProductRow = {
+  id: string
+  name: string
+  kind: string
+  dosage: string | null
+  frequency: string | null
+}
+
+export default function CareNotes({ products }: { products: ProductRow[] }) {
   const [open, setOpen] = useState(false)
 
-  const products = PRODUCTS.filter(p => p.plants.includes(plantSlug))
   const fertilizers = products.filter(p => p.kind === "fertilizer")
   const pesticides = products.filter(p => p.kind === "pesticide")
-  const total = fertilizers.length + pesticides.length
+  const total = products.length
 
   return (
     <div style={{ border: "1px solid var(--line)", borderRadius: "12px", overflow: "hidden", marginBottom: "48px" }}>

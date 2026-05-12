@@ -7,15 +7,21 @@ import Gallery from "./components/Gallery"
 import Journal from "./components/Journal"
 import About from "./components/About"
 import Footer from "./components/Footer"
+import { prisma } from "@/lib/prisma"
 
-export default function Home() {
+export default async function Home() {
+  const plants = await prisma.plant.findMany({
+    select: { id: true, slug: true, name: true, meta: true, category: true, img: true },
+    orderBy: { id: "asc" },
+  })
+
   return (
     <>
       <Navbar />
       <main>
         <Hero />
         <StatsStrip />
-        <PlantGrid />
+        <PlantGrid plants={plants} />
         <Featured />
         <Gallery />
         <Journal />

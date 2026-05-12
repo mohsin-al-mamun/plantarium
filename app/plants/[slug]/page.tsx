@@ -4,10 +4,11 @@ import Navbar from "@/app/components/Navbar"
 import Footer from "@/app/components/Footer"
 import CareNotes from "@/app/components/CareNotes"
 import VarietyGrid from "@/app/components/VarietyGrid"
-import { PLANTS } from "@/app/data/plants"
+import { prisma } from "@/lib/prisma"
 
-export function generateStaticParams() {
-  return PLANTS.map((p) => ({ slug: p.slug }))
+export async function generateStaticParams() {
+  const plants = await prisma.plant.findMany({ select: { slug: true } })
+  return plants.map((p) => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({
@@ -16,7 +17,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const plant = PLANTS.find((p) => p.slug === slug)
+  const plant = await prisma.plant.findUnique({
+    where: { slug },
+    select: { name: true, description: true },
+  })
   if (!plant) return {}
   return {
     title: `${plant.name} — Plantarium`,
@@ -45,8 +49,32 @@ export default async function PlantDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const plant = PLANTS.find((p) => p.slug === slug)
+
+  const plant = await prisma.plant.findUnique({
+    where: { slug },
+    include: {
+      varieties: {
+        orderBy: { position: "asc" },
+        include: {
+          photos: { orderBy: { position: "asc" } },
+        },
+      },
+      products: {
+        include: { product: true },
+      },
+    },
+  })
+
   if (!plant) notFound()
+
+  const varieties = plant.varieties.map((v) => ({
+    name: v.name,
+    photo: v.photo,
+    photos: v.photos.map((p) => p.url),
+    trait: v.trait ?? "",
+    season: v.season ?? "",
+    note: v.note ?? "",
+  }))
 
   return (
     <>
@@ -72,12 +100,7 @@ export default async function PlantDetailPage({
             </Link>
 
             {/* Plant header */}
-            <div
-              style={{
-                maxWidth: "640px",
-                marginBottom: "48px",
-              }}
-            >
+            <div style={{ maxWidth: "640px", marginBottom: "48px" }}>
               <div
                 style={{
                   fontSize: "11px",
@@ -144,20 +167,13 @@ export default async function PlantDetailPage({
               >
                 Varieties
               </div>
-              <p
-                style={{
-                  fontSize: "15px",
-                  color: "var(--ink-mute)",
-                  margin: 0,
-                }}
-              >
-                {plant.varieties.length} {plant.varieties.length === 1 ? "variety" : "varieties"} growing this season
+              <p style={{ fontSize: "15px", color: "var(--ink-mute)", margin: 0 }}>
+                {varieties.length} {varieties.length === 1 ? "variety" : "varieties"} growing this season
               </p>
             </div>
 
-            {/* Varieties grid */}
-            <VarietyGrid varieties={plant.varieties} plantName={plant.name} />
-            <CareNotes plantSlug={plant.slug} />
+            <VarietyGrid varieties={varieties} plantName={plant.name} />
+            <CareNotes products={plant.products.map(pp => pp.product)} />
           </div>
         </section>
       </main>
