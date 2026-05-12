@@ -4,7 +4,6 @@ import Link from "next/link"
 import { useState } from "react"
 
 const navLinks = [
-  { label: "Home", href: "#" },
   { label: "Plants", href: "#plants" },
   { label: "Gallery", href: "#gallery" },
   { label: "Journal", href: "#journal" },
@@ -45,7 +44,7 @@ const XIcon = () => (
 )
 
 export default function Navbar() {
-  const [active, setActive] = useState("Home")
+  const [active, setActive] = useState("")
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
