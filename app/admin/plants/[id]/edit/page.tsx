@@ -2,12 +2,18 @@ import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
+import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
 
 export default async function EditPlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const plant = await prisma.plant.findUnique({
     where: { id: Number(id) },
-    include: { varieties: { orderBy: { position: "asc" } } },
+    include: {
+      varieties: {
+        orderBy: { position: "asc" },
+        include: { photos: true },
+      },
+    },
   })
   if (!plant) notFound()
 
@@ -20,13 +26,20 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
     const description = (formData.get("description") as string) || null
     const img = (formData.get("img") as string) || null
 
+    if (plant!.img && plant!.img !== img) await deleteStorageFile(plant!.img)
     await prisma.plant.update({ where: { id: Number(id) }, data: { name, slug, category, meta, description, img } })
     redirect("/admin/plants")
   }
 
   async function deletePlant() {
     "use server"
+    const allUrls = [
+      plant!.img,
+      ...plant!.varieties.map(v => v.photo),
+      ...plant!.varieties.flatMap(v => v.photos.map(p => p.url)),
+    ]
     await prisma.plant.delete({ where: { id: Number(id) } })
+    await deleteStorageFiles(allUrls)
     redirect("/admin/plants")
   }
 

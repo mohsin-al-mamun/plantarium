@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
+import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
 
 export default async function EditVarietyPage({
   params,
@@ -24,6 +25,7 @@ export default async function EditVarietyPage({
     const note = (formData.get("note") as string) || null
     const position = Number(formData.get("position") ?? variety!.position)
 
+    if (variety!.photo && variety!.photo !== photo) await deleteStorageFile(variety!.photo)
     await prisma.variety.update({
       where: { id: Number(varietyId) },
       data: { name, photo, trait, season, note, position },
@@ -43,7 +45,9 @@ export default async function EditVarietyPage({
 
   async function deleteVariety() {
     "use server"
+    const allUrls = [variety!.photo, ...variety!.photos.map(p => p.url)]
     await prisma.variety.delete({ where: { id: Number(varietyId) } })
+    await deleteStorageFiles(allUrls)
     redirect(`/admin/plants/${id}/edit`)
   }
 
@@ -97,6 +101,7 @@ export default async function EditVarietyPage({
               async function deletePhoto() {
                 "use server"
                 await prisma.varietyPhoto.delete({ where: { id: p.id } })
+                await deleteStorageFile(p.url)
                 redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
               }
               return (
