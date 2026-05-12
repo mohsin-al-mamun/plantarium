@@ -45,24 +45,31 @@ function EmptyCell() {
 
 function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
   const count = photos.length
-  const overflow = count - 4
 
   if (count === 1) {
     return (
-      <div className="w-full h-full">
-        <PhotoTile src={photos[0]} alt={name} pos="center center" />
+      <div className="w-full h-full flex items-center justify-center" style={{ background: "var(--green-surface)", padding: "28px" }}>
+        <div className="relative overflow-hidden group" style={{ width: "100%", height: "100%", borderRadius: "10px" }}>
+          <Image src={photos[0]} alt={name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="340px" />
+          <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+        </div>
       </div>
     )
   }
 
-  // Always 2×2 grid for 2, 3, 4+ images
+  // 5+ photos: shuffle, pick 4 randomly each time modal opens
+  const visible = count > 4
+    ? [...photos].sort(() => Math.random() - 0.5).slice(0, 4)
+    : photos
+
+  // Always 2×2 grid for 2, 3, 4 images
   // 2 images → positions 0 and 3 (diagonal: top-left, bottom-right)
   // 3 images → positions 0, 1, 2 (top-left, top-right, bottom-left)
-  // 4+       → all four cells, overflow badge on cell 3
+  // 4       → all four cells
   const cellSrcs: (string | null)[] =
-    count === 2 ? [photos[0], null, null, photos[1]] :
-    count === 3 ? [photos[0], photos[1], photos[2], null] :
-                  photos.slice(0, 4)
+    count === 2 ? [visible[0], null, null, visible[1]] :
+    count === 3 ? [visible[0], visible[1], visible[2], null] :
+                  visible.slice(0, 4)
 
   return (
     <div className="w-full h-full grid gap-1" style={{ gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}>
@@ -81,13 +88,6 @@ function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
               style={{ objectPosition: OBJ_POSITIONS[i] }}
             />
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-            {i === 3 && overflow > 0 && (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(10,30,16,0.55)" }}>
-                <span style={{ fontFamily: "var(--font-fraunces)", fontSize: "28px", fontWeight: 300, color: "#fff", letterSpacing: "-0.02em" }}>
-                  +{overflow}
-                </span>
-              </div>
-            )}
           </div>
         )
       )}
