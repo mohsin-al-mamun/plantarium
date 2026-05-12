@@ -10,6 +10,7 @@ export default async function EditVarietyPage({
   const { id, varietyId } = await params
   const variety = await prisma.variety.findUnique({
     where: { id: Number(varietyId) },
+    include: { photos: { orderBy: { position: "asc" } } },
   })
   if (!variety || variety.plantId !== Number(id)) notFound()
 
@@ -26,7 +27,17 @@ export default async function EditVarietyPage({
       where: { id: Number(varietyId) },
       data: { name, photo, trait, season, note, position },
     })
-    redirect(`/admin/plants/${id}/edit`)
+    redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
+  }
+
+  async function addPhoto(formData: FormData) {
+    "use server"
+    const url = formData.get("url") as string
+    const position = variety!.photos.length
+    await prisma.varietyPhoto.create({
+      data: { varietyId: Number(varietyId), url, position },
+    })
+    redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
   }
 
   async function deleteVariety() {
@@ -73,6 +84,67 @@ export default async function EditVarietyPage({
         </div>
       </form>
 
+      {/* Gallery photos */}
+      <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
+        <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+          Gallery photos · {variety.photos.length}
+        </div>
+
+        {variety.photos.length > 0 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "20px" }}>
+            {variety.photos.map((p) => {
+              async function deletePhoto() {
+                "use server"
+                await prisma.varietyPhoto.delete({ where: { id: p.id } })
+                redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
+              }
+              return (
+                <div key={p.id} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
+                  padding: "10px 14px", borderRadius: "8px", border: "1px solid var(--line)", background: "var(--card)",
+                }}>
+                  <span style={{
+                    fontSize: "12px", color: "var(--ink-mute)", overflow: "hidden",
+                    textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1,
+                  }}>
+                    {p.url}
+                  </span>
+                  <form action={deletePhoto} style={{ flexShrink: 0 }}>
+                    <button type="submit" style={{
+                      fontSize: "12px", color: "#ef4444", background: "none",
+                      border: "none", cursor: "pointer", padding: 0,
+                    }}>
+                      Remove
+                    </button>
+                  </form>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        <form action={addPhoto} style={{ display: "flex", gap: "8px" }}>
+          <input
+            type="text"
+            name="url"
+            required
+            placeholder="https://… photo URL"
+            style={{
+              flex: 1, padding: "10px 14px", borderRadius: "8px",
+              border: "1px solid var(--line)", background: "var(--paper)",
+              fontSize: "13px", color: "var(--green-ink)", outline: "none",
+            }}
+          />
+          <button type="submit" style={{
+            padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
+            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer", flexShrink: 0,
+          }}>
+            Add photo
+          </button>
+        </form>
+      </div>
+
+      {/* Danger zone */}
       <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
         <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
         <form action={deleteVariety}>

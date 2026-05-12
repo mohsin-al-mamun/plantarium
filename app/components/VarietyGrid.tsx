@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Overlay } from "@/app/components/ModalShell"
 
+const cleanUrl = (url: string) => url.replace(/^["']+|["']+$/g, "").trim()
+
 type Variety = {
   name: string
   photo: string
@@ -129,7 +131,7 @@ export default function VarietyGrid({ varieties, plantName }: { varieties: Varie
               aria-label={`View ${v.name}`}
             >
               <Image
-                src={v.photo}
+                src={cleanUrl(v.photo)}
                 alt={v.name}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
