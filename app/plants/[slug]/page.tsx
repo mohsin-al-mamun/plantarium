@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Navbar from "@/app/components/Navbar"
 import Footer from "@/app/components/Footer"
+import CareNotes from "@/app/components/CareNotes"
 import { PLANTS } from "@/app/data/plants"
 
 export function generateStaticParams() {
@@ -155,13 +156,13 @@ export default async function PlantDetailPage({
             </div>
 
             {/* Varieties grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {plant.varieties.map((v) => (
                 <article
                   key={v.name}
                   className="flex flex-col overflow-hidden"
                   style={{
-                    background: "#fff",
+                    background: "var(--card)",
                     border: "1px solid var(--line)",
                     borderRadius: "12px",
                   }}
@@ -203,8 +204,8 @@ export default async function PlantDetailPage({
                         fontSize: "11px",
                         padding: "4px 10px",
                         borderRadius: "999px",
-                        background: "var(--ochre-surface)",
-                        color: "var(--clay-deep)",
+                        background: "var(--teal)",
+                        color: "var(--green-ink)",
                         fontWeight: 500,
                       }}
                     >
@@ -214,6 +215,7 @@ export default async function PlantDetailPage({
                 </article>
               ))}
             </div>
+            <CareNotes care={plant.care} />
           </div>
         </section>
       </main>

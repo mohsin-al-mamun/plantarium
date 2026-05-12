@@ -84,7 +84,7 @@ export default function PlantGrid() {
                 border: active === tab
                   ? "1px solid var(--green-ink)"
                   : "1px solid var(--line)",
-                background: active === tab ? "var(--green-ink)" : "#fff",
+                background: active === tab ? "var(--green-ink)" : "var(--card)",
                 color: active === tab ? "var(--paper)" : "var(--ink-soft)",
                 cursor: "pointer",
               }}
@@ -102,7 +102,7 @@ export default function PlantGrid() {
               href={`/plants/${plant.slug}`}
               className="flex flex-col overflow-hidden transition-shadow hover:shadow-md"
               style={{
-                background: "#fff",
+                background: "var(--card)",
                 border: "1px solid var(--line)",
                 borderRadius: "12px",
                 textDecoration: "none",
@@ -164,7 +164,7 @@ export default function PlantGrid() {
                         height: "7px",
                         borderRadius: "50%",
                         background: "var(--green-ink)",
-                        boxShadow: "0 0 0 3px rgba(59,109,17,0.12)",
+                        boxShadow: "0 0 0 3px rgba(14,59,42,0.14)",
                         display: "inline-block",
                         flexShrink: 0,
                       }}
@@ -190,7 +190,7 @@ export default function PlantGrid() {
                 fontSize: "13px",
                 fontWeight: 500,
                 border: "1px solid var(--line)",
-                background: "#fff",
+                background: "var(--card)",
                 color: "var(--ink-soft)",
                 cursor: "pointer",
               }}
