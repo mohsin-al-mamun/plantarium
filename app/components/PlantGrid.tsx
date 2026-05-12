@@ -2,124 +2,10 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
+import { PLANTS } from "@/app/data/plants"
 
 type Category = "All" | "Flowers" | "Fruits" | "Vegetables"
-
-type Plant = {
-  id: number
-  name: string
-  meta: string
-  category: Exclude<Category, "All">
-  img: string
-}
-
-const plants: Plant[] = [
-  {
-    id: 1,
-    name: "Cosmos bipinnatus",
-    meta: "3 varieties · sown March",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 2,
-    name: "San Marzano",
-    meta: "2 varieties · staked",
-    category: "Fruits",
-    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 3,
-    name: "Lacinato kale",
-    meta: "1 variety · cool-loving",
-    category: "Vegetables",
-    img: "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 4,
-    name: "Café au Lait dahlia",
-    meta: "4 varieties · tubered",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 5,
-    name: "Albion strawberry",
-    meta: "2 varieties · ever-bearing",
-    category: "Fruits",
-    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 6,
-    name: "Eden climbing rose",
-    meta: "2 varieties · trellised",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 7,
-    name: "Shishito pepper",
-    meta: "3 varieties · in pots",
-    category: "Vegetables",
-    img: "https://images.unsplash.com/photo-1525607551316-4a8e16d1f9ba?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 8,
-    name: "Brown Turkey fig",
-    meta: "1 variety · 2nd year",
-    category: "Fruits",
-    img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 9,
-    name: "Sweet pea",
-    meta: "5 varieties · climbing",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 10,
-    name: "Nasturtium",
-    meta: "2 varieties · trailing",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 11,
-    name: "Wisteria",
-    meta: "1 variety · 3rd year",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 12,
-    name: "Monstera deliciosa",
-    meta: "1 variety · indoor",
-    category: "Vegetables",
-    img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 13,
-    name: "Larkspur",
-    meta: "4 varieties · direct sown",
-    category: "Flowers",
-    img: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 14,
-    name: "Lemon tree",
-    meta: "1 variety · container",
-    category: "Fruits",
-    img: "https://images.unsplash.com/photo-1444930694458-01babf71870c?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: 15,
-    name: "Rainbow chard",
-    meta: "3 varieties · cut-and-come",
-    category: "Vegetables",
-    img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=900&q=80",
-  },
-]
 
 const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
 
@@ -127,7 +13,7 @@ export default function PlantGrid() {
   const [active, setActive] = useState<Category>("All")
   const [visible, setVisible] = useState(8)
 
-  const filtered = active === "All" ? plants : plants.filter((p) => p.category === active)
+  const filtered = active === "All" ? PLANTS : PLANTS.filter((p) => p.category === active)
   const shown = filtered.slice(0, visible)
   const hasMore = visible < filtered.length
   const isExpanded = visible >= filtered.length && filtered.length > 8
@@ -211,16 +97,18 @@ export default function PlantGrid() {
         {/* Plant grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {shown.map((plant) => (
-            <article
+            <Link
               key={plant.id}
-              className="flex flex-col overflow-hidden"
+              href={`/plants/${plant.slug}`}
+              className="flex flex-col overflow-hidden transition-shadow hover:shadow-md"
               style={{
                 background: "#fff",
                 border: "1px solid var(--line)",
                 borderRadius: "12px",
+                textDecoration: "none",
               }}
             >
-              <div className="relative aspect-[5/4] overflow-hidden">
+              <div className="relative aspect-5/4 overflow-hidden">
                 <Image
                   src={plant.img}
                   alt={plant.name}
@@ -285,7 +173,7 @@ export default function PlantGrid() {
                   </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 
