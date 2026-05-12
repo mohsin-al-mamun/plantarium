@@ -66,7 +66,12 @@ export default async function EditVarietyPage({
         </h1>
       </div>
 
-      <form action={updateVariety} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <form action={updateVariety} style={{
+        display: "flex", flexDirection: "column", gap: "20px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", padding: "28px",
+        boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <Field label="Name *" name="name" required defaultValue={variety.name} />
         <ImageUploadField label="Cover photo" name="photo" required defaultValue={variety.photo} />
         <Field label="Trait" name="trait" defaultValue={variety.trait ?? ""} placeholder="e.g. Sweet, Crisp" />
@@ -91,7 +96,11 @@ export default async function EditVarietyPage({
       </form>
 
       {/* Gallery photos */}
-      <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
+      <div style={{
+        marginTop: "24px", padding: "24px 28px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
           Gallery photos · {variety.photos.length}
         </div>
@@ -140,8 +149,12 @@ export default async function EditVarietyPage({
       </div>
 
       {/* Danger zone */}
-      <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
-        <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
+      <div style={{
+        marginTop: "24px", padding: "24px 28px",
+        background: "var(--card)", border: "1px solid #fde8e8",
+        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
+        <div style={{ fontSize: "12px", color: "#ef4444", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "12px" }}>Danger zone</div>
         <DeleteConfirmButton
           action={deleteVariety}
           label="Delete variety"

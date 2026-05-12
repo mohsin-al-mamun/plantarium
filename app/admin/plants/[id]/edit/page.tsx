@@ -58,7 +58,12 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         </h1>
       </div>
 
-      <form action={updatePlant} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <form action={updatePlant} style={{
+        display: "flex", flexDirection: "column", gap: "20px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", padding: "28px",
+        boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <Field label="Name *" name="name" required defaultValue={plant.name} />
         <Field label="Slug *" name="slug" required defaultValue={plant.slug} hint="Changing this breaks existing URLs" />
 
@@ -91,7 +96,11 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         </div>
       </form>
 
-      <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
+      <div style={{
+        marginTop: "24px", padding: "24px 28px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
             Varieties · {plant.varieties.length}
@@ -127,8 +136,12 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         }
       </div>
 
-      <div style={{ paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
-        <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
+      <div style={{
+        marginTop: "24px", padding: "24px 28px",
+        background: "var(--card)", border: "1px solid #fde8e8",
+        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
+        <div style={{ fontSize: "12px", color: "#ef4444", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "12px" }}>Danger zone</div>
         <DeleteConfirmButton
           action={deletePlant}
           label="Delete plant"

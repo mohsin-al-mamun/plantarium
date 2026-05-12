@@ -1,17 +1,14 @@
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import { deleteStorageFiles } from "@/lib/supabase"
-import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
+
+const css = `.edit-btn svg { transition: transform 0.2s ease; } .edit-btn:hover svg { transform: translateX(4px); }`
+
 
 export default async function AdminPlantsPage() {
   const [plants, categoryCounts] = await Promise.all([
     prisma.plant.findMany({
       orderBy: { name: "asc" },
-      include: {
-        _count: { select: { varieties: true } },
-        varieties: { include: { photos: true } },
-      },
+      include: { _count: { select: { varieties: true } } },
     }),
     prisma.plant.groupBy({ by: ["category"], _count: { id: true } }),
   ])
@@ -20,6 +17,7 @@ export default async function AdminPlantsPage() {
 
   return (
     <div>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
       {/* Header */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "32px" }}>
         <div>
@@ -74,20 +72,7 @@ export default async function AdminPlantsPage() {
                   <div style={{ fontSize: "12px", color: "var(--ink-mute)" }}>Add your first plant to get started.</div>
                 </td>
               </tr>
-            ) : plants.map((plant, i) => {
-              async function deletePlant() {
-                "use server"
-                const allUrls = [
-                  plant.img,
-                  ...plant.varieties.map(v => v.photo),
-                  ...plant.varieties.flatMap(v => v.photos.map(p => p.url)),
-                ]
-                await prisma.plant.delete({ where: { id: plant.id } })
-                await deleteStorageFiles(allUrls)
-                redirect("/admin/plants")
-              }
-
-              return (
+            ) : plants.map((plant, i) => (
                 <tr
                   key={plant.id}
                   style={{
@@ -139,29 +124,22 @@ export default async function AdminPlantsPage() {
                   </td>
 
                   {/* Actions */}
-                  <td style={{ padding: "10px 16px" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "4px" }}>
-                      <Link href={`/admin/plants/${plant.id}/edit`} title="Edit plant" style={{
-                        padding: "6px", borderRadius: "6px", color: "var(--ink-mute)",
-                        display: "flex", alignItems: "center", textDecoration: "none",
-                      }}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                      </Link>
-                      <DeleteConfirmButton
-                        action={deletePlant}
-                        title="Delete plant"
-                        name={plant.name}
-                        message={`Permanently deletes ${plant.name} and all ${plant._count.varieties} variet${plant._count.varieties === 1 ? "y" : "ies"} with their gallery photos.`}
-                        icon
-                      />
-                    </div>
+                  <td style={{ padding: "10px 16px", textAlign: "right" }}>
+                    <Link href={`/admin/plants/${plant.id}/edit`} className="edit-btn" style={{
+                      fontSize: "12px", fontWeight: 500, color: "var(--green-ink)",
+                      textDecoration: "none", padding: "6px 14px", borderRadius: "7px",
+                      border: "1px solid var(--green-highlight)", background: "var(--green-surface)",
+                      display: "inline-flex", alignItems: "center", gap: "5px",
+                      letterSpacing: "0.01em",
+                    }}>
+                      Edit
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </Link>
                   </td>
                 </tr>
-              )
-            })}
+            ))}
           </tbody>
         </table>
       </div>
