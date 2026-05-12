@@ -1,11 +1,17 @@
 import Link from "next/link"
+import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
+import { deleteStorageFiles } from "@/lib/supabase"
+import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
 
 export default async function AdminPlantsPage() {
   const [plants, categoryCounts] = await Promise.all([
     prisma.plant.findMany({
       orderBy: { name: "asc" },
-      include: { _count: { select: { varieties: true } } },
+      include: {
+        _count: { select: { varieties: true } },
+        varieties: { include: { photos: true } },
+      },
     }),
     prisma.plant.groupBy({ by: ["category"], _count: { id: true } }),
   ])
@@ -62,78 +68,100 @@ export default async function AdminPlantsPage() {
           <tbody>
             {plants.length === 0 ? (
               <tr>
-                <td colSpan={6} style={{ padding: "56px 24px", textAlign: "center" }}>
+                <td colSpan={5} style={{ padding: "56px 24px", textAlign: "center" }}>
                   <div style={{ fontSize: "32px", marginBottom: "10px" }}>🌱</div>
                   <div style={{ fontSize: "14px", fontWeight: 500, color: "var(--green-ink)", marginBottom: "4px" }}>No plants yet</div>
                   <div style={{ fontSize: "12px", color: "var(--ink-mute)" }}>Add your first plant to get started.</div>
                 </td>
               </tr>
-            ) : plants.map((plant, i) => (
-              <tr
-                key={plant.id}
-                style={{
-                  borderBottom: i < plants.length - 1 ? "1px solid var(--line-soft)" : "none",
-                  background: i % 2 === 0 ? "var(--paper)" : "var(--card)",
-                  transition: "background 0.15s",
-                }}
-                onMouseEnter={undefined}
-              >
-                {/* Thumbnail */}
-                <td style={{ padding: "10px 8px 10px 16px" }}>
-                  <div style={{
-                    width: "42px", height: "42px", borderRadius: "8px", flexShrink: 0,
-                    border: "1px solid var(--line)", overflow: "hidden",
-                    background: "var(--green-surface)", display: "flex",
-                    alignItems: "center", justifyContent: "center", fontSize: "16px",
-                  }}>
-                    {plant.img ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={plant.img}
-                        alt={plant.name}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            ) : plants.map((plant, i) => {
+              async function deletePlant() {
+                "use server"
+                const allUrls = [
+                  plant.img,
+                  ...plant.varieties.map(v => v.photo),
+                  ...plant.varieties.flatMap(v => v.photos.map(p => p.url)),
+                ]
+                await prisma.plant.delete({ where: { id: plant.id } })
+                await deleteStorageFiles(allUrls)
+                redirect("/admin/plants")
+              }
+
+              return (
+                <tr
+                  key={plant.id}
+                  style={{
+                    borderBottom: i < plants.length - 1 ? "1px solid var(--line-soft)" : "none",
+                    background: i % 2 === 0 ? "var(--paper)" : "var(--card)",
+                  }}
+                >
+                  {/* Thumbnail */}
+                  <td style={{ padding: "10px 8px 10px 16px" }}>
+                    <div style={{
+                      width: "42px", height: "42px", borderRadius: "8px", flexShrink: 0,
+                      border: "1px solid var(--line)", overflow: "hidden",
+                      background: "var(--green-surface)", display: "flex",
+                      alignItems: "center", justifyContent: "center", fontSize: "16px",
+                    }}>
+                      {plant.img ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={plant.img}
+                          alt={plant.name}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        />
+                      ) : "🌿"}
+                    </div>
+                  </td>
+
+                  {/* Name */}
+                  <td style={{ padding: "10px 16px 10px 8px" }}>
+                    <span style={{ fontWeight: 500, color: "var(--green-ink)", fontSize: "13px" }}>{plant.name}</span>
+                    {plant.meta && (
+                      <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "1px", fontStyle: "italic" }}>{plant.meta}</div>
+                    )}
+                  </td>
+
+                  {/* Category */}
+                  <td style={{ padding: "10px 16px" }}>
+                    <CategoryBadge category={plant.category} />
+                  </td>
+
+                  {/* Varieties */}
+                  <td style={{ padding: "10px 16px" }}>
+                    <span style={{
+                      fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
+                      background: "var(--green-surface)", padding: "2px 8px",
+                      borderRadius: "20px", display: "inline-block",
+                    }}>
+                      {plant._count.varieties}
+                    </span>
+                  </td>
+
+                  {/* Actions */}
+                  <td style={{ padding: "10px 16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "4px" }}>
+                      <Link href={`/admin/plants/${plant.id}/edit`} title="Edit plant" style={{
+                        padding: "5px", borderRadius: "6px", color: "var(--ink-mute)",
+                        display: "flex", alignItems: "center", textDecoration: "none",
+                      }}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                      </Link>
+                      <DeleteConfirmButton
+                        action={deletePlant}
+                        title="Delete plant"
+                        name={plant.name}
+                        message={`Permanently deletes ${plant.name} and all ${plant._count.varieties} variet${plant._count.varieties === 1 ? "y" : "ies"} with their gallery photos.`}
+                        icon
                       />
-                    ) : "🌿"}
-                  </div>
-                </td>
-
-                {/* Name */}
-                <td style={{ padding: "10px 16px 10px 8px" }}>
-                  <span style={{ fontWeight: 500, color: "var(--green-ink)", fontSize: "13px" }}>{plant.name}</span>
-                  {plant.meta && (
-                    <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "1px", fontStyle: "italic" }}>{plant.meta}</div>
-                  )}
-                </td>
-
-                {/* Category */}
-                <td style={{ padding: "10px 16px" }}>
-                  <CategoryBadge category={plant.category} />
-                </td>
-
-                {/* Varieties */}
-                <td style={{ padding: "10px 16px" }}>
-                  <span style={{
-                    fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
-                    background: "var(--green-surface)", padding: "2px 8px",
-                    borderRadius: "20px", display: "inline-block",
-                  }}>
-                    {plant._count.varieties}
-                  </span>
-                </td>
-
-                {/* Actions */}
-                <td style={{ padding: "10px 16px", textAlign: "right" }}>
-                  <Link href={`/admin/plants/${plant.id}/edit`} style={{
-                    fontSize: "12px", fontWeight: 500, color: "var(--green-ink)",
-                    textDecoration: "none", padding: "5px 12px", borderRadius: "7px",
-                    border: "1px solid var(--line)", background: "var(--card)",
-                    display: "inline-block", transition: "background 0.15s",
-                  }}>
-                    Edit
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
