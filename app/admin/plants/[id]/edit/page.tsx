@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
 import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
+import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
 
 export default async function EditPlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -128,14 +129,12 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
 
       <div style={{ paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
         <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
-        <form action={deletePlant}>
-          <button type="submit" style={{
-            padding: "9px 18px", borderRadius: "8px", fontSize: "13px",
-            border: "1px solid #ef4444", color: "#ef4444", background: "none", cursor: "pointer",
-          }}>
-            Delete plant
-          </button>
-        </form>
+        <DeleteConfirmButton
+          action={deletePlant}
+          label="Delete plant"
+          title={`Delete ${plant.name}?`}
+          message={`This will permanently delete ${plant.name} along with all ${plant.varieties.length} variet${plant.varieties.length === 1 ? "y" : "ies"} and their gallery photos.`}
+        />
       </div>
     </div>
   )

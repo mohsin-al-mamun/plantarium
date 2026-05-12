@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
 import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
+import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
 
 export default async function EditVarietyPage({
   params,
@@ -143,14 +144,12 @@ export default async function EditVarietyPage({
       {/* Danger zone */}
       <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid var(--line)" }}>
         <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginBottom: "12px" }}>Danger zone</div>
-        <form action={deleteVariety}>
-          <button type="submit" style={{
-            padding: "9px 18px", borderRadius: "8px", fontSize: "13px",
-            border: "1px solid #ef4444", color: "#ef4444", background: "none", cursor: "pointer",
-          }}>
-            Delete variety
-          </button>
-        </form>
+        <DeleteConfirmButton
+          action={deleteVariety}
+          label="Delete variety"
+          title={`Delete ${variety.name}?`}
+          message={`This will permanently delete this variety and its ${variety.photos.length} gallery photo${variety.photos.length === 1 ? "" : "s"}.`}
+        />
       </div>
     </div>
   )
