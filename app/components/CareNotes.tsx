@@ -45,7 +45,7 @@ export default function CareNotes({ products }: { products: ProductRow[] }) {
     <div style={{ border: "1px solid var(--line)", borderRadius: "12px", overflow: "hidden", marginBottom: "48px" }}>
       <button
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between transition-colors hover:bg-[var(--green-surface)]"
+        className="w-full flex items-center justify-between transition-colors hover:bg-(--green-surface)"
         style={{ padding: "16px 20px", background: open ? "var(--green-surface)" : "var(--card)", cursor: "pointer", border: "none", textAlign: "left" }}
       >
         <div className="flex items-center gap-2.5">
