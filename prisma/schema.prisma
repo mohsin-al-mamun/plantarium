@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Enums ──────────────────────────────────────────────────────────────────────
+
+enum PlantCategory {
+  Flowers
+  Fruits
+  Vegetables
+}
+
+enum ProductKind {
+  fertilizer
+  pesticide
+}
+
+enum ProductType {
+  organic
+  chemical
+}
+
+// ── Models ─────────────────────────────────────────────────────────────────────
+
+model Plant {
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
+  name        String
+  description String?
+  meta        String?
+  category    PlantCategory
+  img         String?
+  varieties   Variety[]
+  products    PlantProduct[]
+}
+
+model Variety {
+  id       Int            @id @default(autoincrement())
+  plant    Plant          @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId  Int
+  name     String
+  photo    String
+  trait    String?
+  season   String?
+  note     String?
+  position Int            @default(0)
+  photos   VarietyPhoto[]
+
+  @@index([plantId])
+}
+
+model VarietyPhoto {
+  id        Int     @id @default(autoincrement())
+  variety   Variety @relation(fields: [varietyId], references: [id], onDelete: Cascade)
+  varietyId Int
+  url       String
+  position  Int     @default(0)
+
+  @@index([varietyId])
+}
+
+model Product {
+  id        String         @id // slug e.g. "neem-oil"
+  name      String
+  kind      ProductKind
+  type      ProductType
+  dosage    String?
+  frequency String?
+  notes     String?
+  plants    PlantProduct[]
+}
+
+model PlantProduct {
+  plant     Plant   @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId   Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  @@id([plantId, productId])
+}
