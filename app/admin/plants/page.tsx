@@ -59,6 +59,7 @@ export default async function AdminPlantsPage() {
               <Th style={{ width: "52px" }} />
               <Th>Name</Th>
               <Th>Category</Th>
+              <Th>Status</Th>
               <Th>Varieties</Th>
               <Th style={{ textAlign: "right" }}>Actions</Th>
             </tr>
@@ -66,7 +67,7 @@ export default async function AdminPlantsPage() {
           <tbody>
             {plants.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ padding: "56px 24px", textAlign: "center" }}>
+                <td colSpan={6} style={{ padding: "56px 24px", textAlign: "center" }}>
                   <div style={{ fontSize: "32px", marginBottom: "10px" }}>🌱</div>
                   <div style={{ fontSize: "14px", fontWeight: 500, color: "var(--green-ink)", marginBottom: "4px" }}>No plants yet</div>
                   <div style={{ fontSize: "12px", color: "var(--ink-mute)" }}>Add your first plant to get started.</div>
@@ -110,6 +111,11 @@ export default async function AdminPlantsPage() {
                   {/* Category */}
                   <td style={{ padding: "10px 16px" }}>
                     <CategoryBadge category={plant.category} />
+                  </td>
+
+                  {/* Status */}
+                  <td style={{ padding: "10px 16px" }}>
+                    <StatusBadge status={plant.status} />
                   </td>
 
                   {/* Varieties */}
@@ -161,6 +167,24 @@ function StatCard({ label, value, accent, bg }: { label: string; value: number; 
         {label}
       </div>
     </div>
+  )
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const map: Record<string, { emoji: string; bg: string; color: string }> = {
+    Seedling: { emoji: "🌱", bg: "#fef5e8", color: "#a85a0a" },
+    Growing:  { emoji: "🌿", bg: "var(--green-surface)", color: "var(--green-ink)" },
+    Thriving: { emoji: "✨", bg: "#eef4e6", color: "#4a7a3a" },
+    Dormant:  { emoji: "💤", bg: "var(--paper-warm)", color: "var(--ink-mute)" },
+  }
+  const s = map[status] ?? { emoji: "", bg: "var(--paper-warm)", color: "var(--ink-soft)" }
+  return (
+    <span style={{
+      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "5px",
+      background: s.bg, color: s.color, letterSpacing: "0.03em",
+    }}>
+      {s.emoji} {status}
+    </span>
   )
 }
 
