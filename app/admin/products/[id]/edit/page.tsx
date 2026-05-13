@@ -7,11 +7,19 @@ import { deleteStorageFile } from "@/lib/supabase"
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: { _count: { select: { plants: true } } },
-  })
+  const [product, allPlants] = await Promise.all([
+    prisma.product.findUnique({
+      where: { id },
+      include: {
+        _count: { select: { plants: true } },
+        plants: { select: { plantId: true } },
+      },
+    }),
+    prisma.plant.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, category: true } }),
+  ])
   if (!product) notFound()
+
+  const linkedPlantIds = new Set(product.plants.map(p => p.plantId))
 
   async function updateProduct(formData: FormData) {
     "use server"
@@ -25,7 +33,19 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     if (product!.img && product!.img !== img) await deleteStorageFile(product!.img)
     await prisma.product.update({ where: { id }, data: { name, kind, type, dosage, frequency, notes, img } })
-    redirect("/admin/products")
+    redirect(`/admin/products/${id}/edit`)
+  }
+
+  async function updateLinkedPlants(formData: FormData) {
+    "use server"
+    const selectedIds = formData.getAll("plantIds").map(v => Number(v))
+    await prisma.plantProduct.deleteMany({ where: { productId: id } })
+    if (selectedIds.length > 0) {
+      await prisma.plantProduct.createMany({
+        data: selectedIds.map(plantId => ({ plantId, productId: id })),
+      })
+    }
+    redirect(`/admin/products/${id}/edit`)
   }
 
   async function deleteProduct() {
@@ -48,6 +68,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </h1>
       </div>
 
+      {/* Main form */}
       <form action={updateProduct} style={{
         display: "flex", flexDirection: "column", gap: "20px",
         background: "var(--card)", border: "1px solid var(--line)",
@@ -94,6 +115,55 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
+      {/* Linked plants */}
+      <form action={updateLinkedPlants} style={{
+        marginTop: "24px", padding: "24px 28px",
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+      }}>
+        <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
+          Linked plants · {product._count.plants}
+        </div>
+
+        {allPlants.length === 0 ? (
+          <p style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>No plants in database yet.</p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
+            {allPlants.map(plant => (
+              <label key={plant.id} style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                padding: "9px 12px", borderRadius: "8px", cursor: "pointer",
+                border: "1px solid var(--line-soft)", background: linkedPlantIds.has(plant.id) ? "var(--green-surface)" : "var(--paper)",
+              }}>
+                <input
+                  type="checkbox"
+                  name="plantIds"
+                  value={plant.id}
+                  defaultChecked={linkedPlantIds.has(plant.id)}
+                  style={{ accentColor: "var(--green-ink)", width: "15px", height: "15px", flexShrink: 0 }}
+                />
+                <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--green-ink)", flex: 1 }}>{plant.name}</span>
+                <span style={{
+                  fontSize: "10px", fontWeight: 600, padding: "2px 7px", borderRadius: "5px",
+                  background: plant.category === "Flowers" ? "#fde8ef" : plant.category === "Fruits" ? "#fef0e0" : "var(--green-surface)",
+                  color: plant.category === "Flowers" ? "#a83050" : plant.category === "Fruits" ? "#a85a0a" : "var(--green-ink)",
+                }}>
+                  {plant.category}
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
+
+        <button type="submit" style={{
+          padding: "9px 20px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
+          background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
+        }}>
+          Save linked plants
+        </button>
+      </form>
+
+      {/* Danger zone */}
       <div style={{
         marginTop: "24px", padding: "24px 28px",
         background: "var(--card)", border: "1px solid #fde8e8",

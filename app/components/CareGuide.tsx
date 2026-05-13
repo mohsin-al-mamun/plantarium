@@ -58,7 +58,7 @@ function KindBadge({ kind }: { kind: "fertilizer" | "pesticide" }) {
   return (
     <span style={{
       fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-      padding: "3px 9px", borderRadius: "999px",
+      padding: "3px 9px", borderRadius: "5px",
       background: isF ? "var(--green-surface)" : "var(--clay-surface)",
       color: isF ? "var(--green-ink)" : "var(--clay-deep)",
     }}>
@@ -72,7 +72,7 @@ function TypeBadge({ type }: { type: "organic" | "chemical" }) {
   return (
     <span style={{
       fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-      padding: "3px 9px", borderRadius: "999px",
+      padding: "3px 9px", borderRadius: "5px",
       background: "rgba(255,255,255,0.92)",
       color: isO ? "var(--green-ink)" : "var(--clay-deep)",
     }}>
@@ -271,7 +271,7 @@ function PlantCard({ plant, onSelect }: { plant: PlantRow; onSelect: (p: PlantRo
       <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
         <Image src={plant.img ?? ""} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
         <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
-          <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "999px", background: "rgba(255,255,255,0.92)", color: "var(--green-ink)" }}>
+          <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "5px", background: "rgba(255,255,255,0.92)", color: "var(--green-ink)" }}>
             {plant.category}
           </span>
         </div>
