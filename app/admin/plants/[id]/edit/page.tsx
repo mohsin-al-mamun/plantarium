@@ -59,6 +59,9 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         </h1>
       </div>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginBottom: "10px" }}>
+        Plant details
+      </div>
       <form action={updatePlant} style={{
         display: "flex", flexDirection: "column", gap: "20px",
         background: "var(--card)", border: "1px solid var(--line)",
@@ -108,14 +111,17 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         </div>
       </form>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginTop: "32px", marginBottom: "10px" }}>
+        Varieties — saved independently
+      </div>
       <div style={{
-        marginTop: "24px", padding: "24px 28px",
+        padding: "24px 28px",
         background: "var(--card)", border: "1px solid var(--line)",
         borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
           <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-            Varieties · {plant.varieties.length}
+            {plant.varieties.length} {plant.varieties.length === 1 ? "variety" : "varieties"}
           </div>
           <Link href={`/admin/plants/${id}/varieties/new`} style={{
             fontSize: "12px", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500,

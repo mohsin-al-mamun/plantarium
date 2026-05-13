@@ -66,6 +66,9 @@ export default async function EditVarietyPage({
         </h1>
       </div>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginBottom: "10px" }}>
+        Variety details
+      </div>
       <form action={updateVariety} style={{
         display: "flex", flexDirection: "column", gap: "20px",
         background: "var(--card)", border: "1px solid var(--line)",
@@ -95,9 +98,12 @@ export default async function EditVarietyPage({
         </div>
       </form>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginTop: "32px", marginBottom: "10px" }}>
+        Gallery photos — added independently
+      </div>
       {/* Gallery photos */}
       <div style={{
-        marginTop: "24px", padding: "24px 28px",
+        padding: "24px 28px",
         background: "var(--card)", border: "1px solid var(--line)",
         borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
       }}>

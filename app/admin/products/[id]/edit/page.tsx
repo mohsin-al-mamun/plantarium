@@ -68,6 +68,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </h1>
       </div>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginBottom: "10px" }}>
+        Product details
+      </div>
       {/* Main form */}
       <form action={updateProduct} style={{
         display: "flex", flexDirection: "column", gap: "20px",
@@ -115,9 +118,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         </div>
       </form>
 
+      <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginTop: "32px", marginBottom: "10px" }}>
+        Linked plants — saved separately
+      </div>
       {/* Linked plants */}
       <form action={updateLinkedPlants} style={{
-        marginTop: "24px", padding: "24px 28px",
+        padding: "24px 28px",
         background: "var(--card)", border: "1px solid var(--line)",
         borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
       }}>
