@@ -1,12 +1,7 @@
-import { cookies } from "next/headers"
-
-const COOKIE = "admin_token"
+import { createClient } from "@/lib/supabase/server"
 
 export async function isAuthenticated(): Promise<boolean> {
-  const jar = await cookies()
-  return jar.get(COOKIE)?.value === process.env.ADMIN_SECRET
-}
-
-export function getAuthCookieName() {
-  return COOKIE
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  return !!user
 }

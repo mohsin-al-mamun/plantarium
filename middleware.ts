@@ -1,21 +1,40 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
+import { createServerClient } from "@supabase/ssr"
 
-export function middleware(req: NextRequest) {
-  const token = req.cookies.get("admin_token")?.value
-  const isLoginPage = req.nextUrl.pathname === "/admin/login"
+export async function middleware(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({ request })
 
-  if (isLoginPage) {
-    if (token === process.env.ADMIN_SECRET) {
-      return NextResponse.redirect(new URL("/admin", req.url))
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
     }
-    return NextResponse.next()
+  )
+
+  const { data: { user } } = await supabase.auth.getUser()
+  const isLoginPage = request.nextUrl.pathname === "/admin/login"
+
+  if (!user && !isLoginPage) {
+    return NextResponse.redirect(new URL("/admin/login", request.url))
   }
 
-  if (token !== process.env.ADMIN_SECRET) {
-    return NextResponse.redirect(new URL("/admin/login", req.url))
+  if (user && isLoginPage) {
+    return NextResponse.redirect(new URL("/admin", request.url))
   }
 
-  return NextResponse.next()
+  return supabaseResponse
 }
 
 export const config = {

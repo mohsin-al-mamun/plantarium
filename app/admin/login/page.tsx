@@ -1,28 +1,33 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+"use client"
 
-async function login(formData: FormData) {
-  "use server"
-  const password = formData.get("password") as string
-  if (password === process.env.ADMIN_PASSWORD) {
-    const jar = await cookies()
-    jar.set("admin_token", process.env.ADMIN_SECRET!, {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    })
-    redirect("/admin")
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    const supabase = createClient()
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error) {
+      setError("Incorrect email or password.")
+      setLoading(false)
+      return
+    }
+
+    router.push("/admin")
+    router.refresh()
   }
-  redirect("/admin/login?error=1")
-}
-
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>
-}) {
-  const { error } = await searchParams
 
   return (
     <div style={{
@@ -52,21 +57,22 @@ export default async function LoginPage({
             border: "1px solid #fecaca", borderRadius: "8px",
             padding: "10px 14px", marginBottom: "16px",
           }}>
-            Incorrect password. Try again.
+            {error}
           </div>
         )}
 
-        <form action={login} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div>
             <label style={{
               fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
               display: "block", marginBottom: "6px",
             }}>
-              Password
+              Email
             </label>
             <input
-              type="password"
-              name="password"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               autoFocus
               style={{
@@ -78,15 +84,38 @@ export default async function LoginPage({
             />
           </div>
 
+          <div>
+            <label style={{
+              fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
+              display: "block", marginBottom: "6px",
+            }}>
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: "100%", padding: "10px 14px", borderRadius: "8px",
+                border: "1px solid var(--line)", background: "var(--paper)",
+                fontSize: "14px", color: "var(--green-ink)", outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+
           <button
             type="submit"
+            disabled={loading}
             style={{
               padding: "11px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
               background: "var(--green-ink)", color: "var(--paper)",
-              border: "none", cursor: "pointer",
+              border: "none", cursor: loading ? "not-allowed" : "pointer",
+              opacity: loading ? 0.7 : 1,
             }}
           >
-            Enter
+            {loading ? "Signing in…" : "Enter"}
           </button>
         </form>
       </div>

@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import { cookies } from "next/headers"
 import { supabase } from "@/lib/supabase"
+import { isAuthenticated } from "@/lib/auth"
 
 export async function POST(req: NextRequest) {
-  const jar = await cookies()
-  if (jar.get("admin_token")?.value !== process.env.ADMIN_SECRET) {
+  if (!(await isAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

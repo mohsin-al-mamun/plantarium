@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import AdminNav from "@/app/admin/components/AdminNav"
+import { createClient } from "@/lib/supabase/server"
 
 async function logout() {
   "use server"
-  const jar = await cookies()
-  jar.delete("admin_token")
+  const supabase = await createClient()
+  await supabase.auth.signOut()
   redirect("/admin/login")
 }
 
