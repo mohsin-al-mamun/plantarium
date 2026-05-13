@@ -117,7 +117,7 @@ export default async function AdminPlantsPage() {
                     <span style={{
                       fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
                       background: "var(--green-surface)", padding: "2px 8px",
-                      borderRadius: "20px", display: "inline-block",
+                      borderRadius: "5px", display: "inline-block",
                     }}>
                       {plant._count.varieties}
                     </span>
@@ -173,7 +173,7 @@ function CategoryBadge({ category }: { category: string }) {
   const s = styles[category] ?? { bg: "var(--paper-warm)", color: "var(--ink-soft)" }
   return (
     <span style={{
-      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "20px",
+      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "5px",
       background: s.bg, color: s.color, letterSpacing: "0.03em",
     }}>
       {category}

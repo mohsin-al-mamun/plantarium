@@ -105,7 +105,7 @@ export default async function AdminProductsPage() {
                   <span style={{
                     fontSize: "12px", fontWeight: 500, color: "var(--ink-soft)",
                     background: "var(--green-surface)", padding: "2px 8px",
-                    borderRadius: "20px", display: "inline-block",
+                    borderRadius: "5px", display: "inline-block",
                   }}>
                     {p._count.plants}
                   </span>
@@ -156,7 +156,7 @@ function KindBadge({ kind }: { kind: string }) {
   const isFerti = kind === "fertilizer"
   return (
     <span style={{
-      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "20px",
+      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "5px",
       background: isFerti ? "var(--green-surface)" : "#fef5e8",
       color: isFerti ? "var(--green-ink)" : "#a85a0a",
       letterSpacing: "0.03em",
@@ -170,7 +170,7 @@ function TypeBadge({ type }: { type: string }) {
   const isOrganic = type === "organic"
   return (
     <span style={{
-      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "20px",
+      fontSize: "11px", fontWeight: 600, padding: "3px 9px", borderRadius: "5px",
       background: isOrganic ? "#eef4e6" : "#f0f0f5",
       color: isOrganic ? "#6b8f3e" : "#5a5a7a",
       letterSpacing: "0.03em",
