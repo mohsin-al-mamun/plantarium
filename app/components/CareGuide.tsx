@@ -59,7 +59,8 @@ function KindBadge({ kind }: { kind: "fertilizer" | "pesticide" }) {
     <span style={{
       fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
       padding: "3px 9px", borderRadius: "5px",
-      background: isF ? "var(--green-surface)" : "var(--clay-surface)",
+      background: "transparent",
+      border: `1px solid ${isF ? "var(--green-highlight)" : "var(--clay)"}`,
       color: isF ? "var(--green-ink)" : "var(--clay-deep)",
     }}>
       {isF ? "Fertilizer" : "Pesticide"}
@@ -73,7 +74,8 @@ function TypeBadge({ type }: { type: "organic" | "chemical" }) {
     <span style={{
       fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
       padding: "3px 9px", borderRadius: "5px",
-      background: "rgba(255,255,255,0.92)",
+      background: "transparent",
+      border: `1px solid ${isO ? "var(--green-highlight)" : "var(--clay)"}`,
       color: isO ? "var(--green-ink)" : "var(--clay-deep)",
     }}>
       {isO ? "Organic" : "Chemical"}
@@ -92,14 +94,13 @@ function ProductModal({ product, onClose }: { product: ProductRow; onClose: () =
         {coverImg && (
           <div className="relative shrink-0 w-full lg:w-[50%] overflow-hidden" style={{ minHeight: "240px" }}>
             <Image src={coverImg} alt={product.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 432px" />
-            <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.22)" }} />
-            <div className="absolute bottom-0 left-0 right-0 flex gap-2 flex-wrap" style={{ padding: "20px 24px", background: "linear-gradient(to top, rgba(10,30,16,0.7), transparent)" }}>
-              <KindBadge kind={product.kind} />
-              <TypeBadge type={product.type} />
-            </div>
           </div>
         )}
         <div className="flex flex-col justify-center overflow-y-auto" style={{ padding: "40px 44px", flex: 1 }}>
+          <div className="flex gap-1.5 flex-wrap" style={{ marginBottom: "16px" }}>
+            <KindBadge kind={product.kind} />
+            <TypeBadge type={product.type} />
+          </div>
           <h2 style={{ fontFamily: "var(--font-fraunces)", fontWeight: 300, fontSize: "clamp(22px, 3vw, 32px)", letterSpacing: "-0.02em", color: "var(--green-ink)", margin: "0 0 20px" }}>
             {product.name}
           </h2>
@@ -125,7 +126,7 @@ function ProductModal({ product, onClose }: { product: ProductRow; onClose: () =
             <div className="flex flex-wrap gap-2">
               {product.linkedPlants.map(p => (
                 <Link key={p.slug} href={`/plants/${p.slug}`} onClick={onClose}
-                  style={{ fontSize: "13px", padding: "5px 12px", borderRadius: "999px", background: "var(--green-surface)", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500 }}
+                  style={{ fontSize: "13px", padding: "5px 12px", borderRadius: "7px", background: "var(--green-surface)", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500 }}
                   className="hover:opacity-70 transition-opacity"
                 >
                   {p.name}
@@ -152,9 +153,6 @@ function PlantModal({ plant, onClose }: { plant: PlantRow; onClose: () => void }
           <Image src={plant.img ?? ""} alt={plant.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 365px" />
           <div className="absolute inset-0" style={{ background: "rgba(10,30,16,0.3)" }} />
           <div className="absolute bottom-0 left-0 right-0" style={{ padding: "20px 24px", background: "linear-gradient(to top, rgba(10,30,16,0.75), transparent)" }}>
-            <div style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", fontWeight: 600, marginBottom: "4px" }}>
-              {plant.category}
-            </div>
             <div style={{ fontFamily: "var(--font-fraunces)", fontSize: "24px", color: "#fff", fontWeight: 300, lineHeight: 1.1 }}>
               {plant.name}
             </div>
@@ -162,6 +160,14 @@ function PlantModal({ plant, onClose }: { plant: PlantRow; onClose: () => void }
         </div>
 
         <div className="overflow-y-auto" style={{ padding: "36px 40px", flex: 1 }}>
+          <span style={{
+            fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
+            padding: "3px 9px", borderRadius: "5px", background: "transparent", display: "inline-block", marginBottom: "14px",
+            border: `1px solid ${plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay)" : "var(--green-highlight)"}`,
+            color: plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay-deep)" : "var(--green-ink)",
+          }}>
+            {plant.category}
+          </span>
           <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "12px 16px" }}>
             <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--green-ink)", fontWeight: 600, minHeight: "28px", display: "flex", alignItems: "center" }}>
               Fertilizers · {fertilizers.length}
@@ -235,13 +241,13 @@ function ProductCard({ product, onSelect }: { product: ProductRow; onSelect: (p:
       {coverImg && (
         <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
           <Image src={coverImg} alt={product.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-          <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
-            <KindBadge kind={product.kind} />
-            <TypeBadge type={product.type} />
-          </div>
         </div>
       )}
-      <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div style={{ padding: "18px 14px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+        <div className="flex gap-1.5 flex-wrap">
+          <KindBadge kind={product.kind} />
+          <TypeBadge type={product.type} />
+        </div>
         <div style={{ fontFamily: "var(--font-fraunces)", fontSize: "16px", color: "var(--green-ink)", lineHeight: 1.2 }}>
           {product.name}
         </div>
@@ -270,13 +276,16 @@ function PlantCard({ plant, onSelect }: { plant: PlantRow; onSelect: (p: PlantRo
     >
       <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
         <Image src={plant.img ?? ""} alt={plant.name} fill className="object-cover transition-transform duration-500 hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-        <div className="absolute bottom-0 left-0 right-0 flex gap-1.5 flex-wrap" style={{ padding: "10px 12px", background: "linear-gradient(to top, rgba(10,30,16,0.65), transparent)" }}>
-          <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 9px", borderRadius: "5px", background: "rgba(255,255,255,0.92)", color: "var(--green-ink)" }}>
-            {plant.category}
-          </span>
-        </div>
       </div>
-      <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div style={{ padding: "18px 14px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+        <span style={{
+          fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
+          padding: "3px 9px", borderRadius: "5px", background: "transparent", alignSelf: "flex-start",
+          border: `1px solid ${plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay)" : "var(--green-highlight)"}`,
+          color: plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay-deep)" : "var(--green-ink)",
+        }}>
+          {plant.category}
+        </span>
         <div style={{ fontFamily: "var(--font-fraunces)", fontSize: "16px", color: "var(--green-ink)", lineHeight: 1.2 }}>
           {plant.name}
         </div>

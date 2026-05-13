@@ -1,33 +1,33 @@
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import Navbar from "@/app/components/Navbar"
-import Footer from "@/app/components/Footer"
-import CareNotes from "@/app/components/CareNotes"
-import VarietyGrid from "@/app/components/VarietyGrid"
-import ScrollToVarieties from "@/app/components/ScrollToVarieties"
-import { prisma } from "@/lib/prisma"
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
+import CareNotes from "@/app/components/CareNotes";
+import VarietyGrid from "@/app/components/VarietyGrid";
+import ScrollToVarieties from "@/app/components/ScrollToVarieties";
+import { prisma } from "@/lib/prisma";
 
 export async function generateStaticParams() {
-  const plants = await prisma.plant.findMany({ select: { slug: true } })
-  return plants.map((p) => ({ slug: p.slug }))
+  const plants = await prisma.plant.findMany({ select: { slug: true } });
+  return plants.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params
+  const { slug } = await params;
   const plant = await prisma.plant.findUnique({
     where: { slug },
     select: { name: true, description: true },
-  })
-  if (!plant) return {}
+  });
+  if (!plant) return {};
   return {
     title: `${plant.name} — Plantarium`,
     description: plant.description,
-  }
+  };
 }
 
 const BackArrow = () => (
@@ -43,14 +43,14 @@ const BackArrow = () => (
   >
     <path d="M19 12H5M11 5l-7 7 7 7" />
   </svg>
-)
+);
 
 export default async function PlantDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params
+  const { slug } = await params;
 
   const plant = await prisma.plant.findUnique({
     where: { slug },
@@ -65,9 +65,9 @@ export default async function PlantDetailPage({
         include: { product: true },
       },
     },
-  })
+  });
 
-  if (!plant) notFound()
+  if (!plant) notFound();
 
   const varieties = plant.varieties.map((v) => ({
     name: v.name,
@@ -76,7 +76,7 @@ export default async function PlantDetailPage({
     trait: v.trait ?? "",
     season: v.season ?? "",
     note: v.note ?? "",
-  }))
+  }));
 
   return (
     <>
@@ -84,7 +84,6 @@ export default async function PlantDetailPage({
       <main>
         <section style={{ padding: "48px 0 96px" }}>
           <div className="max-w-7xl mx-auto px-4 md:px-16">
-
             {/* Back link */}
             <Link
               href="/#plants"
@@ -104,7 +103,11 @@ export default async function PlantDetailPage({
             {/* Plant header */}
             <div
               className="flex flex-col md:flex-row"
-              style={{ gap: "56px", alignItems: "center", marginBottom: "48px" }}
+              style={{
+                gap: "56px",
+                alignItems: "center",
+                marginBottom: "48px",
+              }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div
@@ -156,7 +159,7 @@ export default async function PlantDetailPage({
               </div>
 
               {plant.img && (
-                <div className="w-full md:w-[460px]" style={{ flexShrink: 0 }}>
+                <div className="w-full md:w-115 " style={{ flexShrink: 0 }}>
                   <div
                     style={{
                       position: "relative",
@@ -201,17 +204,25 @@ export default async function PlantDetailPage({
               >
                 Varieties
               </div>
-              <p style={{ fontSize: "15px", color: "var(--ink-mute)", margin: 0 }}>
-                {varieties.length} {varieties.length === 1 ? "variety" : "varieties"} growing this season
+              <p
+                style={{
+                  fontSize: "15px",
+                  color: "var(--ink-mute)",
+                  margin: 0,
+                }}
+              >
+                {varieties.length}{" "}
+                {varieties.length === 1 ? "variety" : "varieties"} growing this
+                season
               </p>
             </div>
 
             <VarietyGrid varieties={varieties} plantName={plant.name} />
-            <CareNotes products={plant.products.map(pp => pp.product)} />
+            <CareNotes products={plant.products.map((pp) => pp.product)} />
           </div>
         </section>
       </main>
       <Footer />
     </>
-  )
+  );
 }

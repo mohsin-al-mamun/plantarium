@@ -154,12 +154,15 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                 <div className="flex items-center justify-between">
                   <span
                     style={{
-                      fontSize: "11px",
-                      padding: "4px 10px",
-                      borderRadius: "999px",
-                      background: plant.category === "Flowers" ? "#fce4ec" : plant.category === "Fruits" ? "var(--clay-surface)" : "var(--green-surface)",
+                      fontSize: "10px",
+                      padding: "3px 9px",
+                      borderRadius: "5px",
+                      background: "transparent",
+                      border: `1px solid ${plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay)" : "var(--green-highlight)"}`,
                       color: plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay-deep)" : "var(--green-ink)",
-                      fontWeight: 500,
+                      fontWeight: 600,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
                     }}
                   >
                     {plant.category}
