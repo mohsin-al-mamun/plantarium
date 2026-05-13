@@ -4,6 +4,7 @@ import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
 import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
 import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
+import SaveButton from "@/app/admin/components/SaveButton"
 
 export default async function EditPlantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -96,12 +97,7 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         <ImageUploadField label="Image" name="img" defaultValue={plant.img ?? ""} />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Save changes
-          </button>
+          <SaveButton />
           <Link href="/admin/plants" style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",

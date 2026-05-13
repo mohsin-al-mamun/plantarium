@@ -2,11 +2,15 @@ import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
+import SaveButton from "@/app/admin/components/SaveButton"
+import SavedBanner from "@/app/admin/components/SavedBanner"
+import LinkedPlantsForm from "@/app/admin/components/LinkedPlantsForm"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
 import { deleteStorageFile } from "@/lib/supabase"
 
-export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditProductPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ saved?: string }> }) {
   const { id } = await params
+  const { saved } = await searchParams
   const [product, allPlants] = await Promise.all([
     prisma.product.findUnique({
       where: { id },
@@ -33,10 +37,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
     if (product!.img && product!.img !== img) await deleteStorageFile(product!.img)
     await prisma.product.update({ where: { id }, data: { name, kind, type, dosage, frequency, notes, img } })
-    redirect(`/admin/products/${id}/edit`)
+    redirect(`/admin/products/${id}/edit?saved=details`)
   }
 
-  async function updateLinkedPlants(formData: FormData) {
+  async function updateLinkedPlants(_prev: { ok: boolean } | null, formData: FormData) {
     "use server"
     const selectedIds = formData.getAll("plantIds").map(v => Number(v))
     await prisma.plantProduct.deleteMany({ where: { productId: id } })
@@ -45,7 +49,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         data: selectedIds.map(plantId => ({ plantId, productId: id })),
       })
     }
-    redirect(`/admin/products/${id}/edit`)
+    return { ok: true }
   }
 
   async function deleteProduct() {
@@ -67,6 +71,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           Edit — {product.name}
         </h1>
       </div>
+
+      {saved === "details" && <SavedBanner message="Product details saved" />}
 
       <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginBottom: "10px" }}>
         Product details
@@ -103,12 +109,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         <ImageUploadField label="Image" name="img" defaultValue={product.img ?? ""} />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Save changes
-          </button>
+          <SaveButton />
           <Link href="/admin/products" style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",
@@ -121,53 +122,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginTop: "32px", marginBottom: "10px" }}>
         Linked plants — saved separately
       </div>
-      {/* Linked plants */}
-      <form action={updateLinkedPlants} style={{
-        padding: "24px 28px",
-        background: "var(--card)", border: "1px solid var(--line)",
-        borderRadius: "16px", boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
-      }}>
-        <div style={{ fontSize: "12px", fontWeight: 600, color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "16px" }}>
-          Linked plants · {product._count.plants}
-        </div>
-
-        {allPlants.length === 0 ? (
-          <p style={{ fontSize: "13px", color: "var(--ink-mute)", fontStyle: "italic" }}>No plants in database yet.</p>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
-            {allPlants.map(plant => (
-              <label key={plant.id} style={{
-                display: "flex", alignItems: "center", gap: "10px",
-                padding: "9px 12px", borderRadius: "8px", cursor: "pointer",
-                border: "1px solid var(--line-soft)", background: linkedPlantIds.has(plant.id) ? "var(--green-surface)" : "var(--paper)",
-              }}>
-                <input
-                  type="checkbox"
-                  name="plantIds"
-                  value={plant.id}
-                  defaultChecked={linkedPlantIds.has(plant.id)}
-                  style={{ accentColor: "var(--green-ink)", width: "15px", height: "15px", flexShrink: 0 }}
-                />
-                <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--green-ink)", flex: 1 }}>{plant.name}</span>
-                <span style={{
-                  fontSize: "10px", fontWeight: 600, padding: "2px 7px", borderRadius: "5px",
-                  background: plant.category === "Flowers" ? "#fde8ef" : plant.category === "Fruits" ? "#fef0e0" : "var(--green-surface)",
-                  color: plant.category === "Flowers" ? "#a83050" : plant.category === "Fruits" ? "#a85a0a" : "var(--green-ink)",
-                }}>
-                  {plant.category}
-                </span>
-              </label>
-            ))}
-          </div>
-        )}
-
-        <button type="submit" style={{
-          padding: "9px 20px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-          background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-        }}>
-          Save linked plants
-        </button>
-      </form>
+      <LinkedPlantsForm
+        action={updateLinkedPlants}
+        allPlants={allPlants}
+        initialLinkedIds={[...linkedPlantIds]}
+        count={product._count.plants}
+      />
 
       {/* Danger zone */}
       <div style={{

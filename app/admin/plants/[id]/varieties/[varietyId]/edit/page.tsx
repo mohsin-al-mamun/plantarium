@@ -4,13 +4,18 @@ import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
 import { deleteStorageFile, deleteStorageFiles } from "@/lib/supabase"
 import DeleteConfirmButton from "@/app/admin/components/DeleteConfirmButton"
+import SaveButton from "@/app/admin/components/SaveButton"
+import SavedBanner from "@/app/admin/components/SavedBanner"
+import AddPhotoForm from "@/app/admin/components/AddPhotoForm"
 
 export default async function EditVarietyPage({
-  params,
+  params, searchParams,
 }: {
   params: Promise<{ id: string; varietyId: string }>
+  searchParams: Promise<{ saved?: string }>
 }) {
   const { id, varietyId } = await params
+  const { saved } = await searchParams
   const variety = await prisma.variety.findUnique({
     where: { id: Number(varietyId) },
     include: { photos: { orderBy: { position: "asc" } } },
@@ -31,17 +36,17 @@ export default async function EditVarietyPage({
       where: { id: Number(varietyId) },
       data: { name, photo, trait, season, note, position },
     })
-    redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
+    redirect(`/admin/plants/${id}/varieties/${varietyId}/edit?saved=variety`)
   }
 
-  async function addPhoto(formData: FormData) {
+  async function addPhoto(_prev: { ok: boolean } | null, formData: FormData) {
     "use server"
     const url = formData.get("url") as string
     const position = variety!.photos.length
     await prisma.varietyPhoto.create({
       data: { varietyId: Number(varietyId), url, position },
     })
-    redirect(`/admin/plants/${id}/varieties/${varietyId}/edit`)
+    return { ok: true }
   }
 
   async function deleteVariety() {
@@ -66,6 +71,8 @@ export default async function EditVarietyPage({
         </h1>
       </div>
 
+      {saved === "variety" && <SavedBanner message="Variety details saved" />}
+
       <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--ink-mute)", marginBottom: "10px" }}>
         Variety details
       </div>
@@ -83,12 +90,7 @@ export default async function EditVarietyPage({
         <Field label="Position" name="position" defaultValue={String(variety.position)} hint="Display order (0 = first)" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Save changes
-          </button>
+          <SaveButton />
           <Link href={`/admin/plants/${id}/edit`} style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",
@@ -143,15 +145,7 @@ export default async function EditVarietyPage({
           </div>
         )}
 
-        <form action={addPhoto} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <ImageUploadField label="Photo URL" name="url" required />
-          <button type="submit" style={{
-            padding: "10px 18px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer", alignSelf: "flex-start",
-          }}>
-            Add photo
-          </button>
-        </form>
+        <AddPhotoForm action={addPhoto} />
       </div>
 
       {/* Danger zone */}
