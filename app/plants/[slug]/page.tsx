@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import Navbar from "@/app/components/Navbar"
 import Footer from "@/app/components/Footer"
 import CareNotes from "@/app/components/CareNotes"
 import VarietyGrid from "@/app/components/VarietyGrid"
+import ScrollToVarieties from "@/app/components/ScrollToVarieties"
 import { prisma } from "@/lib/prisma"
 
 export async function generateStaticParams() {
@@ -100,59 +102,91 @@ export default async function PlantDetailPage({
             </Link>
 
             {/* Plant header */}
-            <div style={{ maxWidth: "640px", marginBottom: "48px" }}>
-              <div
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: "var(--clay)",
-                  fontWeight: 600,
-                  marginBottom: "14px",
-                }}
-              >
-                {plant.category}
+            <div
+              className="flex flex-col md:flex-row"
+              style={{ gap: "56px", alignItems: "center", marginBottom: "48px" }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "var(--clay)",
+                    fontWeight: 600,
+                    marginBottom: "14px",
+                  }}
+                >
+                  {plant.category}
+                </div>
+                <h1
+                  style={{
+                    fontFamily: "var(--font-fraunces)",
+                    fontWeight: 300,
+                    fontSize: "clamp(32px, 5vw, 56px)",
+                    letterSpacing: "-0.025em",
+                    lineHeight: 1.05,
+                    color: "var(--green-ink)",
+                    margin: "0 0 12px",
+                  }}
+                >
+                  {plant.name}
+                </h1>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--ink-mute)",
+                    marginBottom: "20px",
+                  }}
+                >
+                  {plant.meta}
+                </div>
+                <p
+                  style={{
+                    fontSize: "clamp(15px, 2vw, 17px)",
+                    color: "var(--ink-soft)",
+                    lineHeight: 1.65,
+                    margin: 0,
+                  }}
+                >
+                  {plant.description}
+                </p>
+
+                <ScrollToVarieties varieties={varieties} />
               </div>
-              <h1
-                style={{
-                  fontFamily: "var(--font-fraunces)",
-                  fontWeight: 300,
-                  fontSize: "clamp(32px, 5vw, 56px)",
-                  letterSpacing: "-0.025em",
-                  lineHeight: 1.05,
-                  color: "var(--green-ink)",
-                  margin: "0 0 12px",
-                }}
-              >
-                {plant.name}
-              </h1>
-              <div
-                style={{
-                  fontSize: "13px",
-                  color: "var(--ink-mute)",
-                  marginBottom: "20px",
-                }}
-              >
-                {plant.meta}
-              </div>
-              <p
-                style={{
-                  fontSize: "clamp(15px, 2vw, 17px)",
-                  color: "var(--ink-soft)",
-                  lineHeight: 1.65,
-                  margin: 0,
-                }}
-              >
-                {plant.description}
-              </p>
+
+              {plant.img && (
+                <div className="w-full md:w-[460px]" style={{ flexShrink: 0 }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      aspectRatio: "4/5",
+                      borderRadius: "14px",
+                      overflow: "hidden",
+                      background: "var(--green-surface)",
+                    }}
+                  >
+                    <Image
+                      src={plant.img}
+                      alt={plant.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 460px"
+                      priority
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Varieties header */}
             <div
+              id="varieties"
               style={{
                 paddingTop: "36px",
                 borderTop: "1px solid var(--line)",
                 marginBottom: "32px",
+                scrollMarginTop: "24px",
               }}
             >
               <div

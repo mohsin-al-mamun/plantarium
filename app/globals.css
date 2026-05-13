@@ -75,3 +75,8 @@ body {
   }
   .gallery-tall { grid-row: span 2; }
 }
+
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
