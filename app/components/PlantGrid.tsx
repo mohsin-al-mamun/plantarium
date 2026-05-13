@@ -157,8 +157,8 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                       fontSize: "11px",
                       padding: "4px 10px",
                       borderRadius: "999px",
-                      background: "var(--green-surface)",
-                      color: "var(--green-ink)",
+                      background: plant.category === "Flowers" ? "#fce4ec" : plant.category === "Fruits" ? "var(--clay-surface)" : "var(--green-surface)",
+                      color: plant.category === "Flowers" ? "#c2185b" : plant.category === "Fruits" ? "var(--clay-deep)" : "var(--green-ink)",
                       fontWeight: 500,
                     }}
                   >
