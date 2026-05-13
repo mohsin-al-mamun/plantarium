@@ -13,6 +13,7 @@ type PlantRow = {
   meta: string | null
   category: string
   img: string | null
+  status: string
   _count: { varieties: number }
 }
 
@@ -169,16 +170,13 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                   >
                     <span
                       style={{
-                        width: "7px",
-                        height: "7px",
-                        borderRadius: "50%",
+                        width: "7px", height: "7px", borderRadius: "50%",
                         background: "var(--green-ink)",
                         boxShadow: "0 0 0 3px rgba(14,59,42,0.14)",
-                        display: "inline-block",
-                        flexShrink: 0,
+                        display: "inline-block", flexShrink: 0,
                       }}
                     />
-                    Thriving
+                    {plant.status}
                   </span>
                 </div>
               </div>

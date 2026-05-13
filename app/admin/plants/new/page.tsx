@@ -8,11 +8,12 @@ async function createPlant(formData: FormData) {
   const name = formData.get("name") as string
   const slug = formData.get("slug") as string
   const category = formData.get("category") as "Flowers" | "Fruits" | "Vegetables"
+  const status = (formData.get("status") as "Seedling" | "Growing" | "Thriving" | "Dormant") || "Thriving"
   const meta = (formData.get("meta") as string) || null
   const description = (formData.get("description") as string) || null
   const img = (formData.get("img") as string) || null
 
-  await prisma.plant.create({ data: { name, slug, category, meta, description, img } })
+  await prisma.plant.create({ data: { name, slug, category, status, meta, description, img } })
   redirect("/admin/plants")
 }
 
@@ -40,14 +41,25 @@ export default function NewPlantPage() {
         <Field label="Name *" name="name" required placeholder="e.g. Tomato" />
         <Field label="Slug *" name="slug" required placeholder="e.g. tomato" hint="URL-safe, lowercase, no spaces" />
 
-        <div>
-          <label style={labelStyle}>Category *</label>
-          <select name="category" required style={inputStyle}>
-            <option value="">Select…</option>
-            <option value="Flowers">Flowers</option>
-            <option value="Fruits">Fruits</option>
-            <option value="Vegetables">Vegetables</option>
-          </select>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+          <div>
+            <label style={labelStyle}>Category *</label>
+            <select name="category" required style={inputStyle}>
+              <option value="">Select…</option>
+              <option value="Flowers">Flowers</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Vegetables">Vegetables</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle}>Status</label>
+            <select name="status" style={inputStyle} defaultValue="Thriving">
+              <option value="Seedling">🌱 Seedling</option>
+              <option value="Growing">🌿 Growing</option>
+              <option value="Thriving">✨ Thriving</option>
+              <option value="Dormant">💤 Dormant</option>
+            </select>
+          </div>
         </div>
 
         <Field label="Meta" name="meta" placeholder="e.g. Solanum lycopersicum" hint="Latin name or short descriptor" />

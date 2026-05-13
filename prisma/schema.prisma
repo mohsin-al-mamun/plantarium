@@ -15,6 +15,13 @@ enum PlantCategory {
   Vegetables
 }
 
+enum PlantStatus {
+  Seedling
+  Growing
+  Thriving
+  Dormant
+}
+
 enum ProductKind {
   fertilizer
   pesticide
@@ -35,6 +42,7 @@ model Plant {
   meta        String?
   category    PlantCategory
   img         String?
+  status      PlantStatus    @default(Thriving)
   varieties   Variety[]
   products    PlantProduct[]
 }

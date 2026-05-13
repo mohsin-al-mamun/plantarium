@@ -23,12 +23,13 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
     const name = formData.get("name") as string
     const slug = formData.get("slug") as string
     const category = formData.get("category") as "Flowers" | "Fruits" | "Vegetables"
+    const status = formData.get("status") as "Seedling" | "Growing" | "Thriving" | "Dormant"
     const meta = (formData.get("meta") as string) || null
     const description = (formData.get("description") as string) || null
     const img = (formData.get("img") as string) || null
 
     if (plant!.img && plant!.img !== img) await deleteStorageFile(plant!.img)
-    await prisma.plant.update({ where: { id: Number(id) }, data: { name, slug, category, meta, description, img } })
+    await prisma.plant.update({ where: { id: Number(id) }, data: { name, slug, category, status, meta, description, img } })
     redirect("/admin/plants")
   }
 
@@ -67,13 +68,24 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
         <Field label="Name *" name="name" required defaultValue={plant.name} />
         <Field label="Slug *" name="slug" required defaultValue={plant.slug} hint="Changing this breaks existing URLs" />
 
-        <div>
-          <label style={labelStyle}>Category *</label>
-          <select name="category" required defaultValue={plant.category} style={inputStyle}>
-            <option value="Flowers">Flowers</option>
-            <option value="Fruits">Fruits</option>
-            <option value="Vegetables">Vegetables</option>
-          </select>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+          <div>
+            <label style={labelStyle}>Category *</label>
+            <select name="category" required defaultValue={plant.category} style={inputStyle}>
+              <option value="Flowers">Flowers</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Vegetables">Vegetables</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle}>Status</label>
+            <select name="status" defaultValue={plant.status} style={inputStyle}>
+              <option value="Seedling">🌱 Seedling</option>
+              <option value="Growing">🌿 Growing</option>
+              <option value="Thriving">✨ Thriving</option>
+              <option value="Dormant">💤 Dormant</option>
+            </select>
+          </div>
         </div>
 
         <Field label="Meta" name="meta" defaultValue={plant.meta ?? ""} />
