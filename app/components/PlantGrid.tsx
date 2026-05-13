@@ -13,6 +13,7 @@ type PlantRow = {
   meta: string | null
   category: string
   img: string | null
+  _count: { varieties: number }
 }
 
 const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
@@ -145,7 +146,7 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                       marginTop: "4px",
                     }}
                   >
-                    {plant.meta}
+                    {plant._count.varieties} {plant._count.varieties === 1 ? "variety" : "varieties"}
                   </div>
                 </div>
 

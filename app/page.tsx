@@ -11,7 +11,7 @@ import { prisma } from "@/lib/prisma"
 
 export default async function Home() {
   const plants = await prisma.plant.findMany({
-    select: { id: true, slug: true, name: true, meta: true, category: true, img: true },
+    select: { id: true, slug: true, name: true, meta: true, category: true, img: true, _count: { select: { varieties: true } } },
     orderBy: { id: "asc" },
   })
 
