@@ -1,0 +1,1 @@
+ALTER TABLE "Variety" ADD COLUMN IF NOT EXISTS "bloomingPhoto" TEXT;

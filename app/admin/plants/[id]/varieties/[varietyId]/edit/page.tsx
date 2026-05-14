@@ -32,11 +32,12 @@ export default async function EditVarietyPage({
     const rawPos = (formData.get("position") as string).trim()
     const position = rawPos !== "" ? Number(rawPos) : variety!.position
     const bloomingNow = formData.get("bloomingNow") === "on"
+    const bloomingPhoto = (formData.get("bloomingPhoto") as string) || null
 
     if (variety!.photo && variety!.photo !== photo) await deleteStorageFile(variety!.photo)
     await prisma.variety.update({
       where: { id: Number(varietyId) },
-      data: { name, photo, trait, season, note, position, bloomingNow },
+      data: { name, photo, trait, season, note, position, bloomingNow, bloomingPhoto },
     })
     redirect(`/admin/plants/${id}/varieties/${varietyId}/edit?saved=variety`)
   }
@@ -89,6 +90,14 @@ export default async function EditVarietyPage({
         <Field label="Trait" name="trait" defaultValue={variety.trait ?? ""} placeholder="e.g. Sweet, Crisp" />
         <Field label="Season" name="season" defaultValue={variety.season ?? ""} placeholder="e.g. Spring–Summer" />
         <CheckboxField label="Currently blooming" name="bloomingNow" defaultChecked={variety.bloomingNow} hint="Toggle when this variety is actively blooming right now" />
+        <PhotoPickerField
+          label="Blooming section photo"
+          name="bloomingPhoto"
+          current={variety.bloomingPhoto}
+          cover={variety.photo}
+          gallery={variety.photos.map(p => p.url)}
+          hint="Which photo shows in the Currently Blooming section. Defaults to cover."
+        />
         <Field label="Note" name="note" defaultValue={variety.note ?? ""} multiline />
         <Field label="Position" name="position" defaultValue={String(variety.position)} hint="Display order (0 = first)" />
 
@@ -180,6 +189,40 @@ const inputStyle: React.CSSProperties = {
   border: "1px solid var(--line)", background: "var(--paper)",
   fontSize: "14px", color: "var(--green-ink)", outline: "none",
   boxSizing: "border-box",
+}
+
+function PhotoPickerField({ label, name, current, cover, gallery, hint }: {
+  label: string; name: string; current: string | null; cover: string; gallery: string[]; hint?: string
+}) {
+  const allPhotos = Array.from(new Set([cover, ...gallery]))
+  const selected = current ?? cover
+  return (
+    <div>
+      <label style={labelStyle}>{label}</label>
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "4px" }}>
+        {allPhotos.map((url, i) => (
+          <label key={i} style={{ cursor: "pointer", position: "relative" }}>
+            <input
+              type="radio"
+              name={name}
+              value={url}
+              defaultChecked={selected === url}
+              style={{ position: "absolute", opacity: 0, width: 0, height: 0 }}
+            />
+            <div style={{
+              width: "64px", height: "64px", borderRadius: "8px", overflow: "hidden",
+              border: selected === url ? "2px solid var(--green-ink)" : "2px solid var(--line)",
+              flexShrink: 0,
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt={i === 0 ? "Cover" : `Photo ${i}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          </label>
+        ))}
+      </div>
+      {hint && <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "6px" }}>{hint}</div>}
+    </div>
+  )
 }
 
 function CheckboxField({ label, name, defaultChecked, hint }: {

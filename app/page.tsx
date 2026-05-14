@@ -17,7 +17,7 @@ export default async function Home() {
     }),
     prisma.variety.findMany({
       where: { bloomingNow: true },
-      select: { name: true, photo: true, plant: { select: { slug: true } } },
+      select: { name: true, photo: true, bloomingPhoto: true, plant: { select: { slug: true } } },
       orderBy: { position: "asc" },
     }),
   ])

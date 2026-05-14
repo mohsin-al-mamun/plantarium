@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
-type BloomingItem = { name: string; photo: string; plant: { slug: string } }
+type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null; plant: { slug: string } }
 
 const PAGE_SIZE = 6
 
@@ -14,7 +14,7 @@ function PlantCard({ item, sizes }: CardProps) {
   return (
     <Link href={`/plants/${item.plant.slug}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
       <Image
-        src={item.photo}
+        src={item.bloomingPhoto ?? item.photo}
         alt={item.name}
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"

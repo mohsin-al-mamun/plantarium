@@ -56,9 +56,10 @@ model Variety {
   trait    String?
   season   String?
   note     String?
-  position     Int            @default(0)
-  bloomingNow  Boolean        @default(false)
-  photos       VarietyPhoto[]
+  position      Int            @default(0)
+  bloomingNow   Boolean        @default(false)
+  bloomingPhoto String?
+  photos        VarietyPhoto[]
 
   @@index([plantId])
 }
