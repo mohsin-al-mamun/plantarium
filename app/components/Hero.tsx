@@ -123,7 +123,7 @@ export default function Hero() {
             <a
               href="#plants"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-85"
-              style={{ background: "var(--green-ink)" }}
+              style={{ background: "rgba(255,255,255,0.88)", color: "var(--green-ink)" }}
             >
               Tour the garden
               <ArrowIcon />
