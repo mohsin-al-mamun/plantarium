@@ -1,71 +1,21 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 
-type Plant = { name: string; img: string }
-
-const plants: Plant[] = [
-  {
-    name: "Eden Climbing Rose",
-    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=1400&q=80",
-  },
-  {
-    name: "San Marzano Tomato",
-    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Café au Lait Dahlia",
-    img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Cosmos bipinnatus",
-    img: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Albion Strawberry",
-    img: "https://images.unsplash.com/photo-1543158181-e6f9f6712055?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Lacinato Kale",
-    img: "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Sweet Pea",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Wisteria",
-    img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Nasturtium",
-    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Shishito Pepper",
-    img: "https://images.unsplash.com/photo-1525607551316-4a8e16d1f9ba?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Lemon Tree",
-    img: "https://images.unsplash.com/photo-1444930694458-01babf71870c?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    name: "Larkspur",
-    img: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=900&q=80",
-  },
-]
+type BloomingItem = { name: string; photo: string; plant: { slug: string } }
 
 const PAGE_SIZE = 6
 
-type CardProps = { plant: Plant; sizes: string }
+type CardProps = { item: BloomingItem; sizes: string }
 
-function PlantCard({ plant, sizes }: CardProps) {
+function PlantCard({ item, sizes }: CardProps) {
   return (
-    <div className="relative overflow-hidden h-full group" style={{ borderRadius: "12px" }}>
+    <Link href={`/plants/${item.plant.slug}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
       <Image
-        src={plant.img}
-        alt={plant.name}
+        src={item.photo}
+        alt={item.name}
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
         sizes={sizes}
@@ -87,10 +37,10 @@ function PlantCard({ plant, sizes }: CardProps) {
             lineHeight: 1.2,
           }}
         >
-          {plant.name}
+          {item.name}
         </span>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -106,10 +56,10 @@ const ChevronRight = () => (
   </svg>
 )
 
-export default function Featured() {
+export default function Featured({ items }: { items: BloomingItem[] }) {
   const [page, setPage] = useState(0)
-  const totalPages = Math.ceil(plants.length / PAGE_SIZE)
-  const pageItems = plants.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
+  const totalPages = Math.ceil(items.length / PAGE_SIZE)
+  const pageItems = items.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
   return (
     <section style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
@@ -165,36 +115,42 @@ export default function Featured() {
         </div>
 
         {/* Bookend grid — first & last big on desktop, 2-col on mobile */}
-        <div className="featured-grid">
-          <div className="f-big-left">
-            <PlantCard plant={pageItems[0]} sizes="(max-width: 1024px) 50vw, 50vw" />
+        {items.length === 0 ? (
+          <p style={{ fontSize: "15px", color: "var(--ink-mute)", fontStyle: "italic" }}>
+            Nothing marked as blooming right now.
+          </p>
+        ) : (
+          <div className="featured-grid">
+            <div className="f-big-left">
+              <PlantCard item={pageItems[0]} sizes="(max-width: 1024px) 50vw, 50vw" />
+            </div>
+            {pageItems[1] && (
+              <div className="f-col-3">
+                <PlantCard item={pageItems[1]} sizes="(max-width: 1024px) 50vw, 25vw" />
+              </div>
+            )}
+            {pageItems[2] && (
+              <div className="f-col-4">
+                <PlantCard item={pageItems[2]} sizes="(max-width: 1024px) 50vw, 25vw" />
+              </div>
+            )}
+            {pageItems[3] && (
+              <div className="f-col-1">
+                <PlantCard item={pageItems[3]} sizes="(max-width: 1024px) 50vw, 25vw" />
+              </div>
+            )}
+            {pageItems[4] && (
+              <div className="f-col-2">
+                <PlantCard item={pageItems[4]} sizes="(max-width: 1024px) 50vw, 25vw" />
+              </div>
+            )}
+            {pageItems[5] && (
+              <div className="f-big-right">
+                <PlantCard item={pageItems[5]} sizes="(max-width: 1024px) 50vw, 50vw" />
+              </div>
+            )}
           </div>
-          {pageItems[1] && (
-            <div className="f-col-3">
-              <PlantCard plant={pageItems[1]} sizes="(max-width: 1024px) 50vw, 25vw" />
-            </div>
-          )}
-          {pageItems[2] && (
-            <div className="f-col-4">
-              <PlantCard plant={pageItems[2]} sizes="(max-width: 1024px) 50vw, 25vw" />
-            </div>
-          )}
-          {pageItems[3] && (
-            <div className="f-col-1">
-              <PlantCard plant={pageItems[3]} sizes="(max-width: 1024px) 50vw, 25vw" />
-            </div>
-          )}
-          {pageItems[4] && (
-            <div className="f-col-2">
-              <PlantCard plant={pageItems[4]} sizes="(max-width: 1024px) 50vw, 25vw" />
-            </div>
-          )}
-          {pageItems[5] && (
-            <div className="f-big-right">
-              <PlantCard plant={pageItems[5]} sizes="(max-width: 1024px) 50vw, 50vw" />
-            </div>
-          )}
-        </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
