@@ -18,10 +18,12 @@ export default async function NewVarietyPage({ params }: { params: Promise<{ id:
     const trait = (formData.get("trait") as string) || null
     const season = (formData.get("season") as string) || null
     const note = (formData.get("note") as string) || null
-    const position = Number(formData.get("position") ?? plant!._count.varieties)
+    const rawPos = (formData.get("position") as string).trim()
+    const position = rawPos !== "" ? Number(rawPos) : plant!._count.varieties
+    const bloomingNow = formData.get("bloomingNow") === "on"
 
     await prisma.variety.create({
-      data: { plantId: Number(id), name, photo, trait, season, note, position },
+      data: { plantId: Number(id), name, photo, trait, season, note, position, bloomingNow },
     })
     redirect(`/admin/plants/${id}/edit`)
   }
@@ -45,8 +47,9 @@ export default async function NewVarietyPage({ params }: { params: Promise<{ id:
         <ImageUploadField label="Cover photo" name="photo" required />
         <Field label="Trait" name="trait" placeholder="e.g. Sweet, Crisp" />
         <Field label="Season" name="season" placeholder="e.g. Spring–Summer" />
+        <CheckboxField label="Currently blooming" name="bloomingNow" hint="Toggle when this variety is actively blooming right now" />
         <Field label="Note" name="note" placeholder="Any notes about this variety…" multiline />
-        <Field label="Position" name="position" placeholder={String(plant._count.varieties)} hint="Display order (0 = first)" />
+        <Field label="Position" name="position" defaultValue={String(plant._count.varieties)} hint="Display order (0 = first)" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
           <button type="submit" style={{
@@ -79,18 +82,32 @@ const inputStyle: React.CSSProperties = {
   boxSizing: "border-box",
 }
 
+function CheckboxField({ label, name, hint }: {
+  label: string; name: string; hint?: string
+}) {
+  return (
+    <div>
+      <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
+        <input type="checkbox" name={name} style={{ width: "16px", height: "16px", accentColor: "var(--green-ink)", cursor: "pointer" }} />
+        <span style={{ fontSize: "14px", color: "var(--green-ink)" }}>{label}</span>
+      </label>
+      {hint && <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "4px", marginLeft: "26px" }}>{hint}</div>}
+    </div>
+  )
+}
+
 function Field({
-  label, name, required, placeholder, hint, multiline,
+  label, name, required, defaultValue, placeholder, hint, multiline,
 }: {
   label: string; name: string; required?: boolean
-  placeholder?: string; hint?: string; multiline?: boolean
+  defaultValue?: string; placeholder?: string; hint?: string; multiline?: boolean
 }) {
   return (
     <div>
       <label style={labelStyle}>{label}</label>
       {multiline
-        ? <textarea name={name} required={required} placeholder={placeholder} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
-        : <input type="text" name={name} required={required} placeholder={placeholder} style={inputStyle} />
+        ? <textarea name={name} required={required} defaultValue={defaultValue} placeholder={placeholder} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
+        : <input type="text" name={name} required={required} defaultValue={defaultValue} placeholder={placeholder} style={inputStyle} />
       }
       {hint && <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "4px" }}>{hint}</div>}
     </div>

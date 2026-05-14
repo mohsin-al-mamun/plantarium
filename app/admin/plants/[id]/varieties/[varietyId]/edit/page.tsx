@@ -29,12 +29,14 @@ export default async function EditVarietyPage({
     const trait = (formData.get("trait") as string) || null
     const season = (formData.get("season") as string) || null
     const note = (formData.get("note") as string) || null
-    const position = Number(formData.get("position") ?? variety!.position)
+    const rawPos = (formData.get("position") as string).trim()
+    const position = rawPos !== "" ? Number(rawPos) : variety!.position
+    const bloomingNow = formData.get("bloomingNow") === "on"
 
     if (variety!.photo && variety!.photo !== photo) await deleteStorageFile(variety!.photo)
     await prisma.variety.update({
       where: { id: Number(varietyId) },
-      data: { name, photo, trait, season, note, position },
+      data: { name, photo, trait, season, note, position, bloomingNow },
     })
     redirect(`/admin/plants/${id}/varieties/${varietyId}/edit?saved=variety`)
   }
@@ -86,6 +88,7 @@ export default async function EditVarietyPage({
         <ImageUploadField label="Cover photo" name="photo" required defaultValue={variety.photo} />
         <Field label="Trait" name="trait" defaultValue={variety.trait ?? ""} placeholder="e.g. Sweet, Crisp" />
         <Field label="Season" name="season" defaultValue={variety.season ?? ""} placeholder="e.g. Spring–Summer" />
+        <CheckboxField label="Currently blooming" name="bloomingNow" defaultChecked={variety.bloomingNow} hint="Toggle when this variety is actively blooming right now" />
         <Field label="Note" name="note" defaultValue={variety.note ?? ""} multiline />
         <Field label="Position" name="position" defaultValue={String(variety.position)} hint="Display order (0 = first)" />
 
@@ -177,6 +180,20 @@ const inputStyle: React.CSSProperties = {
   border: "1px solid var(--line)", background: "var(--paper)",
   fontSize: "14px", color: "var(--green-ink)", outline: "none",
   boxSizing: "border-box",
+}
+
+function CheckboxField({ label, name, defaultChecked, hint }: {
+  label: string; name: string; defaultChecked?: boolean; hint?: string
+}) {
+  return (
+    <div>
+      <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
+        <input type="checkbox" name={name} defaultChecked={defaultChecked} style={{ width: "16px", height: "16px", accentColor: "var(--green-ink)", cursor: "pointer" }} />
+        <span style={{ fontSize: "14px", color: "var(--green-ink)" }}>{label}</span>
+      </label>
+      {hint && <div style={{ fontSize: "11px", color: "var(--ink-mute)", marginTop: "4px", marginLeft: "26px" }}>{hint}</div>}
+    </div>
+  )
 }
 
 function Field({
