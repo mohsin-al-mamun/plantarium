@@ -111,9 +111,8 @@ export default function Hero() {
             }}
           >
             A small, slow-growing collection of forty-some plants tended on a
-            sunlit rooftop in Williamsburg — flowers I cut for the kitchen
-            table, fruits I share with neighbours, vegetables that mostly make
-            it to dinner.
+            sunlit rooftop — flowers grown for the joy of it, a handful of
+            fruits, and just enough vegetables to taste the season.
           </p>
 
           <div
