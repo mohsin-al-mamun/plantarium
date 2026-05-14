@@ -8,9 +8,9 @@ type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null;
 
 const PAGE_SIZE = 6
 
-type CardProps = { item: BloomingItem; sizes: string }
+type CardProps = { item: BloomingItem }
 
-function PlantCard({ item, sizes }: CardProps) {
+function PlantCard({ item }: CardProps) {
   return (
     <Link href={`/plants/${item.plant.slug}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
       <Image
@@ -18,7 +18,7 @@ function PlantCard({ item, sizes }: CardProps) {
         alt={item.name}
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
-        sizes={sizes}
+        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
       />
       <div
         className="absolute inset-0"
@@ -114,41 +114,17 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
           </p>
         </div>
 
-        {/* Bookend grid — first & last big on desktop, 2-col on mobile */}
         {items.length === 0 ? (
           <p style={{ fontSize: "15px", color: "var(--ink-mute)", fontStyle: "italic" }}>
             Nothing marked as blooming right now.
           </p>
         ) : (
-          <div className="featured-grid">
-            <div className="f-big-left">
-              <PlantCard item={pageItems[0]} sizes="(max-width: 1024px) 50vw, 50vw" />
-            </div>
-            {pageItems[1] && (
-              <div className="f-col-3">
-                <PlantCard item={pageItems[1]} sizes="(max-width: 1024px) 50vw, 25vw" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {pageItems.map(item => (
+              <div key={item.name} style={{ aspectRatio: "3/4", position: "relative" }}>
+                <PlantCard item={item} />
               </div>
-            )}
-            {pageItems[2] && (
-              <div className="f-col-4">
-                <PlantCard item={pageItems[2]} sizes="(max-width: 1024px) 50vw, 25vw" />
-              </div>
-            )}
-            {pageItems[3] && (
-              <div className="f-col-1">
-                <PlantCard item={pageItems[3]} sizes="(max-width: 1024px) 50vw, 25vw" />
-              </div>
-            )}
-            {pageItems[4] && (
-              <div className="f-col-2">
-                <PlantCard item={pageItems[4]} sizes="(max-width: 1024px) 50vw, 25vw" />
-              </div>
-            )}
-            {pageItems[5] && (
-              <div className="f-big-right">
-                <PlantCard item={pageItems[5]} sizes="(max-width: 1024px) 50vw, 50vw" />
-              </div>
-            )}
+            ))}
           </div>
         )}
 
