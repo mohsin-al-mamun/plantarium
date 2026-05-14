@@ -32,22 +32,25 @@ export default function About() {
                 marginBottom: "22px",
               }}
             >
-              I&apos;m Maren — a slow gardener with a small{" "}
-              <em style={{ fontStyle: "italic", color: "var(--green-ink)" }}>tar-paper roof</em>
-              , a watering can, and more thyme than is reasonable.
+              I&apos;m Mohsin — a slow gardener with a small{" "}
+              <em style={{ fontStyle: "italic", color: "var(--green-ink)" }}>rooftop garden</em>{" "}
+              on the seventh floor.
             </p>
 
             <p style={{ fontSize: "17px", lineHeight: 1.7, color: "var(--ink-soft)", marginBottom: "18px" }}>
-              I started this rooftop with two pots of basil in the spring of 2024. Two years on,
-              it&apos;s grown into something that genuinely surprises me most weeks. This page is a
-              way to keep an honest record of what&apos;s working, what isn&apos;t, and what the
-              bees turn up to in the mornings.
+              It started with a few roses and bougainvillaea, and quietly grew from there. Flowers
+              still make up most of it — nearly everything up here blooms. Fruits and vegetables
+              came later, in smaller numbers, mostly out of curiosity.
+            </p>
+
+            <p style={{ fontSize: "17px", lineHeight: 1.7, color: "var(--ink-soft)", marginBottom: "18px" }}>
+              My father is retired and spends more time on this rooftop than I do. He&apos;s the
+              one who keeps things going between my visits — the garden is as much his as it is mine.
             </p>
 
             <p style={{ fontSize: "17px", lineHeight: 1.7, color: "var(--ink-soft)", margin: 0 }}>
-              Everything here is grown without synthetic inputs and watered with collected rain
-              whenever the weather allows. I&apos;m always happy to swap cuttings or seeds — say
-              hello.
+              We use organic fertiliser where we can, chemical pesticides when we have to, and try
+              to pay attention to what each plant actually needs.
             </p>
           </div>
 
@@ -60,8 +63,8 @@ export default function About() {
                     <path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11Z" />
                   </svg>
                 ),
-                title: "Water gently, deeply, less often",
-                desc: "Twice a week in summer, mornings only. A long slow soak beats a daily splash on every count.",
+                title: "Water well — the sun demands it",
+                desc: "Bangladesh summers are scorching. Most plants get watered daily; thirsty ones like hibiscus, bougainvillaea, crape jasmine, and rangoon creeper often get a second round.",
               },
               {
                 icon: (
@@ -71,8 +74,8 @@ export default function About() {
                     <path d="M12 4v4" />
                   </svg>
                 ),
-                title: "Organic inputs, always",
-                desc: "Compost from the building's bins, kelp every fortnight, a fish-emulsion drench when the leaves look tired.",
+                title: "Organic fertiliser, chemical pest control",
+                desc: "We feed with organic fertiliser as a first choice, but reach for chemical pesticides when pests get the upper hand.",
               },
               {
                 icon: (
@@ -81,8 +84,8 @@ export default function About() {
                     <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" />
                   </svg>
                 ),
-                title: "Match the plant to the sun",
-                desc: "South rail for fruits, west corner for shade-tolerants, the windy north edge for the things that don't mind a fight.",
+                title: "Work around the heat",
+                desc: "On a seventh-floor rooftop the sun is relentless all day. Sensitive plants go near the parapet wall, which gives them a little shelter from the worst of the heat and wind.",
               },
             ].map((row) => (
               <div
