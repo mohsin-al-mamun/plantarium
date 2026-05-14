@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS "GardenPhoto" (
+  "id" SERIAL PRIMARY KEY,
+  "url" TEXT NOT NULL,
+  "caption" TEXT,
+  "takenAt" TIMESTAMP(3) NOT NULL,
+  "position" INTEGER NOT NULL DEFAULT 0
+);

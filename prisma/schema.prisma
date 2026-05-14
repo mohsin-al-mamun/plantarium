@@ -86,6 +86,14 @@ model Product {
   plants    PlantProduct[]
 }
 
+model GardenPhoto {
+  id       Int      @id @default(autoincrement())
+  url      String
+  caption  String?
+  takenAt  DateTime
+  position Int      @default(0)
+}
+
 model PlantProduct {
   plant     Plant   @relation(fields: [plantId], references: [id], onDelete: Cascade)
   plantId   Int
