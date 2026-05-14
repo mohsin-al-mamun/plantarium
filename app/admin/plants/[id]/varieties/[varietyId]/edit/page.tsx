@@ -140,12 +140,18 @@ export default async function EditVarietyPage({
                   display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
                   padding: "10px 14px", borderRadius: "8px", border: "1px solid var(--line)", background: "var(--card)",
                 }}>
-                  <span style={{
-                    fontSize: "12px", color: "var(--ink-mute)", overflow: "hidden",
-                    textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1,
-                  }}>
-                    {p.url}
-                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "6px", overflow: "hidden", flexShrink: 0 }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                    <a href={p.url} target="_blank" rel="noreferrer" style={{
+                      fontSize: "12px", color: "var(--ink-mute)", overflow: "hidden",
+                      textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, textDecoration: "none",
+                    }}>
+                      {p.url}
+                    </a>
+                  </div>
                   <DeleteConfirmButton
                     action={deletePhoto}
                     title="Remove photo"

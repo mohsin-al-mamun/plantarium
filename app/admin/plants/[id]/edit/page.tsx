@@ -134,9 +134,22 @@ export default async function EditPlantPage({ params }: { params: Promise<{ id: 
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                   padding: "10px 14px", borderRadius: "8px", border: "1px solid var(--line)", background: "var(--card)",
                 }}>
-                  <div>
-                    <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--green-ink)" }}>{v.name}</span>
-                    {v.season && <span style={{ fontSize: "12px", color: "var(--ink-mute)", marginLeft: "10px" }}>{v.season}</span>}
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{
+                      width: "42px", height: "42px", borderRadius: "8px", flexShrink: 0,
+                      border: "1px solid var(--line)", overflow: "hidden",
+                      background: "var(--green-surface)", display: "flex",
+                      alignItems: "center", justifyContent: "center", fontSize: "16px",
+                    }}>
+                      {v.photo
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img src={v.photo} alt={v.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                        : "🌿"}
+                    </div>
+                    <div>
+                      <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--green-ink)" }}>{v.name}</span>
+                      {v.season && <span style={{ fontSize: "12px", color: "var(--ink-mute)", marginLeft: "10px" }}>{v.season}</span>}
+                    </div>
                   </div>
                   <Link href={`/admin/plants/${id}/varieties/${v.id}/edit`} style={{
                     fontSize: "12px", color: "var(--green-ink)", textDecoration: "none",
