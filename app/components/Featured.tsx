@@ -6,7 +6,7 @@ import { useState } from "react"
 
 type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null; plant: { slug: string } }
 
-const PAGE_SIZE = 6
+const PAGE_SIZE = 8
 
 type CardProps = { item: BloomingItem }
 
