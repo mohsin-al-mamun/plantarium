@@ -118,14 +118,16 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                 textDecoration: "none",
               }}
             >
-              <div className="relative aspect-5/4 overflow-hidden">
-                <Image
-                  src={plant.img ?? ""}
-                  alt={plant.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
+              <div className="relative aspect-5/4 overflow-hidden" style={{ background: "var(--green-surface)" }}>
+                {plant.img && (
+                  <Image
+                    src={plant.img}
+                    alt={plant.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                )}
               </div>
 
               <div style={{ padding: "18px 20px 20px" }}>
