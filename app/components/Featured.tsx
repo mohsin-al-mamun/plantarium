@@ -6,13 +6,17 @@ import { useState } from "react"
 
 type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null; plant: { slug: string } }
 
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+}
+
 const PAGE_SIZE = 8
 
 type CardProps = { item: BloomingItem }
 
 function PlantCard({ item }: CardProps) {
   return (
-    <Link href={`/plants/${item.plant.slug}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
+    <Link href={`/plants/${item.plant.slug}/${slugify(item.name)}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
       <Image
         src={item.bloomingPhoto ?? item.photo}
         alt={item.name}
