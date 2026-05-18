@@ -10,7 +10,7 @@ import Footer from "./components/Footer"
 import { prisma } from "@/lib/prisma"
 
 export default async function Home() {
-  const [plants, bloomingVarieties, gardenPhotos] = await Promise.all([
+  const [plants, bloomingVarieties, gardenPhotos, varietyCount] = await Promise.all([
     prisma.plant.findMany({
       select: { id: true, slug: true, name: true, meta: true, category: true, img: true, status: true, _count: { select: { varieties: true } } },
       orderBy: { name: "asc" },
@@ -23,14 +23,19 @@ export default async function Home() {
     prisma.gardenPhoto.findMany({
       orderBy: [{ position: "asc" }, { takenAt: "desc" }],
     }),
+    prisma.variety.count(),
   ])
+
+  const flowerCount = plants.filter(p => p.category === "Flowers").length
+  const fruitCount = plants.filter(p => p.category === "Fruits").length
+  const vegetableCount = plants.filter(p => p.category === "Vegetables").length
 
   return (
     <>
       <Navbar />
       <main>
         <Hero />
-        <StatsStrip />
+        <StatsStrip flowers={flowerCount} fruits={fruitCount} vegetables={vegetableCount} varieties={varietyCount} />
         <PlantGrid plants={plants} />
         <Featured items={bloomingVarieties} />
         <Gallery photos={gardenPhotos} />
