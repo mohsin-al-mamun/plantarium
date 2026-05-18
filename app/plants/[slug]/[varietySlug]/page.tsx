@@ -66,7 +66,7 @@ export default async function VarietyPage({
   const variety = plant.varieties.find((v) => slugify(v.name) === varietySlug)
   if (!variety) notFound()
 
-  const allPhotos = [variety.photo, ...variety.photos.map((p) => p.url)]
+  const allPhotos = Array.from(new Set([variety.photo, ...variety.photos.map((p) => p.url)]))
   const count = allPhotos.length
   const visible = count > 4 ? allPhotos.slice(0, 4) : allPhotos
   const cellSrcs: (string | null)[] =

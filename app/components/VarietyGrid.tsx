@@ -174,7 +174,7 @@ export default function VarietyGrid({ varieties, plantName, plantSlug }: { varie
             {/* Adaptive image grid */}
             <div className="shrink-0 w-full lg:w-[60%] lg:self-stretch overflow-hidden" style={{ minHeight: "320px" }}>
               <AdaptiveGrid
-                photos={[selected.photo, ...(selected.photos ?? [])]}
+                photos={Array.from(new Set([selected.photo, ...(selected.photos ?? [])]))}
                 name={selected.name}
               />
             </div>
