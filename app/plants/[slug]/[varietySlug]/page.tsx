@@ -93,8 +93,8 @@ export default async function VarietyPage({
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16" style={{ alignItems: "start" }}>
 
-              {/* Left — details */}
-              <div>
+              {/* Left — details (second on mobile, first on desktop) */}
+              <div className="order-2 lg:order-1">
                 <div style={{ fontSize: "11px", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--clay)", fontWeight: 600, marginBottom: "10px" }}>
                   Variety · {plant.name}
                 </div>
@@ -138,8 +138,8 @@ export default async function VarietyPage({
 
               </div>
 
-              {/* Right — photo */}
-              <div>
+              {/* Right — photo (first on mobile, second on desktop) */}
+              <div className="order-1 lg:order-2">
                 {allPhotos.length === 1 ? (
                   <div className="group" style={{ position: "relative", aspectRatio: "4/5", borderRadius: "14px", overflow: "hidden", background: "var(--green-surface)" }}>
                     <Image
