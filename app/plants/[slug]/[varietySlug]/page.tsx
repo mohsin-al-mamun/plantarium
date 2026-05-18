@@ -67,6 +67,12 @@ export default async function VarietyPage({
   if (!variety) notFound()
 
   const allPhotos = [variety.photo, ...variety.photos.map((p) => p.url)]
+  const count = allPhotos.length
+  const visible = count > 4 ? allPhotos.slice(0, 4) : allPhotos
+  const cellSrcs: (string | null)[] =
+    count === 2 ? [visible[0], null, null, visible[1]] :
+    count === 3 ? [visible[0], visible[1], visible[2], null] :
+                  visible.slice(0, 4)
 
   return (
     <>
@@ -75,18 +81,15 @@ export default async function VarietyPage({
         <section style={{ padding: "48px 0 96px" }}>
           <div className="max-w-7xl mx-auto px-4 md:px-16">
 
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2" style={{ marginBottom: "36px", fontSize: "13px", color: "var(--ink-mute)" }}>
-              <Link href="/#plants" className="hover:opacity-70 transition-opacity" style={{ color: "inherit", textDecoration: "none" }}>
-                Collection
-              </Link>
-              <span style={{ opacity: 0.4 }}>/</span>
-              <Link href={`/plants/${plant.slug}`} className="hover:opacity-70 transition-opacity" style={{ color: "inherit", textDecoration: "none" }}>
-                {plant.name}
-              </Link>
-              <span style={{ opacity: 0.4 }}>/</span>
-              <span style={{ color: "var(--green-ink)", fontWeight: 500 }}>{variety.name}</span>
-            </div>
+            {/* Back link */}
+            <Link
+              href={`/plants/${plant.slug}`}
+              className="inline-flex items-center gap-2 transition-opacity hover:opacity-70"
+              style={{ fontSize: "13px", color: "var(--ink-mute)", textDecoration: "none", marginBottom: "36px", display: "inline-flex" }}
+            >
+              <BackArrow />
+              {plant.name}
+            </Link>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16" style={{ alignItems: "start" }}>
 
@@ -133,27 +136,17 @@ export default async function VarietyPage({
                   </div>
                 )}
 
-                <div style={{ marginTop: "40px" }}>
-                  <Link
-                    href={`/plants/${plant.slug}`}
-                    className="inline-flex items-center gap-2 transition-opacity hover:opacity-70"
-                    style={{ fontSize: "13px", color: "var(--ink-mute)", textDecoration: "none" }}
-                  >
-                    <BackArrow />
-                    All {plant.name} varieties
-                  </Link>
-                </div>
               </div>
 
               {/* Right — photo */}
               <div>
                 {allPhotos.length === 1 ? (
-                  <div style={{ position: "relative", aspectRatio: "4/5", borderRadius: "14px", overflow: "hidden", background: "var(--green-surface)" }}>
+                  <div className="group" style={{ position: "relative", aspectRatio: "4/5", borderRadius: "14px", overflow: "hidden", background: "var(--green-surface)" }}>
                     <Image
                       src={allPhotos[0]}
                       alt={variety.name}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       priority
                     />
@@ -161,24 +154,30 @@ export default async function VarietyPage({
                 ) : (
                   <div
                     className="grid gap-2"
-                    style={{
-                      gridTemplateColumns: "1fr 1fr",
-                      borderRadius: "14px",
-                      overflow: "hidden",
-                    }}
+                    style={{ gridTemplateColumns: "1fr 1fr", borderRadius: "14px", overflow: "hidden" }}
                   >
-                    {allPhotos.slice(0, 4).map((src, i) => (
-                      <div key={i} style={{ position: "relative", aspectRatio: "1/1", background: "var(--green-surface)" }}>
-                        <Image
-                          src={src}
-                          alt={`${variety.name} ${i + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 1024px) 50vw, 25vw"
-                          priority={i === 0}
-                        />
-                      </div>
-                    ))}
+                    {cellSrcs.map((src, i) =>
+                      src === null ? (
+                        <div key={i} style={{ aspectRatio: "1/1", background: "var(--green-surface)", display: "grid", placeItems: "center" }}>
+                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-ink)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.25 }}>
+                            <path d="M12 21c0-7 5-12 9-12-1 7-5 12-9 12Z" />
+                            <path d="M12 21c-4 0-8-3-9-9 6 0 9 4 9 9Z" />
+                            <path d="M12 21V11" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div key={i} className="group" style={{ position: "relative", aspectRatio: "1/1", background: "var(--green-surface)", overflow: "hidden" }}>
+                          <Image
+                            src={src}
+                            alt={`${variety.name} ${i + 1}`}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            sizes="(max-width: 1024px) 50vw, 25vw"
+                            priority={i === 0}
+                          />
+                        </div>
+                      )
+                    )}
                   </div>
                 )}
               </div>

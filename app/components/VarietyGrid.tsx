@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Overlay } from "@/app/components/ModalShell"
+
+function slugify(s: string) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
+}
 
 const cleanUrl = (url: string) => url.replace(/^["']+|["']+$/g, "").trim()
 
@@ -100,7 +105,7 @@ function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
   )
 }
 
-export default function VarietyGrid({ varieties, plantName }: { varieties: Variety[]; plantName: string }) {
+export default function VarietyGrid({ varieties, plantName, plantSlug }: { varieties: Variety[]; plantName: string; plantSlug: string }) {
   const [selected, setSelected] = useState<Variety | null>(null)
 
   useEffect(() => {
@@ -169,7 +174,7 @@ export default function VarietyGrid({ varieties, plantName }: { varieties: Varie
             {/* Adaptive image grid */}
             <div className="shrink-0 w-full lg:w-[60%] lg:self-stretch overflow-hidden" style={{ minHeight: "320px" }}>
               <AdaptiveGrid
-                photos={selected.photos?.length ? selected.photos : [selected.photo]}
+                photos={[selected.photo, ...(selected.photos ?? [])]}
                 name={selected.name}
               />
             </div>
@@ -199,6 +204,15 @@ export default function VarietyGrid({ varieties, plantName }: { varieties: Varie
                   {selected.note}
                 </p>
               </div>
+              <Link
+                href={`/plants/${plantSlug}/${slugify(selected.name)}`}
+                style={{ marginTop: "24px", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", color: "var(--green-ink)", textDecoration: "none", fontWeight: 500 }}
+              >
+                View full page
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
           </div>
         </Overlay>
