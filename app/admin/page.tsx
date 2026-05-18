@@ -2,11 +2,12 @@ import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 
 export default async function AdminDashboard() {
-  const [plantCount, productCount, varietyCount, photoCount] = await Promise.all([
+  const [plantCount, productCount, varietyCount, photoCount, journalCount] = await Promise.all([
     prisma.plant.count(),
     prisma.product.count(),
     prisma.variety.count(),
     prisma.gardenPhoto.count(),
+    prisma.journalEntry.count(),
   ])
 
   return (
@@ -23,11 +24,12 @@ export default async function AdminDashboard() {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 200px)", gap: "16px", marginBottom: "48px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 180px)", gap: "16px", marginBottom: "48px" }}>
         <StatCard label="Plants" value={plantCount} href="/admin/plants" accent="var(--green-ink)" />
         <StatCard label="Varieties" value={varietyCount} href="/admin/varieties" accent="var(--green-ink)" />
         <StatCard label="Products" value={productCount} href="/admin/products" accent="var(--clay-deep)" />
         <StatCard label="Gallery" value={photoCount} href="/admin/gallery" accent="#7a6a9a" />
+        <StatCard label="Journal" value={journalCount} href="/admin/journal" accent="var(--ochre)" />
       </div>
 
       <div style={{
@@ -41,6 +43,7 @@ export default async function AdminDashboard() {
           <ActionLink href="/admin/plants/new">+ Add plant</ActionLink>
           <ActionLink href="/admin/products/new" outline>+ Add product</ActionLink>
           <ActionLink href="/admin/gallery/new" outline>+ Add photo</ActionLink>
+          <ActionLink href="/admin/journal/new" outline>+ Add entry</ActionLink>
         </div>
       </div>
     </div>
