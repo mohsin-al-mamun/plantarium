@@ -24,7 +24,7 @@ export default async function AdminDashboard() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 200px)", gap: "16px", marginBottom: "48px" }}>
         <StatCard label="Plants" value={plantCount} href="/admin/plants" accent="var(--green-ink)" />
-        <StatCard label="Varieties" value={varietyCount} href="/admin/plants" accent="var(--green-ink)" />
+        <StatCard label="Varieties" value={varietyCount} href="/admin/varieties" accent="var(--green-ink)" />
         <StatCard label="Products" value={productCount} href="/admin/products" accent="var(--clay-deep)" />
       </div>
 
