@@ -13,7 +13,7 @@ export default async function Home() {
   const [plants, bloomingVarieties, gardenPhotos] = await Promise.all([
     prisma.plant.findMany({
       select: { id: true, slug: true, name: true, meta: true, category: true, img: true, status: true, _count: { select: { varieties: true } } },
-      orderBy: { id: "asc" },
+      orderBy: { name: "asc" },
     }),
     prisma.variety.findMany({
       where: { bloomingNow: true },
