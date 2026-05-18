@@ -1,37 +1,19 @@
 import Image from "next/image"
 import Link from "next/link"
+import { prisma } from "@/lib/prisma"
 
-type Entry = {
-  date: string
-  title: string
-  sub: string
-  img: string
-  accent?: "amber"
+function formatDate(date: Date) {
+  const d = date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+  const [day, mon, year] = d.split(" ")
+  return `${day} · ${mon.toUpperCase()} · ${year}`
 }
 
-const entries: Entry[] = [
-  {
-    date: "04 · MAY · 2026",
-    title: "First Eden rose of the season opened.",
-    sub: "After a slow April, three buds cracked open within a day of each other. Heavy fragrance in the morning, faint by noon.",
-    img: "https://images.unsplash.com/photo-1496062031456-07b8f162a322?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    date: "21 · APR · 2026",
-    title: "San Marzano transplanted into the long bed.",
-    sub: "Six plants, eighteen inches apart, staked with bamboo. The first true leaves are darker than last year — likely the new compost.",
-    img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600&q=80",
-    accent: "amber",
-  },
-  {
-    date: "02 · APR · 2026",
-    title: "Cosmos and zinnia direct-sown after the last frost.",
-    sub: "Three rows along the south rail. Light cover of compost, then a slow soak. Germination expected in 7–10 days.",
-    img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=600&q=80",
-  },
-]
+export default async function Journal() {
+  const entries = await prisma.journalEntry.findMany({
+    orderBy: [{ position: "asc" }, { date: "desc" }],
+    take: 3,
+  })
 
-export default function Journal() {
   return (
     <section id="journal" style={{ padding: "24px 0 96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-16">
@@ -84,106 +66,113 @@ export default function Journal() {
           </p>
         </div>
 
-        {/* Journal list */}
-        <div className="relative" style={{ paddingLeft: "28px" }}>
-          {/* Vertical line */}
-          <div
-            className="absolute"
-            style={{
-              left: "6px",
-              top: "8px",
-              bottom: "8px",
-              width: "1px",
-              background: "var(--line)",
-            }}
-          />
-
-          {entries.map((entry, i) => (
+        {entries.length === 0 ? (
+          <p style={{ fontSize: "15px", color: "var(--ink-mute)", fontStyle: "italic", paddingLeft: "28px" }}>
+            No journal entries yet.
+          </p>
+        ) : (
+          <div className="relative" style={{ paddingLeft: "28px" }}>
+            {/* Vertical line */}
             <div
-              key={entry.date}
-              className="relative"
+              className="absolute"
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr auto",
-                gap: "32px",
-                padding: "24px 0",
-                borderBottom: i < entries.length - 1 ? "1px solid var(--line-soft)" : "none",
+                left: "6px",
+                top: "8px",
+                bottom: "8px",
+                width: "1px",
+                background: "var(--line)",
               }}
-            >
-              {/* Dot */}
-              <div
-                className="absolute"
-                style={{
-                  left: "-28px",
-                  top: "32px",
-                  width: "13px",
-                  height: "13px",
-                  borderRadius: "50%",
-                  background: entry.accent === "amber" ? "var(--ochre)" : "var(--green-ink)",
-                  boxShadow: entry.accent === "amber"
-                    ? "0 0 0 4px var(--ochre-surface)"
-                    : "0 0 0 4px var(--green-surface)",
-                }}
-              />
+            />
 
-              {/* Text */}
-              <div>
-                <div
-                  style={{
-                    fontFamily: "monospace",
-                    fontSize: "11px",
-                    color: "var(--ink-mute)",
-                    letterSpacing: "0.06em",
-                  }}
-                >
-                  {entry.date}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-fraunces)",
-                    fontSize: "22px",
-                    letterSpacing: "-0.01em",
-                    margin: "6px 0",
-                    color: "var(--green-ink)",
-                  }}
-                >
-                  {entry.title}
-                </div>
-                <p
-                  style={{
-                    fontSize: "14px",
-                    color: "var(--ink-soft)",
-                    maxWidth: "560px",
-                    margin: 0,
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {entry.sub}
-                </p>
-              </div>
-
-              {/* Thumb */}
+            {entries.map((entry, i) => (
               <div
-                className="relative shrink-0 hidden sm:block"
+                key={entry.id}
+                className="relative"
                 style={{
-                  width: "140px",
-                  height: "100px",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  alignSelf: "center",
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto",
+                  gap: "32px",
+                  padding: "24px 0",
+                  borderBottom: i < entries.length - 1 ? "1px solid var(--line-soft)" : "none",
                 }}
               >
-                <Image
-                  src={entry.img}
-                  alt={entry.title}
-                  fill
-                  className="object-cover"
-                  sizes="140px"
+                {/* Dot */}
+                <div
+                  className="absolute"
+                  style={{
+                    left: "-28px",
+                    top: "32px",
+                    width: "13px",
+                    height: "13px",
+                    borderRadius: "50%",
+                    background: entry.accent === "amber" ? "var(--ochre)" : "var(--green-ink)",
+                    boxShadow: entry.accent === "amber"
+                      ? "0 0 0 4px var(--ochre-surface)"
+                      : "0 0 0 4px var(--green-surface)",
+                  }}
                 />
+
+                {/* Text */}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "11px",
+                      color: "var(--ink-mute)",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {formatDate(entry.date)}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-fraunces)",
+                      fontSize: "22px",
+                      letterSpacing: "-0.01em",
+                      margin: "6px 0",
+                      color: "var(--green-ink)",
+                    }}
+                  >
+                    {entry.title}
+                  </div>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      color: "var(--ink-soft)",
+                      maxWidth: "560px",
+                      margin: 0,
+                      lineHeight: 1.65,
+                    }}
+                  >
+                    {entry.body}
+                  </p>
+                </div>
+
+                {/* Thumb */}
+                {entry.img && (
+                  <div
+                    className="relative shrink-0 hidden sm:block"
+                    style={{
+                      width: "140px",
+                      height: "100px",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                      alignSelf: "center",
+                    }}
+                  >
+                    <Image
+                      src={entry.img}
+                      alt={entry.title}
+                      fill
+                      className="object-cover"
+                      sizes="140px"
+                    />
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-10" style={{ paddingLeft: "28px" }}>
           <Link

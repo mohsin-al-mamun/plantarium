@@ -102,3 +102,13 @@ model PlantProduct {
 
   @@id([plantId, productId])
 }
+
+model JournalEntry {
+  id       Int      @id @default(autoincrement())
+  title    String
+  body     String
+  img      String?
+  date     DateTime
+  accent   String?
+  position Int      @default(0)
+}
