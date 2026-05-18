@@ -45,10 +45,14 @@ const BackArrow = () => (
 
 export default async function VarietyPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string; varietySlug: string }>
+  searchParams: Promise<{ from?: string }>
 }) {
   const { slug, varietySlug } = await params
+  const { from } = await searchParams
+  const fromBlooming = from === "blooming"
 
   const plant = await prisma.plant.findUnique({
     where: { slug },
@@ -83,12 +87,12 @@ export default async function VarietyPage({
 
             {/* Back link */}
             <Link
-              href={`/plants/${plant.slug}`}
+              href={fromBlooming ? "/#blooming" : `/plants/${plant.slug}`}
               className="inline-flex items-center gap-2 transition-opacity hover:opacity-70"
               style={{ fontSize: "13px", color: "var(--ink-mute)", textDecoration: "none", marginBottom: "36px", display: "inline-flex" }}
             >
               <BackArrow />
-              {plant.name}
+              {fromBlooming ? "Currently blooming" : plant.name}
             </Link>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16" style={{ alignItems: "start" }}>

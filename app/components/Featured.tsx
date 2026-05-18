@@ -16,7 +16,7 @@ type CardProps = { item: BloomingItem }
 
 function PlantCard({ item }: CardProps) {
   return (
-    <Link href={`/plants/${item.plant.slug}/${slugify(item.name)}`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
+    <Link href={`/plants/${item.plant.slug}/${slugify(item.name)}?from=blooming`} className="relative overflow-hidden h-full group" style={{ borderRadius: "12px", display: "block", textDecoration: "none" }}>
       <Image
         src={item.bloomingPhoto ?? item.photo}
         alt={item.name}
@@ -66,7 +66,7 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
   const pageItems = items.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
   return (
-    <section style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
+    <section id="blooming" style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-16">
 
         {/* Section head */}
