@@ -119,26 +119,27 @@ export default function Hero() {
             className="flex flex-wrap items-center"
             style={{ gap: "12px", marginBottom: "48px" }}
           >
-            <a
-              href="#plants"
+            <button
+              onClick={() => document.getElementById("plants")?.scrollIntoView({ behavior: "smooth" })}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-85"
-              style={{ background: "rgba(255,255,255,0.88)", color: "var(--green-ink)" }}
+              style={{ background: "rgba(255,255,255,0.88)", color: "var(--green-ink)", border: "none", cursor: "pointer" }}
             >
               Tour the garden
               <ArrowIcon />
-            </a>
-            <a
-              href="#journal"
+            </button>
+            <button
+              onClick={() => document.getElementById("journal")?.scrollIntoView({ behavior: "smooth" })}
               className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-80"
               style={{
                 background: "rgba(255,255,255,0.14)",
                 border: "1px solid rgba(255,255,255,0.35)",
                 backdropFilter: "blur(6px)",
                 WebkitBackdropFilter: "blur(6px)",
+                cursor: "pointer",
               }}
             >
               Read the journal
-            </a>
+            </button>
           </div>
 
           <div

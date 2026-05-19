@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type GardenPhoto = { id: number; url: string; caption: string | null; takenAt: Date; position: number }
 
