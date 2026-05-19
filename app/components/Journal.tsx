@@ -2,10 +2,13 @@ import Image from "next/image"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+
 function formatDate(date: Date) {
-  const d = date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
-  const [day, mon, year] = d.split(" ")
-  return `${day} · ${mon.toUpperCase()} · ${year}`
+  const d = String(date.getUTCDate()).padStart(2, "0")
+  const m = MONTHS[date.getUTCMonth()]
+  const y = date.getUTCFullYear()
+  return `${d} · ${m} · ${y}`
 }
 
 export default async function Journal() {
