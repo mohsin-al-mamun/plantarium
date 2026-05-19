@@ -24,16 +24,33 @@ const ChevronRight = () => (
   </svg>
 )
 
-function Modal({ photo, onClose }: { photo: GardenPhoto; onClose: () => void }) {
+function Modal({ photos, index, onClose, onNav }: { photos: GardenPhoto[]; index: number; onClose: () => void; onNav: (i: number) => void }) {
+  const photo = photos[index]
+  const hasPrev = index > 0
+  const hasNext = index < photos.length - 1
+
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+      if (e.key === "ArrowLeft" && hasPrev) onNav(index - 1)
+      if (e.key === "ArrowRight" && hasNext) onNav(index + 1)
+    }
     document.addEventListener("keydown", handler)
     document.body.style.overflow = "hidden"
     return () => {
       document.removeEventListener("keydown", handler)
       document.body.style.overflow = ""
     }
-  }, [onClose])
+  }, [onClose, onNav, index, hasPrev, hasNext])
+
+  const navBtn: React.CSSProperties = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)",
+    background: "rgba(255,255,255,0.12)", border: "none", borderRadius: "50%",
+    width: "44px", height: "44px", cursor: "pointer",
+    color: "#fff", display: "grid", placeItems: "center",
+    transition: "background 0.2s",
+    zIndex: 10,
+  }
 
   return (
     <div
@@ -58,20 +75,38 @@ function Modal({ photo, onClose }: { photo: GardenPhoto; onClose: () => void }) 
         ×
       </button>
 
+      {/* Prev */}
+      {hasPrev && (
+        <button onClick={(e) => { e.stopPropagation(); onNav(index - 1) }} style={{ ...navBtn, left: "16px" }}>
+          <ChevronLeft />
+        </button>
+      )}
+
+      {/* Next */}
+      {hasNext && (
+        <button onClick={(e) => { e.stopPropagation(); onNav(index + 1) }} style={{ ...navBtn, right: "16px" }}>
+          <ChevronRight />
+        </button>
+      )}
+
       {/* Image */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{ position: "relative", width: "100%", maxWidth: "900px", maxHeight: "80vh" }}
       >
         <img
+          key={photo.id}
           src={photo.url}
           alt={photo.caption ?? ""}
-          style={{ width: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "10px", display: "block" }}
+          style={{ width: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "10px", display: "block", animation: "fadeUp 0.25s ease both" }}
         />
       </div>
 
-      {/* Date + caption */}
+      {/* Counter + caption */}
       <div style={{ marginTop: "16px", textAlign: "center" }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: "4px" }}>
+          {index + 1} / {photos.length}
+        </div>
         <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "6px" }}>
           {formatDate(photo.takenAt)}
         </div>
@@ -89,6 +124,7 @@ function PhotoTile({ photo, rowSpan = false, onClick }: { photo: GardenPhoto; ro
   return (
     <div
       className={`relative rounded-xl overflow-hidden group cursor-pointer${rowSpan ? " gallery-tall" : ""}`}
+      style={{ cursor: "pointer" }}
       onClick={onClick}
     >
       <Image
@@ -130,7 +166,7 @@ function PhotoTile({ photo, rowSpan = false, onClick }: { photo: GardenPhoto; ro
 
 export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState<GardenPhoto | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const totalPages = Math.ceil(photos.length / PAGE_SIZE)
   const p = photos.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
@@ -160,10 +196,10 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
           <p style={{ fontSize: "15px", color: "var(--ink-mute)", fontStyle: "italic" }}>No photos yet.</p>
         ) : (
           <div key={page} className="gallery-grid" style={{ animation: "fadeUp 0.3s ease both" }}>
-            {p[0] && <PhotoTile photo={p[0]} rowSpan onClick={() => setSelected(p[0])} />}
-            {p.slice(1, 4).map((photo) => <PhotoTile key={photo.id} photo={photo} onClick={() => setSelected(photo)} />)}
-            {p[4] && <PhotoTile photo={p[4]} rowSpan onClick={() => setSelected(p[4])} />}
-            {p.slice(5, 8).map((photo) => <PhotoTile key={photo.id} photo={photo} onClick={() => setSelected(photo)} />)}
+            {p[0] && <PhotoTile photo={p[0]} rowSpan onClick={() => setSelectedIndex(photos.indexOf(p[0]))} />}
+            {p.slice(1, 4).map((photo) => <PhotoTile key={photo.id} photo={photo} onClick={() => setSelectedIndex(photos.indexOf(photo))} />)}
+            {p[4] && <PhotoTile photo={p[4]} rowSpan onClick={() => setSelectedIndex(photos.indexOf(p[4]))} />}
+            {p.slice(5, 8).map((photo) => <PhotoTile key={photo.id} photo={photo} onClick={() => setSelectedIndex(photos.indexOf(photo))} />)}
           </div>
         )}
 
@@ -190,7 +226,7 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
         )}
       </div>
 
-      {selected && <Modal photo={selected} onClose={() => setSelected(null)} />}
+      {selectedIndex !== null && <Modal photos={photos} index={selectedIndex} onClose={() => setSelectedIndex(null)} onNav={setSelectedIndex} />}
     </section>
   )
 }
