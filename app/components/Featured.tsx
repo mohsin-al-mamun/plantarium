@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null; plant: { slug: string } }
 
@@ -64,11 +64,6 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
   const [page, setPage] = useState(0)
   const totalPages = Math.ceil(items.length / PAGE_SIZE)
   const pageItems = items.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
-
-  useEffect(() => {
-    document.getElementById("blooming")?.scrollIntoView({ behavior: "smooth" })
-  }, [page])
-
   return (
     <section id="blooming" style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-16">
@@ -140,7 +135,7 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-4 mt-8">
             <button
-              onClick={() => setPage((p) => p - 1)}
+              onClick={() => { setPage((p) => p - 1); setTimeout(() => document.getElementById("blooming")?.scrollIntoView({ behavior: "smooth" }), 50) }}
               disabled={page === 0}
               className="grid place-items-center transition-opacity"
               style={{
@@ -162,7 +157,7 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
             </span>
 
             <button
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => { setPage((p) => p + 1); setTimeout(() => document.getElementById("blooming")?.scrollIntoView({ behavior: "smooth" }), 50) }}
               disabled={page === totalPages - 1}
               className="grid place-items-center transition-opacity"
               style={{

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 type GardenPhoto = { id: number; url: string; caption: string | null; takenAt: Date; position: number }
 
@@ -170,10 +170,6 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
   const totalPages = Math.ceil(photos.length / PAGE_SIZE)
   const p = photos.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
-  useEffect(() => {
-    document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })
-  }, [page])
-
   return (
     <section id="gallery" className="py-24" style={{ background: "var(--paper)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -206,7 +202,7 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-4 mt-8">
             <button
-              onClick={() => setPage((p) => p - 1)}
+              onClick={() => { setPage((p) => p - 1); setTimeout(() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" }), 50) }}
               disabled={page === 0}
               className="grid place-items-center transition-opacity"
               style={{ width: "38px", height: "38px", borderRadius: "50%", border: "1px solid var(--line)", background: "#fff", color: "var(--ink-soft)", cursor: page === 0 ? "not-allowed" : "pointer", opacity: page === 0 ? 0.35 : 1 }}
@@ -215,7 +211,7 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
             </button>
             <span style={{ fontSize: "13px", color: "var(--ink-mute)" }}>{page + 1} / {totalPages}</span>
             <button
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => { setPage((p) => p + 1); setTimeout(() => document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" }), 50) }}
               disabled={page === totalPages - 1}
               className="grid place-items-center transition-opacity"
               style={{ width: "38px", height: "38px", borderRadius: "50%", border: "1px solid var(--line)", background: "#fff", color: "var(--ink-soft)", cursor: page === totalPages - 1 ? "not-allowed" : "pointer", opacity: page === totalPages - 1 ? 0.35 : 1 }}
