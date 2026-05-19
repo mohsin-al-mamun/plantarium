@@ -25,6 +25,7 @@ const LeafIcon = () => (
 const socials = [
   {
     label: "LinkedIn",
+    href: "https://www.linkedin.com/in/mohsinalmamun/",
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="4" />
@@ -34,6 +35,7 @@ const socials = [
   },
   {
     label: "GitHub",
+    href: "https://github.com/mohsin-al-mamun",
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
@@ -42,6 +44,7 @@ const socials = [
   },
   {
     label: "Facebook",
+    href: "https://www.facebook.com/oxg.mamun",
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14 4h-2a3 3 0 0 0-3 3v3H7v3h2v8h3v-8h2.5l.5-3H12V7a1 1 0 0 1 1-1h1Z" />
@@ -50,6 +53,7 @@ const socials = [
   },
   {
     label: "Email",
+    href: "mailto:oxgmohsin@gmail.com",
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -176,11 +180,13 @@ export default function Footer() {
           }}
         >
           <div>© 2026 Plantarium · Brooklyn, NY · Tended by Maren</div>
-          <div className="flex" style={{ gap: "10px" }}>
-            {socials.map(({ label, icon }) => (
+          <div className="flex items-center" style={{ gap: "10px" }}>
+            {socials.filter(s => s.label !== "Email").map(({ label, href, icon }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="grid place-items-center transition-opacity hover:opacity-80"
                 style={{
@@ -194,6 +200,13 @@ export default function Footer() {
                 {icon}
               </a>
             ))}
+            <a
+              href="mailto:oxgmohsin@gmail.com"
+              className="transition-opacity hover:opacity-80"
+              style={{ color: "rgba(255,255,255,0.55)", fontSize: "12px", textDecoration: "none" }}
+            >
+              oxgmohsin@gmail.com
+            </a>
           </div>
         </div>
       </div>
