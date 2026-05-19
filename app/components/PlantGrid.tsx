@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -22,6 +22,7 @@ const tabs: Category[] = ["All", "Flowers", "Fruits", "Vegetables"]
 export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
   const [active, setActive] = useState<Category>("All")
   const [visible, setVisible] = useState(8)
+  const prevVisible = useRef(8)
 
   const filtered = active === "All" ? plants : plants.filter((p) => p.category === active)
   const shown = filtered.slice(0, visible)
@@ -85,7 +86,7 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
           {tabs.map((tab) => (
             <button
               key={tab}
-              onClick={() => { setActive(tab); setVisible(8) }}
+              onClick={() => { setActive(tab); setVisible(8); prevVisible.current = 8 }}
               className="inline-flex items-center transition-colors"
               style={{
                 padding: "9px 16px",
@@ -106,7 +107,7 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
 
         {/* Plant grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {shown.map((plant) => (
+          {shown.map((plant, i) => (
             <Link
               key={plant.id}
               href={`/plants/${plant.slug}`}
@@ -116,6 +117,8 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
                 border: "1px solid var(--line)",
                 borderRadius: "12px",
                 textDecoration: "none",
+                animation: i >= prevVisible.current ? "fadeUp 0.35s ease both" : "none",
+                animationDelay: i >= prevVisible.current ? `${(i - prevVisible.current) * 60}ms` : "0ms",
               }}
             >
               <div className="relative aspect-5/4 overflow-hidden" style={{ background: "var(--green-surface)" }}>
@@ -193,8 +196,12 @@ export default function PlantGrid({ plants }: { plants: PlantRow[] }) {
           <div className="mt-10 text-center">
             <button
               onClick={() => {
-                if (hasMore) setVisible((v) => v + 8)
-                else setVisible(8)
+                if (hasMore) { prevVisible.current = visible; setVisible((v) => v + 8) }
+                else {
+                  prevVisible.current = visible
+                  setVisible(8)
+                  document.getElementById("plants")?.scrollIntoView({ behavior: "smooth" })
+                }
               }}
               style={{
                 padding: "11px 32px",
