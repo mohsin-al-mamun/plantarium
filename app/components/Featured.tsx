@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type BloomingItem = { name: string; photo: string; bloomingPhoto: string | null; plant: { slug: string } }
 
@@ -65,6 +65,10 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
   const totalPages = Math.ceil(items.length / PAGE_SIZE)
   const pageItems = items.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
+  useEffect(() => {
+    document.getElementById("blooming")?.scrollIntoView({ behavior: "smooth" })
+  }, [page])
+
   return (
     <section id="blooming" style={{ paddingTop: "24px", paddingBottom: "96px", background: "var(--paper-warm)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-16">
@@ -123,7 +127,7 @@ export default function Featured({ items }: { items: BloomingItem[] }) {
             Nothing marked as blooming right now.
           </p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div key={page} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" style={{ animation: "fadeUp 0.3s ease both" }}>
             {pageItems.map(item => (
               <div key={item.name} style={{ aspectRatio: "3/4", position: "relative" }}>
                 <PlantCard item={item} />

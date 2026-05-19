@@ -134,6 +134,10 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
   const totalPages = Math.ceil(photos.length / PAGE_SIZE)
   const p = photos.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
 
+  useEffect(() => {
+    document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" })
+  }, [page])
+
   return (
     <section id="gallery" className="py-24" style={{ background: "var(--paper)" }}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -155,7 +159,7 @@ export default function Gallery({ photos }: { photos: GardenPhoto[] }) {
         {photos.length === 0 ? (
           <p style={{ fontSize: "15px", color: "var(--ink-mute)", fontStyle: "italic" }}>No photos yet.</p>
         ) : (
-          <div className="gallery-grid">
+          <div key={page} className="gallery-grid" style={{ animation: "fadeUp 0.3s ease both" }}>
             {p[0] && <PhotoTile photo={p[0]} rowSpan onClick={() => setSelected(p[0])} />}
             {p.slice(1, 4).map((photo) => <PhotoTile key={photo.id} photo={photo} onClick={() => setSelected(photo)} />)}
             {p[4] && <PhotoTile photo={p[4]} rowSpan onClick={() => setSelected(p[4])} />}
