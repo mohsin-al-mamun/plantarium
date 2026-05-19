@@ -181,7 +181,7 @@ export default function Footer() {
         >
           <div>© 2026 Plantarium · Brooklyn, NY · Tended by Maren</div>
           <div className="flex items-center" style={{ gap: "10px" }}>
-            {socials.filter(s => s.label !== "Email").map(({ label, href, icon }) => (
+            {socials.map(({ label, href, icon }) => (
               <a
                 key={label}
                 href={href}
@@ -200,13 +200,6 @@ export default function Footer() {
                 {icon}
               </a>
             ))}
-            <a
-              href="mailto:oxgmohsin@gmail.com"
-              className="transition-opacity hover:opacity-80"
-              style={{ color: "rgba(255,255,255,0.55)", fontSize: "12px", textDecoration: "none" }}
-            >
-              oxgmohsin@gmail.com
-            </a>
           </div>
         </div>
       </div>
