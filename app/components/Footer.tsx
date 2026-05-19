@@ -106,7 +106,7 @@ export default function Footer() {
               </span>
             </div>
             <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px", lineHeight: 1.65, maxWidth: "320px", margin: 0 }}>
-              A personal record of one small rooftop garden in Brooklyn. Updated whenever something opens, ripens, or refuses to.
+              A personal garden journal from Khulna, Bangladesh. Gardening is my way of staying close to nature — one plant at a time.
             </p>
           </div>
 
@@ -179,7 +179,7 @@ export default function Footer() {
             color: "rgba(255,255,255,0.35)",
           }}
         >
-          <div>© 2026 Plantarium · Brooklyn, NY · Tended by Maren</div>
+          <div>© 2024 Plantarium · Khulna, Bangladesh · Tended by Mohsin</div>
           <div className="flex items-center" style={{ gap: "10px" }}>
             {socials.map(({ label, href, icon }) => (
               <a
