@@ -104,7 +104,7 @@ export default function StatsStrip({
           {items.map((item, i) => (
             <div
               key={item.label}
-              className="flex items-center gap-18px"
+              className="flex items-center gap-[18px]"
               style={{
                 padding: "0 32px",
                 borderRight:
