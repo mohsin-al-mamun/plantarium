@@ -1,9 +1,30 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Overlay } from "@/app/components/ModalShell"
+
+const ExpandIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+  </svg>
+)
+const ChevronLeft = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+)
+const ChevronRight = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 18l6-6-6-6" />
+  </svg>
+)
+const XIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+)
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")
@@ -53,29 +74,31 @@ function EmptyCell() {
   )
 }
 
-function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
+function AdaptiveGrid({ photos, name, onPhotoClick }: { photos: string[]; name: string; onPhotoClick: (src: string) => void }) {
   const count = photos.length
 
   if (count === 1) {
     return (
       <div className="w-full h-full flex items-center justify-center" style={{ background: "var(--green-surface)", padding: "28px" }}>
-        <div className="relative overflow-hidden group" style={{ width: "100%", height: "100%", borderRadius: "10px" }}>
+        <button
+          onClick={() => onPhotoClick(photos[0])}
+          className="relative overflow-hidden group"
+          style={{ width: "100%", height: "100%", borderRadius: "10px", border: "none", padding: 0, cursor: "zoom-in" }}
+        >
           <Image src={photos[0]} alt={name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="340px" />
-          <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-        </div>
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center"
+            style={{ width: "28px", height: "28px", borderRadius: "7px", background: "rgba(10,30,16,0.6)", color: "#fff" }}>
+            <ExpandIcon />
+          </div>
+        </button>
       </div>
     )
   }
 
-  // 5+ photos: shuffle, pick 4 randomly each time modal opens
   const visible = count > 4
     ? [...photos].sort(() => Math.random() - 0.5).slice(0, 4)
     : photos
 
-  // Always 2×2 grid for 2, 3, 4 images
-  // 2 images → positions 0 and 3 (diagonal: top-left, bottom-right)
-  // 3 images → positions 0, 1, 2 (top-left, top-right, bottom-left)
-  // 4       → all four cells
   const cellSrcs: (string | null)[] =
     count === 2 ? [visible[0], null, null, visible[1]] :
     count === 3 ? [visible[0], visible[1], visible[2], null] :
@@ -87,7 +110,12 @@ function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
         src === null ? (
           <EmptyCell key={i} />
         ) : (
-          <div key={i} className="relative overflow-hidden group">
+          <button
+            key={i}
+            onClick={() => onPhotoClick(src)}
+            className="relative overflow-hidden group"
+            style={{ border: "none", padding: 0, cursor: "zoom-in" }}
+          >
             <Image
               src={src}
               alt={`${name} ${i + 1}`}
@@ -97,8 +125,11 @@ function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
               priority
               style={{ objectPosition: OBJ_POSITIONS[i] }}
             />
-            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-          </div>
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center"
+              style={{ width: "28px", height: "28px", borderRadius: "7px", background: "rgba(10,30,16,0.6)", color: "#fff" }}>
+              <ExpandIcon />
+            </div>
+          </button>
         )
       )}
     </div>
@@ -107,12 +138,32 @@ function AdaptiveGrid({ photos, name }: { photos: string[]; name: string }) {
 
 export default function VarietyGrid({ varieties, plantName, plantSlug }: { varieties: Variety[]; plantName: string; plantSlug: string }) {
   const [selected, setSelected] = useState<Variety | null>(null)
+  const [lightboxPhotos, setLightboxPhotos] = useState<string[]>([])
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
+  const prevPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i - 1 + lightboxPhotos.length) % lightboxPhotos.length : null), [lightboxPhotos.length])
+  const nextPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i + 1) % lightboxPhotos.length : null), [lightboxPhotos.length])
+
+  const openLightbox = useCallback((allPhotos: string[], src: string) => {
+    setLightboxPhotos(allPhotos)
+    setLightboxIndex(allPhotos.indexOf(src) === -1 ? 0 : allPhotos.indexOf(src))
+  }, [])
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSelected(null) }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (lightboxIndex !== null) { closeLightbox(); return }
+        setSelected(null)
+      }
+      if (lightboxIndex !== null) {
+        if (e.key === "ArrowLeft") prevPhoto()
+        if (e.key === "ArrowRight") nextPhoto()
+      }
+    }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [])
+  }, [lightboxIndex, closeLightbox, prevPhoto, nextPhoto])
 
   useEffect(() => {
     document.body.style.overflow = selected ? "hidden" : ""
@@ -176,6 +227,7 @@ export default function VarietyGrid({ varieties, plantName, plantSlug }: { varie
               <AdaptiveGrid
                 photos={Array.from(new Set([selected.photo, ...(selected.photos ?? [])]))}
                 name={selected.name}
+                onPhotoClick={(src) => openLightbox(Array.from(new Set([selected.photo, ...(selected.photos ?? [])])), src)}
               />
             </div>
 
@@ -216,6 +268,59 @@ export default function VarietyGrid({ varieties, plantName, plantSlug }: { varie
             </div>
           </div>
         </Overlay>
+      )}
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ background: "rgba(0,0,0,0.92)", zIndex: 60 }}
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 grid place-items-center transition-opacity hover:opacity-70"
+            style={{ width: "40px", height: "40px", borderRadius: "50%", background: "rgba(255,255,255,0.12)", color: "#fff", border: "none", cursor: "pointer" }}
+            aria-label="Close"
+          >
+            <XIcon />
+          </button>
+
+          {lightboxPhotos.length > 1 && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2" style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)" }}>
+              {lightboxIndex + 1} / {lightboxPhotos.length}
+            </div>
+          )}
+
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={lightboxPhotos[lightboxIndex]}
+            alt={`Photo ${lightboxIndex + 1}`}
+            onClick={e => e.stopPropagation()}
+            style={{ maxWidth: "90vw", maxHeight: "85vh", width: "auto", height: "auto", display: "block", borderRadius: "8px" }}
+          />
+
+          {lightboxPhotos.length > 1 && (
+            <>
+              <button
+                onClick={e => { e.stopPropagation(); prevPhoto() }}
+                className="absolute left-4 grid place-items-center transition-opacity hover:opacity-70"
+                style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(255,255,255,0.12)", color: "#fff", border: "none", cursor: "pointer" }}
+                aria-label="Previous"
+              >
+                <ChevronLeft />
+              </button>
+              <button
+                onClick={e => { e.stopPropagation(); nextPhoto() }}
+                className="absolute right-4 grid place-items-center transition-opacity hover:opacity-70"
+                style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(255,255,255,0.12)", color: "#fff", border: "none", cursor: "pointer" }}
+                aria-label="Next"
+              >
+                <ChevronRight />
+              </button>
+            </>
+          )}
+        </div>
       )}
     </>
   )

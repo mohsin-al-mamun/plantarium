@@ -2,9 +2,9 @@ export const dynamic = "force-dynamic"
 
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 import Navbar from "@/app/components/Navbar"
 import Footer from "@/app/components/Footer"
+import VarietyPhotoViewer from "@/app/components/VarietyPhotoViewer"
 import { prisma } from "@/lib/prisma"
 
 function slugify(s: string) {
@@ -73,12 +73,6 @@ export default async function VarietyPage({
   if (!variety) notFound()
 
   const allPhotos = Array.from(new Set([variety.photo, ...variety.photos.map((p) => p.url)]))
-  const count = allPhotos.length
-  const visible = count > 4 ? allPhotos.slice(0, 4) : allPhotos
-  const cellSrcs: (string | null)[] =
-    count === 2 ? [visible[0], null, null, visible[1]] :
-    count === 3 ? [visible[0], visible[1], visible[2], null] :
-                  visible.slice(0, 4)
 
   return (
     <>
@@ -146,46 +140,7 @@ export default async function VarietyPage({
 
               {/* Right — photo (first on mobile, second on desktop) */}
               <div className="order-1 lg:order-2">
-                {allPhotos.length === 1 ? (
-                  <div className="group" style={{ position: "relative", aspectRatio: "4/5", borderRadius: "14px", overflow: "hidden", background: "var(--green-surface)" }}>
-                    <Image
-                      src={allPhotos[0]}
-                      alt={variety.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      priority
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="grid gap-2"
-                    style={{ gridTemplateColumns: "1fr 1fr", borderRadius: "14px", overflow: "hidden" }}
-                  >
-                    {cellSrcs.map((src, i) =>
-                      src === null ? (
-                        <div key={i} style={{ aspectRatio: "1/1", background: "var(--green-surface)", display: "grid", placeItems: "center" }}>
-                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-ink)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.25 }}>
-                            <path d="M12 21c0-7 5-12 9-12-1 7-5 12-9 12Z" />
-                            <path d="M12 21c-4 0-8-3-9-9 6 0 9 4 9 9Z" />
-                            <path d="M12 21V11" />
-                          </svg>
-                        </div>
-                      ) : (
-                        <div key={i} className="group" style={{ position: "relative", aspectRatio: "1/1", background: "var(--green-surface)", overflow: "hidden" }}>
-                          <Image
-                            src={src}
-                            alt={`${variety.name} ${i + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            sizes="(max-width: 1024px) 50vw, 25vw"
-                            priority={i === 0}
-                          />
-                        </div>
-                      )
-                    )}
-                  </div>
-                )}
+                <VarietyPhotoViewer photos={allPhotos} name={variety.name} />
               </div>
 
             </div>
