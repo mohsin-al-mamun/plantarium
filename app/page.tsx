@@ -31,12 +31,13 @@ export default async function Home() {
   const flowerCount = plants.filter(p => p.category === "Flowers").length
   const fruitCount = plants.filter(p => p.category === "Fruits").length
   const vegetableCount = plants.filter(p => p.category === "Vegetables").length
+  const categoryCount = new Set(plants.map(p => p.category)).size
 
   return (
     <>
       <Navbar />
       <main>
-        <Hero />
+        <Hero varietyCount={varietyCount} categoryCount={categoryCount} />
         <StatsStrip flowers={flowerCount} fruits={fruitCount} vegetables={vegetableCount} varieties={varietyCount} />
         <PlantGrid plants={plants} />
         <Featured items={bloomingVarieties} />

@@ -12,12 +12,6 @@ const HERO_IMAGES = [
   "https://images.unsplash.com/photo-1611088433323-46fa6b0c7af9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
-const stats = [
-  { value: "40+", label: "Varieties" },
-  { value: "3", label: "Categories" },
-  { value: "2 yrs", label: "Growing" },
-];
-
 const ArrowIcon = () => (
   <svg
     width="12"
@@ -33,7 +27,7 @@ const ArrowIcon = () => (
   </svg>
 );
 
-export default function Hero() {
+export default function Hero({ varietyCount, categoryCount }: { varietyCount: number; categoryCount: number }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -150,7 +144,11 @@ export default function Hero() {
               borderTop: "1px solid rgba(255,255,255,0.22)",
             }}
           >
-            {stats.map((s) => (
+            {[
+              { value: String(varietyCount), label: "Varieties" },
+              { value: String(categoryCount), label: "Categories" },
+              { value: "2 yrs", label: "Growing" },
+            ].map((s) => (
               <div key={s.label}>
                 <div
                   style={{
