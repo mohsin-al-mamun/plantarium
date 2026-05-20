@@ -110,20 +110,26 @@ export default function Hero({ varietyCount, categoryCount }: { varietyCount: nu
           </p>
 
           <div
-            className="flex flex-wrap items-center"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center w-4/5 sm:w-auto mx-auto sm:mx-0"
             style={{ gap: "12px", marginBottom: "48px" }}
           >
             <button
-              onClick={() => document.getElementById("plants")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-85"
+              onClick={() => {
+                const el = document.getElementById("plants");
+                if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
+              }}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-85 w-full sm:w-auto"
               style={{ background: "rgba(255,255,255,0.88)", color: "var(--green-ink)", border: "none", cursor: "pointer" }}
             >
               Tour the garden
               <ArrowIcon />
             </button>
             <button
-              onClick={() => document.getElementById("journal")?.scrollIntoView({ behavior: "smooth" })}
-              className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-80"
+              onClick={() => {
+                const el = document.getElementById("journal");
+                if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
+              }}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full text-sm font-medium text-white transition-opacity hover:opacity-80 w-full sm:w-auto"
               style={{
                 background: "rgba(255,255,255,0.14)",
                 border: "1px solid rgba(255,255,255,0.35)",
@@ -137,7 +143,7 @@ export default function Hero({ varietyCount, categoryCount }: { varietyCount: nu
           </div>
 
           <div
-            className="flex flex-wrap"
+            className="flex flex-wrap justify-center sm:justify-start"
             style={{
               gap: "32px",
               paddingTop: "28px",

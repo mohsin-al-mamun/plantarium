@@ -380,13 +380,13 @@ export default function CareGuide({ products, plants }: { products: ProductRow[]
           )}
 
           {view === "products" && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {filteredProducts.map(p => <ProductCard key={p.id} product={p} onSelect={setSelectedProduct} />)}
             </div>
           )}
 
           {view === "plants" && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {plants.map(p => <PlantCard key={p.slug} plant={p} onSelect={setSelectedPlant} />)}
             </div>
           )}

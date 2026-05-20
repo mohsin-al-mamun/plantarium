@@ -96,22 +96,21 @@ export default function StatsStrip({
 
   return (
     <section style={{ background: "var(--green-ink)" }}>
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-16">
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid grid-cols-2 sm:grid-cols-4"
           style={{ padding: "44px 0" }}
         >
           {items.map((item, i) => (
             <div
               key={item.label}
-              className="flex items-center gap-[18px]"
-              style={{
-                padding: "0 32px",
-                borderRight:
-                  i < items.length - 1
-                    ? "1px solid rgba(255,255,255,0.12)"
-                    : undefined,
-              }}
+              className={[
+                "flex items-center gap-[18px] px-4 sm:px-8 border-[rgba(255,255,255,0.12)]",
+                i % 2 === 0 ? "border-r" : "",
+                i < 2 ? "border-b pb-8 sm:pb-0" : "pt-8 sm:pt-0",
+                "sm:border-b-0",
+                i < 3 ? "sm:border-r" : "sm:border-r-0",
+              ].join(" ")}
             >
               <div
                 className="shrink-0 grid place-items-center"
