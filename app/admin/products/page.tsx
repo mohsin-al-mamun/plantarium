@@ -63,7 +63,7 @@ export default async function AdminProductsPage() {
               <Th>Kind</Th>
               <Th>Type</Th>
               <Th>Plants</Th>
-              <Th style={{ textAlign: "right", position: "sticky", right: 0, background: "var(--card)", boxShadow: "-3px 0 6px -2px rgba(14,59,42,0.08)" }}>Actions</Th>
+              <th className="admin-col-actions-head" style={{ padding: "11px 16px", textAlign: "right", fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--ink-mute)" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +113,7 @@ export default async function AdminProductsPage() {
                 </td>
 
                 {/* Actions */}
-                <td style={{ padding: "12px 16px", textAlign: "right", position: "sticky", right: 0, background: "inherit", boxShadow: "-3px 0 6px -2px rgba(14,59,42,0.08)" }}>
+                <td className="admin-col-actions" style={{ padding: "12px 16px", textAlign: "right" }}>
                   <Link href={`/admin/products/${p.id}/edit`} className="edit-btn" style={{
                     fontSize: "12px", fontWeight: 500, color: "var(--green-ink)",
                     textDecoration: "none", padding: "6px 14px", borderRadius: "7px",

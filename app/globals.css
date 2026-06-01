@@ -152,6 +152,18 @@ body {
   .admin-page-header { flex-direction: column; gap: 12px; }
   .admin-stats-grid-3, .admin-stats-grid-4 { grid-template-columns: repeat(2, 1fr); }
   .admin-stats-grid-5 { grid-template-columns: repeat(2, 1fr); }
+  .admin-col-actions {
+    position: sticky;
+    right: 0;
+    background: inherit;
+    box-shadow: -3px 0 6px -2px rgba(14,59,42,0.08);
+  }
+  .admin-col-actions-head {
+    position: sticky;
+    right: 0;
+    background: var(--card);
+    box-shadow: -3px 0 6px -2px rgba(14,59,42,0.08);
+  }
 }
 
 @keyframes bounce-down {
