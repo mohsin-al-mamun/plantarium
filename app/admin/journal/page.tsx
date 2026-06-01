@@ -46,7 +46,7 @@ export default async function AdminJournalPage() {
               <Th>Title</Th>
               <Th>Accent</Th>
               <Th>Position</Th>
-              <Th style={{ textAlign: "right" }}>Actions</Th>
+              <Th style={{ textAlign: "right", position: "sticky", right: 0, background: "var(--card)", boxShadow: "-3px 0 6px -2px rgba(14,59,42,0.08)" }}>Actions</Th>
             </tr>
           </thead>
           <tbody>
@@ -118,7 +118,7 @@ export default async function AdminJournalPage() {
                 </td>
 
                 {/* Actions */}
-                <td style={{ padding: "10px 16px", textAlign: "right" }}>
+                <td style={{ padding: "10px 16px", textAlign: "right", position: "sticky", right: 0, background: "inherit", boxShadow: "-3px 0 6px -2px rgba(14,59,42,0.08)" }}>
                   <Link href={`/admin/journal/${entry.id}/edit`} className="edit-btn" style={{
                     fontSize: "12px", fontWeight: 500, color: "var(--green-ink)",
                     textDecoration: "none", padding: "6px 14px", borderRadius: "7px",
