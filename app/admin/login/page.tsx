@@ -30,10 +30,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{
-      minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      background: "var(--green-surface)",
-    }}>
+    <div className="admin-login-bg">
       <div style={{
         width: "100%", maxWidth: "360px", padding: "40px",
         border: "1px solid var(--line)", borderRadius: "16px",

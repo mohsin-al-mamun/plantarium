@@ -33,7 +33,7 @@ export default async function AdminVarietiesPage({
     <div>
       <style dangerouslySetInnerHTML={{ __html: css }} />
 
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "32px" }}>
+      <div className="admin-page-header">
         <div>
           <h1 style={{
             fontFamily: "var(--font-fraunces)", fontWeight: 300, fontSize: "30px",
@@ -50,15 +50,15 @@ export default async function AdminVarietiesPage({
         </Suspense>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", marginBottom: "32px" }}>
+      <div className="admin-stats-grid-3">
         <StatCard label="Total Varieties" value={varieties.length} accent="var(--green-ink)" />
         <StatCard label="Currently Blooming" value={bloomingCount} accent="#c2637a" bg="#fdf0f3" />
         <StatCard label="Not Blooming" value={varieties.length - bloomingCount} accent="var(--ink-mute)" bg="var(--paper-warm)" />
       </div>
 
       <div style={{
-        border: "1px solid var(--line)", borderRadius: "14px", overflow: "hidden",
-        boxShadow: "0 1px 4px rgba(14,59,42,0.06)",
+        border: "1px solid var(--line)", borderRadius: "14px", overflowX: "auto",
+        boxShadow: "0 1px 4px rgba(14,59,42,0.06)", WebkitOverflowScrolling: "touch",
       }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
           <thead>

@@ -13,11 +13,7 @@ async function logout() {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ minHeight: "100vh", background: "var(--paper)" }}>
-      <nav style={{
-        borderBottom: "1px solid var(--line)", background: "var(--card)",
-        padding: "0 32px", display: "flex", alignItems: "center",
-        justifyContent: "space-between", height: "56px",
-      }}>
+      <nav className="admin-nav-bar">
         <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           <Link href="/admin" style={{
             textDecoration: "none", display: "flex", alignItems: "center", gap: "10px",
@@ -40,9 +36,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               Plant<em style={{ fontStyle: "italic", fontWeight: 400 }}>arium</em>
             </span>
           </Link>
-          <AdminNav />
+          <AdminNav logoutAction={logout} />
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div className="admin-nav-right">
           <span style={{
             fontSize: "10px", fontWeight: 600, letterSpacing: "0.12em",
             textTransform: "uppercase", color: "var(--paper)",
@@ -66,7 +62,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </form>
         </div>
       </nav>
-      <main style={{ padding: "40px 32px", maxWidth: "1200px", margin: "0 auto" }}>
+      <main className="admin-main">
         {children}
       </main>
     </div>

@@ -11,7 +11,7 @@ export default async function AdminGalleryPage() {
 
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px" }}>
+      <div className="admin-page-header">
         <h1 style={{ fontFamily: "var(--font-fraunces)", fontWeight: 300, fontSize: "28px", color: "var(--green-ink)", margin: 0 }}>
           Garden Photos
         </h1>
