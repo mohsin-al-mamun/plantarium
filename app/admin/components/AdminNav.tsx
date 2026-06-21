@@ -3,6 +3,25 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
+import { useFormStatus } from "react-dom"
+
+function LogoutBtn() {
+  const { pending } = useFormStatus()
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      style={{
+        width: "100%", textAlign: "left", fontSize: "13px", color: "var(--ink-mute)",
+        background: "none", border: "none", cursor: pending ? "not-allowed" : "pointer",
+        padding: "10px 12px", borderRadius: "8px",
+        opacity: pending ? 0.6 : 1, transition: "opacity 0.15s",
+      }}
+    >
+      {pending ? "Logging out…" : "Log out"}
+    </button>
+  )
+}
 
 const links = [
   { href: "/admin/plants", label: "Plants" },
@@ -83,13 +102,7 @@ export default function AdminNav({ logoutAction }: { logoutAction: () => Promise
             ← View site
           </Link>
           <form action={logoutAction}>
-            <button type="submit" style={{
-              width: "100%", textAlign: "left", fontSize: "13px", color: "var(--ink-mute)",
-              background: "none", border: "none", cursor: "pointer",
-              padding: "10px 12px", borderRadius: "8px",
-            }}>
-              Log out
-            </button>
+            <LogoutBtn />
           </form>
         </div>
       </div>

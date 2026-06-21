@@ -1,5 +1,6 @@
 "use client"
 
+import { useTransition } from "react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 type Plant = { id: number; name: string }
@@ -13,6 +14,7 @@ export default function VarietyFilterBar({
   selectedPlantId?: number
   bloomingFilter?: string
 }) {
+  const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -24,7 +26,9 @@ export default function VarietyFilterBar({
     } else {
       params.delete(key)
     }
-    router.push(`${pathname}?${params.toString()}`)
+    startTransition(() => {
+      router.push(`${pathname}?${params.toString()}`)
+    })
   }
 
   const selectStyle: React.CSSProperties = {
@@ -38,12 +42,13 @@ export default function VarietyFilterBar({
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "16px", opacity: isPending ? 0.6 : 1, transition: "opacity 0.15s" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <label style={labelStyle}>Plant</label>
         <select
           value={selectedPlantId ?? ""}
           onChange={e => update("plant", e.target.value)}
+          disabled={isPending}
           style={{ ...selectStyle, minWidth: "160px" }}
         >
           <option value="">All plants</option>
@@ -58,6 +63,7 @@ export default function VarietyFilterBar({
         <select
           value={bloomingFilter ?? ""}
           onChange={e => update("blooming", e.target.value)}
+          disabled={isPending}
           style={{ ...selectStyle, minWidth: "140px" }}
         >
           <option value="">All</option>

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
+import SaveButton from "@/app/admin/components/SaveButton"
 
 export default async function NewJournalEntryPage() {
   async function createEntry(formData: FormData) {
@@ -55,12 +56,7 @@ export default async function NewJournalEntryPage() {
         <Field label="Position" name="position" placeholder="0" hint="Display order (0 = first). Defaults to end of list." />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Add entry
-          </button>
+          <SaveButton label="Add entry" />
           <Link href="/admin/journal" style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",

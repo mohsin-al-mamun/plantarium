@@ -1,6 +1,32 @@
 "use client"
 
 import { useState } from "react"
+import { useFormStatus } from "react-dom"
+
+function DeleteSubmitBtn() {
+  const { pending } = useFormStatus()
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      style={{
+        width: "100%", padding: "10px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
+        background: "#ef4444", color: "#fff", border: "none",
+        cursor: pending ? "not-allowed" : "pointer",
+        opacity: pending ? 0.7 : 1, transition: "opacity 0.15s",
+        display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
+      }}
+    >
+      {pending && (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          strokeLinecap="round" style={{ animation: "spin 0.8s linear infinite" }}>
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      )}
+      {pending ? "Deleting…" : "Delete"}
+    </button>
+  )
+}
 
 export default function DeleteConfirmButton({
   action,
@@ -104,12 +130,7 @@ export default function DeleteConfirmButton({
                 Cancel
               </button>
               <form action={action} style={{ flex: 1 }}>
-                <button type="submit" style={{
-                  width: "100%", padding: "10px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-                  background: "#ef4444", color: "#fff", border: "none", cursor: "pointer",
-                }}>
-                  Delete
-                </button>
+                <DeleteSubmitBtn />
               </form>
             </div>
           </div>

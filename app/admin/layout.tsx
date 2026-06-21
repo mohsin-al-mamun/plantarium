@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import AdminNav from "@/app/admin/components/AdminNav"
+import LogoutButton from "@/app/admin/components/LogoutButton"
 import { createClient } from "@/lib/supabase/server"
 
 async function logout() {
@@ -52,14 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           }}>
             ← View site
           </Link>
-          <form action={logout}>
-            <button type="submit" style={{
-              fontSize: "12px", color: "var(--ink-mute)", background: "none",
-              border: "none", cursor: "pointer", padding: 0,
-            }}>
-              Log out
-            </button>
-          </form>
+          <LogoutButton action={logout} />
         </div>
       </nav>
       <main className="admin-main">

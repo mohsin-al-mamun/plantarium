@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
+import SaveButton from "@/app/admin/components/SaveButton"
 
 export default async function NewVarietyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -53,12 +54,7 @@ export default async function NewVarietyPage({ params }: { params: Promise<{ id:
         <Field label="Position" name="position" defaultValue={String(plant._count.varieties)} hint="Display order (0 = first)" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Add variety
-          </button>
+          <SaveButton label="Add variety" />
           <Link href={`/admin/plants/${id}/edit`} style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",

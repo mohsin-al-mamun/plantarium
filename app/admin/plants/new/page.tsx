@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import ImageUploadField from "@/app/admin/components/ImageUploadField"
+import SaveButton from "@/app/admin/components/SaveButton"
 
 async function createPlant(formData: FormData) {
   "use server"
@@ -68,12 +69,7 @@ export default function NewPlantPage() {
         <ImageUploadField label="Image" name="img" />
 
         <div style={{ display: "flex", gap: "12px", paddingTop: "8px" }}>
-          <button type="submit" style={{
-            padding: "10px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 500,
-            background: "var(--green-ink)", color: "var(--paper)", border: "none", cursor: "pointer",
-          }}>
-            Create plant
-          </button>
+          <SaveButton label="Create plant" />
           <Link href="/admin/plants" style={{
             padding: "10px 24px", borderRadius: "8px", fontSize: "13px",
             border: "1px solid var(--line)", color: "var(--ink-soft)", textDecoration: "none",
