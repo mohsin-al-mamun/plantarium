@@ -39,6 +39,7 @@ function FertilizerCard({ d, layer }: { d: Fertilizer; layer: Layer }) {
         <div>
           <div style={{ fontFamily: "var(--font-fraunces)", fontWeight: 500, fontSize: "18px", color: "var(--green-ink)", lineHeight: 1.2 }}>{d.name}</div>
           <div style={{ fontSize: "12px", color: "var(--ink-mute)", marginTop: "2px" }}>{d.local}</div>
+          {d.chemical && <div style={{ fontSize: "11.5px", color: "var(--ink-mute)", fontStyle: "italic", marginTop: "2px" }}>{d.chemical}</div>}
         </div>
         <span style={{ fontSize: "11px", padding: "4px 10px", borderRadius: "999px", border: `1px solid ${a.border}`, color: a.text, whiteSpace: "nowrap", flexShrink: 0 }}>{d.symbol}</span>
       </div>
@@ -152,7 +153,7 @@ export default function FertilizerGuide() {
             A working reference for the fertilizers actually used in a rooftop garden — what each one does, what happens when it&apos;s missing, and exactly how much to dissolve per litre of water. Organised like soil itself: fast-acting nutrients near the surface, slow-release builders in the bedrock below.
           </p>
           <div className="flex flex-wrap gap-2" style={{ marginTop: "22px" }}>
-            {["17 fertilizers", "g/L and ml/L dosing", "deficiency diagnosis", "chili-specific notes"].map((t) => (
+            {[`${quickRefRows.length} fertilizers`, "g/L and ml/L dosing", "deficiency diagnosis", "chili-specific notes"].map((t) => (
               <span key={t} style={{ fontSize: "12px", padding: "6px 12px", border: "1px solid var(--line)", borderRadius: "999px", color: "var(--ink-soft)" }}>{t}</span>
             ))}
           </div>
@@ -266,16 +267,16 @@ export default function FertilizerGuide() {
         </section>
 
         {/* Chili callout */}
-        <section id="chili" style={{ marginTop: "40px", scrollMarginTop: "88px" }}>
-          <div style={{ borderRadius: "16px", padding: "32px 32px", background: "linear-gradient(135deg, #4A1F16 0%, #2E1510 100%)", border: "1px solid rgba(201,114,100,0.25)", position: "relative", overflow: "hidden" }}>
+        <section id="chili" style={{ margin: "40px -16px 0", scrollMarginTop: "88px" }}>
+          <div style={{ borderRadius: "16px", padding: "40px 32px", background: "linear-gradient(135deg, #4A1F16 0%, #2E1510 100%)", border: "1px solid rgba(201,114,100,0.25)", position: "relative", overflow: "hidden" }}>
             <span style={{ position: "absolute", right: "20px", top: "50%", transform: "translateY(-50%) rotate(12deg)", fontSize: "5rem", opacity: 0.12 }}>🌶</span>
             <div style={{ position: "relative" }}>
               <div style={eyebrowStyle(RUST_LIGHT)}>Case study</div>
               <h3 style={{ fontFamily: "var(--font-fraunces)", fontWeight: 500, fontSize: "clamp(20px, 2.6vw, 28px)", color: "#fff", margin: "0 0 14px" }}>Mirich gach — chili, stage by stage</h3>
-              <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.72)", maxWidth: "640px", lineHeight: 1.6, marginBottom: "20px" }}>
+              <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.72)", maxWidth: "680px", lineHeight: 1.6, marginBottom: "24px" }}>
                 Chili is the most planted pot crop on the rooftop and the most sensitive to fertilizer timing. The feed should follow the plant&apos;s growth stage, not the calendar — nitrogen held too long delays flowering, and boron given too strong can kill the plant outright. Here&apos;s the sequence that actually works.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" style={{ maxWidth: "780px" }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {chiliStages.map((c) => (
                   <div key={c.stage} style={{ background: "rgba(255,255,255,0.06)", borderRadius: "8px", padding: "14px 16px", borderLeft: `2px solid ${RUST_LIGHT}` }}>
                     <div style={{ fontSize: "10.5px", textTransform: "uppercase", letterSpacing: "0.07em", color: RUST_LIGHT, marginBottom: "6px", fontWeight: 600 }}>{c.stage}</div>
