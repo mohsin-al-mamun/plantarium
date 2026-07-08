@@ -326,12 +326,21 @@ export default function CareGuide({ products, plants }: { products: ProductRow[]
     return true
   })
 
-  const filterBtn = (active: boolean) => ({
+  type Accent = { text: string; bg: string; border: string }
+  const GREEN_ACCENT: Accent = { text: "var(--green-ink)", bg: "var(--green-surface)", border: "var(--green-highlight)" }
+  const CLAY_ACCENT: Accent = { text: "var(--clay-deep)", bg: "var(--clay-surface)", border: "var(--clay)" }
+  const NEUTRAL_ACCENT: Accent = { text: "var(--ink-soft)", bg: "var(--paper-warm)", border: "var(--line)" }
+
+  const filterBtn = (active: boolean, accent: Accent = GREEN_ACCENT) => ({
     padding: "8px 16px", borderRadius: "999px", fontSize: "13px", cursor: "pointer",
-    border: active ? "1px solid var(--green-ink)" : "1px solid var(--line)",
-    background: active ? "var(--green-ink)" : "var(--card)",
-    color: active ? "var(--paper)" : "var(--ink-soft)",
+    border: `1px solid ${active ? accent.border : "var(--line)"}`,
+    background: active ? accent.bg : "var(--card)",
+    color: active ? accent.text : "var(--ink-soft)",
+    fontWeight: active ? 500 : 400,
   } as React.CSSProperties)
+
+  const kindAccent = (k: KindFilter) => k === "fertilizer" ? GREEN_ACCENT : k === "pesticide" ? CLAY_ACCENT : NEUTRAL_ACCENT
+  const typeAccent = (t: TypeFilter) => t === "organic" ? GREEN_ACCENT : t === "chemical" ? CLAY_ACCENT : NEUTRAL_ACCENT
 
   return (
     <>
@@ -349,6 +358,16 @@ export default function CareGuide({ products, plants }: { products: ProductRow[]
             <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "var(--ink-soft)", lineHeight: 1.65, margin: 0 }}>
               Every fertilizer and pesticide used across the garden — doses, timing, and which plants they belong to.
             </p>
+            <Link href="/care/fertilizers"
+              className="inline-flex items-center gap-2 hover:opacity-80 transition-opacity"
+              style={{
+                marginTop: "22px", fontSize: "13px", fontWeight: 600, color: "var(--paper)",
+                background: "var(--green-ink)", padding: "11px 20px", borderRadius: "999px",
+                textDecoration: "none",
+              }}
+            >
+              Read the full fertilizer guide →
+            </Link>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: "28px" }}>
@@ -360,7 +379,7 @@ export default function CareGuide({ products, plants }: { products: ProductRow[]
             <div className="flex flex-wrap items-center gap-2" style={{ marginBottom: "32px" }}>
               <div className="flex items-center gap-2">
                 {(["all", "fertilizer", "pesticide"] as KindFilter[]).map(k => (
-                  <button key={k} onClick={() => setKind(k)} style={filterBtn(kind === k)}>
+                  <button key={k} onClick={() => setKind(k)} style={filterBtn(kind === k, kindAccent(k))}>
                     {k === "all" ? "All" : k === "fertilizer" ? "Fertilizers" : "Pesticides"}
                   </button>
                 ))}
@@ -368,7 +387,7 @@ export default function CareGuide({ products, plants }: { products: ProductRow[]
               <div style={{ width: "1px", height: "20px", background: "var(--line)", margin: "0 4px" }} />
               <div className="flex items-center gap-2">
                 {(["all", "organic", "chemical"] as TypeFilter[]).map(t => (
-                  <button key={t} onClick={() => setType(t)} style={filterBtn(type === t)}>
+                  <button key={t} onClick={() => setType(t)} style={filterBtn(type === t, typeAccent(t))}>
                     {t === "all" ? "All types" : t.charAt(0).toUpperCase() + t.slice(1)}
                   </button>
                 ))}
