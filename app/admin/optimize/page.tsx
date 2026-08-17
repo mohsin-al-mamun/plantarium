@@ -24,6 +24,41 @@ function pct(original: number, optimized: number) {
   return Math.round((1 - optimized / original) * 100)
 }
 
+// Vercel functions reject bodies over 4.5MB. Downscale client-side first so
+// large phone photos still make it to /api/optimize for final compression.
+const UPLOAD_SAFE_BYTES = 4 * 1024 * 1024
+
+async function shrinkForUpload(file: File): Promise<File> {
+  if (file.size <= UPLOAD_SAFE_BYTES) return file
+
+  const bitmap = await createImageBitmap(file)
+  let { width, height } = bitmap
+  let quality = 0.85
+
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const canvas = document.createElement("canvas")
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext("2d")!
+    ctx.drawImage(bitmap, 0, 0, width, height)
+
+    const blob: Blob = await new Promise((resolve, reject) =>
+      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("canvas encode failed"))), "image/jpeg", quality)
+    )
+
+    if (blob.size <= UPLOAD_SAFE_BYTES) {
+      const baseName = file.name.replace(/\.[^.]+$/, "")
+      return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" })
+    }
+
+    width = Math.round(width * 0.75)
+    height = Math.round(height * 0.75)
+    quality = Math.max(0.5, quality - 0.1)
+  }
+
+  throw new Error("Could not shrink image below upload limit")
+}
+
 export default function OptimizePage() {
   const [entries, setEntries] = useState<ImageEntry[]>([])
   const [dragging, setDragging] = useState(false)
@@ -47,10 +82,11 @@ export default function OptimizePage() {
     setEntries((prev) => prev.map((e) => e.id === id ? { ...e, status: "processing" } : e))
     const entry = entries.find((e) => e.id === id)!
 
-    const form = new FormData()
-    form.append("image", entry.file)
-
     try {
+      const uploadFile = await shrinkForUpload(entry.file)
+      const form = new FormData()
+      form.append("image", uploadFile)
+
       const res = await fetch("/api/optimize", { method: "POST", body: form })
       if (!res.ok) throw new Error(await res.text())
 
